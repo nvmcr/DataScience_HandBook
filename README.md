@@ -1,8 +1,8 @@
 # Transforming Complex Tech into Simple Explanations - A Revision Guide to Data Science related concepts - Machine Learning, Statistics, AWS...
 ## Content
-* [Probability and Statistics]()
-* [Machine Learning]()
-* [AWS]()
+* [Probability and Statistics](https://github.com/nvmcr/Blog/tree/main/ProbalityAndStatistics)
+* [Machine Learning](https://github.com/nvmcr/Blog/tree/main/Machine_Learning)
+* [AWS](https://github.com/nvmcr/Blog/tree/main/AWS)
 ## Motivation
 As someone who is learning data science, looking for jobs and a ghajini/brainfart, I found myself constantly looking for resources for quick revision. However, I often found that the explanations and resources available were way too much or overly complex or filled with technical jargon that made it difficult to understand the concepts. Also, I have a habit of taking notes and jotting down key concepts and ideas that I wanted to remember. Scribbling down on the paper helps me to reinforce my understandings. But like I said, I scribble in some cryptic alien language that even I find hard to understand at times.
 
