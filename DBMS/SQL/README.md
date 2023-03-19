@@ -1,9 +1,9 @@
 # SQL
 ## Table of Contents
-1. Intro(#intro)
-2. SELECT(#select-queries)
-3. Constraints, Filtering, Sorting(#constraints,-filtering,-sorting)
-4. Multiple Table Queries(#multi-table-queries)
+1. [Intro](#intro)
+2. [SELECT](#select-queries)
+3. [Constraints, Filtering, Sorting](#constraints,-filtering,-sorting)
+4. [Multiple Table Queries](#multi-table-queries)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
