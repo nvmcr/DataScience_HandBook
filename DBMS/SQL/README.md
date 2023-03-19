@@ -54,3 +54,19 @@ LIMIT 10 OFFSET 50;
 ```
 After 50 rows, next 10 rows will be returned.
 > The `LIMIT` will return the specified number of rows and `OFFSET` will specify where the `LIMIT` count should start from.
+## Multi-Table Queries
+In real world data, the data is broken down into pieces and stord across multiple orthogonal tables using *normalization*. This database normalization is useful as it minimizes duplicate data in a single table and also allows the data to grow independent of each other. 
+For example, if there are two tables `table1` and `table2` where `table1` has `id`, `name`, `gpa` and `table2` has `studentid`, `state`, `city`. If we need top 10 highest gpa students from Texas, query looks like:
+```
+SELECT name, gpa
+FROM table1
+  INNER JOIN table2
+    ON table1.id = table2.studentid
+WHERE state = 'Texas'
+ORDER BY gpa
+LIMIT 10;
+```
+`ON` condition specifies how the tables need to be joined. `INNER JOIN`/`JOIN` will join only the rows that are common to both tables. Once the tables are joined, remaining keywords can be used similar to a single table. 
+Similar to `INNER JOIN`, other type of joins can also be used.
+> All types of joins combine multiple tables. In specific, `INNER JOIN` will return only the rows that are common to both tables. `OUTER JOIN` will return all the rows from both tables, `LEFT JOIN` will return all rows from first table and will return common rows from second table. `RIGHT JOIN` is the reverse case of LEFT JOIN`. 
+Usually joins other than `INNER JOIN` will result in null values. They can be retrieved using `IS/IS NOT NULL`.
