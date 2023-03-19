@@ -4,6 +4,7 @@
 2. [SELECT](#select-queries)
 3. [Constraints, Filtering, Sorting](#constraints-filtering-sorting)
 4. [Multiple Table Queries](#multi-table-queries)
+5. [Queries with Expressions](#queries-with-expressions)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
@@ -75,3 +76,40 @@ LIMIT 10;
 Similar to `INNER JOIN`, other type of joins can also be used.
 > All types of joins combine multiple tables. In specific, `INNER JOIN` will return only the rows that are common to both tables. `OUTER JOIN` will return all the rows from both tables, `LEFT JOIN` will return all rows from first table and will return common rows from second table. `RIGHT JOIN` is the reverse case of LEFT JOIN`. 
 Usually joins other than `INNER JOIN` will result in null values. They can be retrieved using `IS/IS NOT NULL`.
+## Queries with Expressions
+Expressions are handy in writing complex logic for querying. The expressions can be combined with all other keywords that we saw before. For example, if we need is to retrieve all students who graduated in even years, the query looks like:
+```
+SELECT name, year_of_passing
+FROM table1
+  INNER JOIN table2
+    ON table1.id = table2.studentid
+WHERE year_of_passing % 2 = 0;
+```
+Similarly if we can use expressions to transform the data. But for readability we name the transformed column different using `AS` keyword. For example, we need to convert student gpa into 10 point scale, the query looks like:
+```
+SELECT name, (gpa * 2.5) AS 10_scale_gpa
+FROM table1;
+```
+There are common aggregate functions available such as `COUNT()`, `MIN()`, `MAX()`, `AVG()` and `SUM()`. They can be combined with `GROUP BY` clause too. For example, if we need to find average gpa of students from each state, the query looks like:
+```
+SELECT State, AVG(gpa) AS Avergae_Gpa
+FROM table1
+  INNER JOIN table2
+    ON table1.id = table2.studentid
+GROUP BY State
+```
+> When using the GROUP BY clause, you should only include columns in the SELECT clause that are either:
+* Listed in the GROUP BY clause, or
+* Are included in an aggregate function like SUM(), AVG(), MIN(), MAX(), or COUNT().
+
+What if we need to apply any transformations on the new column generated after `GROUP BY`? SQL provides another keyword, `HAVING` to use after `GROUP BY`. For example, if we need to find the number of students from each state who graduated in 2022. But we are intrested in the states where total package is more than 100000 the query looks like:
+```
+SELECT state, COUNT(*) as num_students, SUM(package) as total_package
+FROM table1
+  INNER JOIN table2
+    ON table1.id = table2.studentid
+WHERE year_of_graduation = 2022
+GROUP BY state
+HAVING SUM(package) > 100000;
+```
+> `HAVING` is only used with aggregate functions. Without aggregate functions `WHERE` can do the job.
