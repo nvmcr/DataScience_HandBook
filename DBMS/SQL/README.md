@@ -21,7 +21,7 @@ The `SELECT` and `FROM` statements need not be seperate lines they can be used i
 SELECT year_of_passing, name, gpa FROM table1;
 ```
 > The semi-colan (;) marje the end of a SQL statement similar to C. But in some databased it is optional. SQL is not case sensitive atleast not for keywords. Also it does not require indentation. But its better to use `;` at the end of statements, make keywords capitalized and use indentation for readability.
-## Queries with Constraints
+## Constraints, Filtering, Sorting
 What if we don't need all the rows. Just like we *select* required columns, we can retrieve only the required rows using `WHERE` keyword.
 ```
 SELECT name, gpa, year_of_passing
@@ -39,5 +39,18 @@ Common operators that can be used include:
 |IS NULL, IS NOT NULL|col_name IS NULL|
 |LIKE|col_name LIKE 'ME%'|
 > `LIKE` is used to filter data based on a specific pattern. It can use wildcard characters like `%` and `_`. `LIKE 'M%'` retrieves every row in that column that **contains** 'M' and `LIKE 'Me_ha'` retrieves every value **strictly** has 'Me' in front and a *single* middle string and 'ha' at the end. Use multiple underscores to retrieve multiple characters. 
-> All strings should be represneted within single or double quotations.
-  
+
+> All strings should be represneted within single or double quotations. 
+Many times databases are filled with duplicate values. To retrieve only distinct values, `DISTINCT` keyword is used.
+```
+SELECT DISTINCT gpa, name FROM table1;
+```
+Also databases agre generally not ordered. To arrange the rows, we can order them by a specific column using `ORDER BY col_name ASC/DESC` clause. ALong with this `LIMIT` and `OFFSET` are commonly used together. 
+```
+SELECT name, gpa
+FROM table1
+ORDER BY Id DESC
+LIMIT 10 OFFSET 50;
+```
+After 50 rows, next 10 rows will be returned.
+> The `LIMIT` will return the specified number of rows and `OFFSET` will specify where the `LIMIT` count should start from.
