@@ -117,7 +117,7 @@ HAVING SUM(package) > 100000;
 Below numbering shows order of clauses and keywords executed in a complete query.
 1. FROM and JOINs 
 
-These are first executed as we need a table in the first place to work.
+These are first executed as we need a table in the first place to work. 
 2. WHERE 
 
 Once we have the data, `WHERE` constraints are executed and any needless data is discarded.
