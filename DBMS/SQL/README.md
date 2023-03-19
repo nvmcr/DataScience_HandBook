@@ -31,10 +31,10 @@ WHERE gpa > 3
 ```
 Common operators that can be used include:
 |Operator|Example|
-|--------|-------|
+|-------|-------|
 |=, !=(or)<>, <, >, <=, >=|col_name = 5|
 |BETWEEN ... AND ...|col_name BETWEEN 2012 AND 2016|
 |NOT BETWEEN ... AND ...|col_name NOT BETWEEN 2012 and 2016|
 |IN|col_name IN (1,2,3,4,5)|
 |IS NULL, IS NOT NULL|col_name IS NULL|
-|LIKE|col_name LIKE 'ME%' (gives everything that starts with ME|
+|LIKE|col_name LIKE 'ME%' (gives everything that starts with ME)|
