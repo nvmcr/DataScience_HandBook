@@ -6,6 +6,7 @@
 4. [Multiple Table Queries](#multi-table-queries)
 5. [Queries with Expressions](#queries-with-expressions)
 6. [Order of Execution](#order-of-execution)
+7. [Modifying Rows](#Modifying-Rows)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
@@ -115,18 +116,27 @@ HAVING SUM(package) > 100000;
 ## Order of Execution
 Below numbering shows order of clauses and keywords executed in a complete query.
 1. FROM and JOINs 
+
 These are first executed as we need a table in the first place to work.
 2. WHERE 
+
 Once we have the data, `WHERE` constraints are executed and any needless data is discarded.
 3. GROUP BY 
+
 The rows that are left are grouped accordingly. There will be as many rows as there are unique values in the column specified by `GROUP BY`.
 4. HAVING 
+
 As expected, it is executed immediately after `GROUP BY`.
 5. SELECT
+
 Now specified columns or `ALIAS` specified by `AS` are computed.
 6. DISTINCT 
+
 Of the remaining rows,the rows with duplicate values in specified column are discarded.
 7. ORDER BY 
+
 The rows are sorted either in ascending or descending order.
 8. OFFSET and LIMIT 
+
 What to display is controlled by these two at the end.
+## Modifying Rows
