@@ -26,16 +26,16 @@ AWS EC2 is an amazing alternative to on-premises data centers. AWS has servers, 
 While using EC2 instance, one can choose the operating system (Windows or Linux). One can also configure what software to run on that instance like different web aps, databases. User can increase memory and compute for a particular instance after realizing that the application is starting to max out that instance. This is called **vertical scaling**. The user can also control the netwrok aspect of the instance.
 ### Types of EC2 Instances
 There are different types of EC2 instances are grouped  under an instance familty and are optimized for different tasks. 
-1. General Purpose Instances
+1. General Purpose Instances 
     They provide a **balance** of compute, memory and networking tasks. They can be used for variety of workloads like application servers, gaming servers, small and medium databases, etc. They are chosen if the user doesn't need optimization in a single resource area.
-2. Compute Optimized Instances
+2. Compute Optimized Instances 
     They are ideal for compute bound applications taht benefit from **high-perfomance** processors. Ideal for high perfomance web servers, compute-intensive applications servers adn also for batch processing workloads that require many transanctions in a single group.
-3. Memory Optimized Instances
+3. Memory Optimized Instances 
     They are designed to deliver fast performance for workloads that process **large datasets in memory**. If user has a workload that require large amounts of data to be preloaded before running the application, memory optimized instances are useful.
-4. Acclearated Compuing Instances
-    These use hardware accelarators to perform certain function more efficiently like floating point number calculations, graphics processing etc.
-5. Storage Optimized Instances
-    They are designed for workloads that require high, sequential read and write access to large datasets on local storage. Examples include data warehousing applications, high-frequency online transaction processing systems etc. These servers provides low latency and high input/output operations per second (IOPS).
+4. Acclearated Compuing Instances 
+    These use **hardware accelarators** to perform certain function more efficiently like floating point number calculations, graphics processing etc.
+5. Storage Optimized Instances 
+    They are designed for workloads that require **high, sequential read and write access to large datasets** on local storage. Examples include data warehousing applications, high-frequency online transaction processing systems etc. These servers provides low latency and high input/output operations per second (IOPS).
 ### Pricing
 AWS offers 5 types of pricing.
 1. On-Demand: Pay for the duration an instance runs. No commitments or contracts.
@@ -47,6 +47,7 @@ AWS offers 5 types of pricing.
 >Scalability means beginnin with the only resources the user need and designing architecture to automatically respond to changing demand by scaling out or in.
 **Amazon EC2 Auto Scaling** is the services that provides the scaling process for EC2 instances. There are two approaches to use auto scaling:
 * Dynamic Scaling: Responding to changing demand
-* Predictive Scaling: Automatically schedule the right number of instances based on predicted demand.
+* Predictive Scaling: Automatically schedule the right number of instances based on predicted demand. 
+
 There are several configurations that can be set for an auo scaling group. The user must set the minimum number of instances, desired capacity (if None, desire = minimum) and maximum capacity (how much to scale during increase in demand).
 ### Elastic Load Balancing
