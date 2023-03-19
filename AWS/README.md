@@ -1,8 +1,8 @@
 # Cloud Essentials
 ## Table of Contents
 1. [Intro](#Intro)
-  1. [Client-Server Model](#client-server-model)
-  2. [Cloud Computing](#cloud-computing)
+    1. [Client-Server Model](#client-server-model)
+    2. [Cloud Computing](#cloud-computing)
 2. [Elastic Compute Cloud (EC2)](#EC2)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
