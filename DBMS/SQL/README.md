@@ -9,10 +9,14 @@ Structured Query Language (SQL) is a language designed for users to query, manip
 Queries have syntax. Say, there is a table named `table1` which has details of students. To retrieve specific columns the qury will look like:
 ```
 SELECT name, gpa
-FROM table1
+FROM table1;
 ```
 If we need to see the entire table, asterisk (\*) can be used.
 ```
 SELECT *
-FROM table1
+FROM table1;
+```
+The `SELECT` and `FROM` statements need not be seperate lines they can be used in a single line too.
+```
+SELECT year_of_passing, name, gpa FROM table1;
 ```
