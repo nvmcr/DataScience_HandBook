@@ -11,7 +11,7 @@ Queries have syntax. Say, there is a table named `table1` which has details of s
 SELECT name, gpa
 FROM table1
 ```
-If we need to see the entire table, asterisk (* ) can be used.
+If we need to see the entire table, asterisk (\*) can be used.
 ```
 SELECT *
 FROM table1
