@@ -20,3 +20,21 @@ The `SELECT` and `FROM` statements need not be seperate lines they can be used i
 ```
 SELECT year_of_passing, name, gpa FROM table1;
 ```
+> The semi-colan (;) marje the end of a SQL statement similar to C. But in some databased it is optional. SQL is not case sensitive atleast not for keywords. Also it does not require indentation. But its better to use `;` at the end of statements, make keywords capitalized and use indentation for readability.
+## Queries with Constraints
+What if we don't need all the rows. Just like we *select* required columns, we can retrieve only the required rows using `WHERE` keyword.
+```
+SELECT name, gpa, year_of_passing
+FROM table1
+WHERE gpa > 3
+      AND year_of_passing >= 2016;
+```
+Common operators that can be used include:
+|Operator|Example|
+|--------|-------|
+|=, !=(or)<>, <, >, <=, >=|col_name = 5|
+|BETWEEN ... AND ...|col_name BETWEEN 2012 AND 2016|
+|NOT BETWEEN ... AND ...|col_name NOT BETWEEN 2012 and 2016|
+|IN|col_name IN (1,2,3,4,5)|
+|IS NULL, IS NOT NULL|col_name IS NULL|
+|LIKE|col_name LIKE 'ME%' (gives everything that starts with ME|
