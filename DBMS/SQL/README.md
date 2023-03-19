@@ -38,6 +38,6 @@ Common operators that can be used include:
 |IN|col_name IN (1,2,3,4,5)|
 |IS NULL, IS NOT NULL|col_name IS NULL|
 |LIKE|col_name LIKE 'ME%'|
-> `LIKE` is used to filter data based on a specific pattern. It can use wildcard characters like `%` and `_`. `LIKE 'M%'` retrieves every row that **contains** with 'M' and `LIKE 'Me_ha'` retrieves every value **strictly** has 'Me' in front and a *single* middle string and 'ha' at the end. Use multiple underscores to retrieve multiple characters.
+> `LIKE` is used to filter data based on a specific pattern. It can use wildcard characters like `%` and `_`. `LIKE 'M%'` retrieves every row in that column that **contains** 'M' and `LIKE 'Me_ha'` retrieves every value **strictly** has 'Me' in front and a *single* middle string and 'ha' at the end. Use multiple underscores to retrieve multiple characters. 
 > All strings should be represneted within single or double quotations.
   
