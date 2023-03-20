@@ -10,6 +10,7 @@
       1. [Inserting Rows](#inserting-new-rows)
       2. [Updating Rows](#updating-existing-rows)
       3. [Deleting Rows](#deleting-rows)
+8. [Creating Table](#creating-table)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
@@ -182,3 +183,39 @@ DELETE FROM table1
 WHERE Gpa < 3;
 ```
 > Before updating or deleting, its better to use `SELECT` statement first to check if we are updating/deleting the correct row.
+## Creating Table
+We create tables using `CREATE TABLE` statement. The syntax looks like:
+```
+CREATE TABLE IF NOT EXISTS tableName (
+      columnName1 datatype constraints DEFAULT default_value,
+      columnName2 datatype
+      );
+```
+`IF NOT EXISTS` is an optional clause just to check if there is any other table with same name. 
+Common Data Types include;
+|Data Type|Description|
+|--|--|
+|INT/INTEGER|A signed or unsigned 32bit(depends on database) integer|
+|BIGINT|A large integer (1000000)|
+|BOOL/BOOLEAN|True/False or 1/0|
+|FLOAT|A decimal value|
+|DOUBLE|A large decimal value|
+|CHAR/CHARACTER(num_char)|String types with fixed length. If input < num_char, extra space is filled with spaces|
+|VARCHAR(num_char)|String type with variable length. `num_char` is just a max cap.|
+|DATE|Common format includes YYYY-MM-DD|
+|TIME|Common format includes HH:MM:SS|
+|DATETIME|Mix of date and time, YYYY-MM-DD HH:MM:SS|
+|INTERVAL|It stores time difference/interval like 3 hours/5days and 2 hours|
+|YEAR/MONTH/DAY|Individual representation|
+|BLOB|Binary Large Object store large binary data. They are ususally images, videos that can be queried with right metadata|
+Along with the mandatory datatype, a column can also have an optional constraint that limits what values can be inserted into a column. 
+Commonly used constraints are:
+|Constraint|Description|
+|--|--|
+|PRIMARY KEY|Each value in this column is unique and cant have NULL values. They can be used to identify each row (~id)|
+|FOREIGN KEY|This establishes relationship between tables. Say there is a master table and a additional table, the ids in additional table are FORIEGN KEY and they should match with PRIMARY KEY in master table|
+|AUTOINCREMENT|Integer values are automatically incremented and filled with each row insertion (Not supported by all database|
+|UNIQUE|Ensures all values in that column are unique|
+|NOT NULL|The column cant have NULL values|
+|DEFAULT|A default value if no value is specified|
+|CHECK (expression)|Custom expression to have a specific value in column `CHECK (gpa>0 AND gpa<4)`|
