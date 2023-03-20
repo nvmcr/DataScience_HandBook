@@ -14,6 +14,9 @@
       1. [Creating Tables](#creating-tables)
       2. [Altering Tables](#altering-tables)
       3. [Dropping Tables](#dropping-tables)
+9. [Subqueries](#Subqueries)
+      1. [Correlated Subqueries](#Correlated-Subqueries)
+10. [SET Queries](#set-queries)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
@@ -246,12 +249,58 @@ DROP year_of_passing;
 ```
 ```
 ALTER TABLE table1
-RENAME TO table2
+RENAME TO table2;
 ```
 There are additional features provided by specific databases. For example, MySQL provides `FIRST` or `AFTER` keywords for insertion of columns.
 ### Dropping Tables
 ```
-DROP TABLE IF EXISTS table1
+DROP TABLE IF EXISTS table1;
 ```
 `DELETE` without a `WHERE` will also remove all the rows which is nothing but deleting entire table.
 > If there is a `FOREIGN KEY` depending on the table that is to be deleted, first all those dependent tables need to be updated.
+## Subqueries
+Subqueries, also known as nested queries, are a powerful feature in SQL that allow you to write complex queries by embedding one query inside another. 
+> A subquery is a SELECT statement that is embedded within another SELECT, INSERT, UPDATE, or DELETE statement. 
+The result of the subquery is then used as a value or a condition in the outer query. Subqueries are *enclosed in parantheses*. Will look at different ways to use subqueries. 
+For example, we have two tables `students` and `parttimeEmployees`. We need to find out the students who are also part time employees.
+```
+SELECT * 
+FROM students
+WHERE StudentName IN (SELECT EmployeeName FROM parttimeEmployees);
+```
+Another example would be, say we need to update all gpa by 10% for all those who have gpa less than average gpa.
+```
+UPDATE students
+SET gpa = gpa*1.1
+WHERE gpa < (SELECT AVG(gpa) FROM students);
+```
+### Correlated Subqueries
+A correlated subquery is a type of subquery that relies on the outerquery for its values.
+> The key difference between a subquery and a correlated subquery is that a subquery is executed independently and its result is used by the outer query, while a correlated subquery is executed for each row of the outer query and its result depends on the values of the outer query.
+For example, we need to find average gpa of students from each state where the average gpa is lower than the overall average gpa from all states. The states information is located in a different table. The correlated subquery looks like
+```
+SELECT State, AVG(gpa) AS avg_gpa
+FROM table1
+  INNER JOIN table2
+    ON table1.id = table2.studentid
+GROUP BY State
+HAVING AVG(gpa) < (
+      SELECT AVG(gpa)
+      FROM table1
+      WHERE id = table2.studentid
+      );
+```
+In the above example, the subquery is calculating the total average gpa and is using `id` from main query making it correlated subquery.
+>Generally, correlated subqueries are realted to main queries using `WHERE` statement.
+## SET Queries
+There are few set operations available to append one results of different queries. 
+The `UNION` operator combines results from two or more `SELECT` statements into a single results set that includes all distinct rows returned by either `SELECT` statements. `UNION ALL` will return all rows without considering whether they are distinct or not. 
+The `INTERSECT` operator returns only the common rows returned by `SELECT` two statements. 
+The `EXCEPT` operator returns all rows returned by first `SELECT` and that are not present in second `SELECT`.
+```
+SELECT col1, col2
+FROM table1
+UNION/UNION ALL/ INTERSECT/ EXCEPT
+SELECT col1, col2
+FROM table2
+```
