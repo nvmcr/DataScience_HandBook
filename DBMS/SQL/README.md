@@ -294,8 +294,11 @@ In the above example, the subquery is calculating the total average gpa and is u
 >Generally, correlated subqueries are realted to main queries using `WHERE` statement.
 ## SET Queries
 There are few set operations available to append one results of different queries. 
+
 The `UNION` operator combines results from two or more `SELECT` statements into a single results set that includes all distinct rows returned by either `SELECT` statements. `UNION ALL` will return all rows without considering whether they are distinct or not. 
+
 The `INTERSECT` operator returns only the common rows returned by `SELECT` two statements. 
+
 The `EXCEPT` operator returns all rows returned by first `SELECT` and that are not present in second `SELECT`.
 ```
 SELECT col1, col2
