@@ -7,6 +7,9 @@
 5. [Queries with Expressions](#queries-with-expressions)
 6. [Order of Execution](#order-of-execution)
 7. [Modifying Rows](#Modifying-Rows)
+      1. [Inserting Rows](#inserting-new-rows)
+      2. [Updating Rows](#updating-existing-rows)
+      3. [Deleting Rows](#deleting-rows)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
@@ -147,3 +150,35 @@ The rows are sorted either in ascending or descending order.
 
 What to display is controlled by these two at the end.
 ## Modifying Rows
+*Schema* makes a SQL database efficient and consistent even with large amounts of data.
+>The database schema describes the structure of each table and the datatypes that each column contain.
+### Inserting New Rows
+We use `INSERT INTO` statement to specify the table we are modifying and use `VALUES` to specify values. Say, we need to add two new rows to our student table that has columns `Id`,`Name`,`Gpa`, the query looks like;
+```
+INSERT INTO table1
+VALUES
+      (20, "Megha",3.94),
+      (21, "Macha",3.96);
+```
+We need to specify all the column values in our new row. If we have incomplete rows to be added in a table that support default values, we can explicitly mention.
+```
+INSERT INTO table1 (Name,Gpa)
+VALUES
+      ("Megha", 3.94)
+      ("Macha",3.96)
+```
+We can even specify value in form an equation like `("Megha",3.94*2.5)`.
+### Updating Existing Rows
+To update alreaday existing rows in the table, we use `UPDATE` and `SET`. In most cases, updating rows will also include `WHERE` to specify row as we dont want to update entire columns. Say we have a table with year of passing and package columns and we want increase package by 1000 and decrease gpa by 10% for all students graduated after 2020.
+```
+UPDATE table1
+SET package = package + 1000, gpa = gpa*0.1
+WHERE year > 2020;
+```
+### Deleting Rows
+To delete the rows in a table, we use `DELETE FROM`. Using this clause without a `WHERE` statement will clear all the rows.
+```
+DELETE FROM table1
+WHERE Gpa < 3;
+```
+> Before updating or deleting, its better to use `SELECT` statement first to check if we are updating/deleting the correct row.
