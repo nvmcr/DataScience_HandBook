@@ -10,7 +10,10 @@
       1. [Inserting Rows](#inserting-new-rows)
       2. [Updating Rows](#updating-existing-rows)
       3. [Deleting Rows](#deleting-rows)
-8. [Creating Table](#creating-table)
+8. [Table Queries](#table-queries)
+      1. [Creating Tables](#creating-tables)
+      2. [Altering Tables](#altering-tables)
+      3. [Dropping Tables](#dropping-tables)
 ## Intro
 Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
 * What is a relational database? 
@@ -183,7 +186,8 @@ DELETE FROM table1
 WHERE Gpa < 3;
 ```
 > Before updating or deleting, its better to use `SELECT` statement first to check if we are updating/deleting the correct row.
-## Creating Table
+## Table Queries
+### Creating Tables
 We create tables using `CREATE TABLE` statement. The syntax looks like:
 ```
 CREATE TABLE IF NOT EXISTS tableName (
@@ -207,7 +211,8 @@ Common Data Types include;
 |DATETIME|Mix of date and time, YYYY-MM-DD HH:MM:SS|
 |INTERVAL|It stores time difference/interval like 3 hours/5days and 2 hours|
 |YEAR/MONTH/DAY|Individual representation|
-|BLOB|Binary Large Object store large binary data. They are ususally images, videos that can be queried with right metadata|
+|BLOB|Binary Large Object store large binary data. They are ususally images, videos that can be queried with right metadata| 
+
 Along with the mandatory datatype, a column can also have an optional constraint that limits what values can be inserted into a column. 
 Commonly used constraints are:
 |Constraint|Description|
@@ -218,4 +223,35 @@ Commonly used constraints are:
 |UNIQUE|Ensures all values in that column are unique|
 |NOT NULL|The column cant have NULL values|
 |DEFAULT|A default value if no value is specified|
-|CHECK (expression)|Custom expression to have a specific value in column `CHECK (gpa>0 AND gpa<4)`|
+|CHECK (expression)|Custom expression to have a specific value in column `CHECK (gpa>0 AND gpa<4)`| 
+
+Example:
+```
+CREATE TABLE table1 (
+      id INT PRIMARY KEY AUTOINCREMENT,
+      name VARCHAR(50),
+      gpa DECIMAL(10,2) CHECK (gpa > 0 AND gpa<4),
+      package FLOAT DEFAULT 30000,
+);
+```
+### Altering Tables
+Altering a table maybe to add new columns, removing existing columns or renaming the table.
+```
+ALTER TABLE table1
+ADD year_of_passing INT;
+```
+```
+ALTER TABLE table1
+DROP year_of_passing;
+```
+```
+ALTER TABLE table1
+RENAME TO table2
+```
+There are additional features provided by specific databases. For example, MySQL provides `FIRST` or `AFTER` keywords for insertion of columns.
+### Dropping Tables
+```
+DROP TABLE IF EXISTS table1
+```
+`DELETE` without a `WHERE` will also remove all the rows which is nothing but deleting entire table.
+> If there is a `FOREIGN KEY` depending on the table that is to be deleted, first all those dependent tables need to be updated.
