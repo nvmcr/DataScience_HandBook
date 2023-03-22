@@ -11,6 +11,7 @@
     5. [Messaging and Queuing](#Messaging-and-queuing)
     6. [Other services](#Quick-bites-of-other-services)
 3. [Networking](#Networking)
+4. [Storage and Databases](#Storage-and-Databases)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
@@ -79,3 +80,4 @@ As there are millions of customers who use AWS services and vast number of resou
 What happens when a customer clicks on our application say a website? 
 
 Once a customer reuests data drom application, Amazon **Route 53** uses DNS resolution which gets IP address through the domain name and then the customer request is sent to nearest edge location (a data centre string cache data for low latency) through Amazon **CloudFront**. The Amazn CloudFront connects to the appliction load balancer which sends the incoming packets to EC2 instance.
+## Storage and Databases
