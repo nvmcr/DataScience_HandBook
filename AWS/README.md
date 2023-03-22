@@ -7,7 +7,7 @@
     1. [EC2 Instance Types](#types-of-ec2-instances)
     2. [Pricing](#pricing)
     3. [Scaling](#auto-scaling)
-    4. [Elastic Load Balancing](#elastic-loa--ba-ancing))
+    4. [Elastic Load Balancing](#elastic-loa--ba-ancing)
     5. [Messaging and Queuing](#Messaging-and-queuing)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
@@ -52,9 +52,10 @@ AWS offers 5 types of pricing.
 
 There are several configurations that can be set for an auto scaling group. The user must set the minimum number of instances, desired capacity (if None, desire = minimum) and maximum capacity (how much to scale during increase in demand).
 ### Elastic Load Balancing
-Say we run a burger joint and customers(requests) flow suddenly increased. With the help of auto scaling we increased our staff (instances) but how does the customers know which staff member to got to. What if most of the customers go to staff memeber 1, leaving other memebers without work. To manage the requests load, we use a load balancer that ensures there is even distribution of workload. AWS offers Elastic Load Balancing (ELB).
+We use restaurant analogy again. Say customers(requests) flow suddenly increased. With the help of auto scaling we increased our cooks (instances) but how does the waiter(api) know which cook the order should go to. What if most of the orders go to cook 1, leaving others without work. To manage the requests load, we use a load balancer that ensures there is even distribution of workload. AWS offers Elastic Load Balancing (ELB).
 > Elastic Load Balancing automatically distributes incoming application traffic across multiple resources/insatnces.
 
 ELB is a **regional construct** and it scales automatically. As the traffic groes, ELB handles additional throughput. Also when the extra insatnces are available, the auto scaling service lets the ELB know about extra resources and ELB distributes accordingly. Once the throughput/requests decreases, ELB will stop new input into few instances and once those instances are out of requests, they are terminated. 
 Apart from handling such external traffic, it handles ordering tier(front end) and production tier(back end). Say if we got a new instance in back end, then the insatnce has to let every insatnce of front end know that its ready and the front end resources has to change distribution of every backend instances they are connected with. But with ELB, as it is regional, every front end instance come to ELB (single url for all front end instances) and ELB distributes to available back end instances. Now if a new instance is available in backend, then it will only let ELB know and ELB will manage the load. The front end doesn't need to know anything about whats happening in back end.
 ### Messaging and queuing
+In the restaurant case, the service flow works as long as the waiter and cook is in sync. What if cook is busy with an order but waiter is waiting for the cook to take another order. After a certain time the waiter might drop that order and go for a new customer order. To handle this we can have something like a board where waiter lists everything that the cook has to do which is nothing but we are placing the orders in a buffer. Just like waiter and cook, applications might be facing issues with transferring messages. If application B fails to take the message, then application A also fails. This is called *tighlty coupled* architecture. AWS uses *lossely  coupled* architecture. In this even if one component fails, it won't cause cascading failures. We will have a message queue where application A sends all the messages. In case of B failure, the messages just get piled up in buffer and gets transmissiioned once B is back. To achieve this AWS uses two services called **Amazon Simple Queue Service**(SQS)
