@@ -9,7 +9,11 @@
     3. [Scaling](#auto-scaling)
     4. [Elastic Load Balancing](#elastic-load-balancing)
     5. [Messaging and Queuing](#Messaging-and-queuing)
-    6. [Other services](#Quick-bites-of-other-services)
+    6. [Other Services](#Other-services)
+        1. [Lambda](#Lambda)
+        2. [ECS and EKS](#ecs-and-eks)
+        3. [Fargate](#Fargate)
+            1. [Docker vs Kubernetes](#Docker-vs-Kubernetes)
 3. [Networking](#Networking)
 4. [Storage and Databases](#Storage-and-Databases)
     1. [EBS](#elastic-block-store-ebs)
@@ -19,8 +23,14 @@
         1. [EFS vs EBS](#EFS-vs-EBS)
     4. [RDS](#Relational-Database-Service-rds)
     5. [DynamoDB](#DynamoDB)
-    6. [Database vs Data Warehouse vs Data Lake](#Database-vs-Data-Warehouse-vs-Data-Lake)
     7. [Redshift](#Redshift)
+        1. [Database vs Data Warehouse vs Data Lake](#Database-vs-Data-Warehouse-vs-Data-Lake)
+    9. [Other Services](#additional-database-services)
+        1. [DocumentDB](#documentdb)
+        2. [Neptune](#neptune)
+        3. [Quantum Ledger Database](#quantum-ledger-database)
+        4. [Managed Blockchain](#managed-blockchain)
+        6. [DynamoDB Accelerator](#dynamodb-accelerator)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
@@ -72,16 +82,19 @@ Apart from handling such external traffic, it handles ordering tier(front end) a
 ### Messaging and queuing
 In the restaurant case, the service flow works as long as the waiter and cook is in sync. What if cook is busy with an order but waiter is waiting for the cook to take another order. After a certain time the waiter might drop that order and go for a new customer order. To handle this we can have something like a board where waiter lists everything that the cook has to do which is nothing but we are placing the orders in a buffer. Just like waiter and cook, applications might be facing issues with transferring messages. If application B fails to take the message, then application A also fails. This is called *tighlty coupled* architecture or **monolithic**. AWS uses *lossely  coupled* architecture or **microservices**. In this even if one component fails, it won't cause cascading failures. We will have a message queue where application A sends all the messages. In case of B failure, the messages just get piled up in buffer and gets transmissiioned once B is back. To achieve this AWS uses two services called Amazon **Simple Queue Service**(SQS) and **Simple Notification Service**(SNS). 
 SQS allows to send, store and receive messages between software components at any volume. The messages are placed in SQS queues. On the other hand, SNS sends messages to serices like notifications to end users. It has a publisher/subscriber (pub/sub) model. We can create a SNS topic which is a channel for messages to be delivered. Then the configure subscribers(end users) to that topic and we publish those messages to subscribers. Thus sending one message to all the subscribers.
-### Quick bites of other services
+### Other Services
 Though most of things EC2 does are automatic, we have to do EC2 setups, managing instances, patching instances with new software packages, etc. To decrease such extra tasks, AWS offers multiple serverless options.
 > Serverless means that we cannot see/access the underlying infrastructure or instances that are hosting the applicaion.
-
+#### Lambda
 Everything is taken care by AWS. One such serverless comput eoption is **AWS Lambda**. We upload our code into a Lambda function and configure a trigger. The AWS service waits for the trigger and when there is one, the code is run automatically in an environment that is taken care by AWS. lambda is designed to run code *under 15 minutes*. So it can't run deep learning tasks but most suitable for web backend, handling requests that takes less than 15 minutes to complete. 
+#### ECS and EKS
 If we need to access the environment but still want the efficieny and portability, we cna use AWS container services like Amazon **Elastic Container Service** (ECS) and **Elastic Kubernetes Service** (EKS). Both these services are docker container orchestration tools.
 > A container is a package of our code where we pack our application, dependencies and configurations that it needs.
 
 Think it like a conda or pip environment that has details needed to replicate our system. These containers run on top of EC2 instance. There are multiple docker containers that run in isolation of each other. We need to start, stop, restart and monitor these multiple containers called clusters. This process of tasks is called container orchestration. ECS and EKS are designed to help these orchestrations. ECS helps to run containerized applications without need of our own orchestration software. EKS also does similar with different tools. 
-But again these two services run over EC2 instance. We need to go serverless, then AWS offers **Fargate**. It is a serverless compute platform for ECS and EKS. In general, say we need to host applications and want access to that underlying os like windows, linux then we have to go for EC2 instance. But we wawnt to host some short running functions or even-driven and we dont need to knw about underlying environment, we go for AWS lambda. Similarly we choose ECS and EKS and then choose to go with EC2 or Fargate.
+#### Fargate
+But again these two services run over EC2 instance. We need to go serverless, then AWS offers **Fargate**. It is a serverless compute platform for ECS and EKS. In general, say we need to host applications and want access to that underlying os like windows, linux then we have to go for EC2 instance. But we want to host some short running functions or even-driven and we dont need to knw about underlying environment, we go for AWS lambda. Similarly we choose ECS and EKS and then choose to go with EC2 or Fargate.
+##### Docker vs Kubernetes
 > Difference between docker and kubernetes is, docker is foundation of containerization and provides a way to package and deploy applications, while Kubernetes builds on top of Docker and provides tools for managing and orchestrating multiple containers across multiple hosts.
 ## Networking
 As there are millions of customers who use AWS services and vast number of resources customers created, there should be boundaries around resources such a way that network traffic would be able to flow between them unrestricted. AWS offers **Virtual Private Cloud**(VPC) to establish boundaries around AWS resources. Amazon VPC enables us an isolated section of AWS cloud. In that section, we organize our resources into subnets. To allow public traffic from internet to access our VPC, we attach an **internet gateway** to the VPC. Similarly we have only private resources in VPC, to grant access to required users, we use a **Virtual Private Network**(VPN). VPN uses same path as VPC except our traffic is encrypted. As we use the same connection as VPC, there might be slow downs. So AWS offers one more service **Direct Connect**. It provides a dedicated connection to our VPC.  This helps us to reduce network costs and increase the bandwidth.
@@ -126,7 +139,9 @@ It supports before mentioned database systems plus more backup and security opti
 ### DynamoDB
 DynamoDB is a non-relational and serverless database. We create tables where we store and query data but instead of rows and cols, data is organized using structures like key-value pairs similar to dictionaries. Instead of having rigid schemas like relational databases, DynamoDB has a flexible schema and queries are simple and doesn't span multiple tables. So they have quick response time and highlt scalable.
 > DynamoDB is a key-value serverless database service with high scalability and performance.
-### Database vs Data Warehouse vs Data Lake
+### Redshift
+> Redshift is a massively scalable data warehousing service that can be used for big data analytics.
+#### Database vs Data Warehouse vs Data Lake
 A database, data warehouse, and data lake are all types of data management systems, but they differ in their design, purpose, and usage.
 
 A database is a system that stores and manages structured data in a **highly organized manner**. Databases are typically used for transactional processing, which involves frequent read and write operations on small amounts of data. Databases use a schema to define the structure of the data and enforce consistency and integrity of the data.
@@ -136,5 +151,16 @@ A data warehouse, on the other hand, is a system that stores and manages **large
 A data lake is a system that stores and manages large volumes of **raw, unstructured, and semi-structured data from multiple sources**. Data lakes are designed to store data in its original form and enable a variety of data analysis and processing tasks, such as data exploration, machine learning, and advanced analytics. Data lakes do not enforce a rigid schema, and the data can be transformed and processed in a variety of ways.
 
 In summary, a database is a system that manages structured data for transactional processing, a data warehouse is a system that manages large volumes of historical data for analytical processing, and a data lake is a system that manages large volumes of raw data for exploratory and analytical processing. Each type of data management system has its own strengths and weaknesses, and the choice of system depends on the specific use case and requirements.
-### Redshift
-> Redshift is a massively scalable data warehousing service that can be used for big data analytics.
+### Additional Database Services
+We might need different database for different purposes. So AWS offers a wide range of databases.
+#### DocumentDB
+DocumentDB is a document database service that supports MongoDB workloads. (MongoDB is a document database program.)
+#### Neptune
+Neptune is a graph database service. We can use Amazon Neptune to build and run applications that work with highly connected datasets, such as recommendation engines, fraud detection, and knowledge graphs.
+#### Quantum Ledger Database 
+QLDB is a ledger database service. We can use Amazon QLDB to review a complete history of all the changes that have been made to your application data.
+#### Managed Blockchain 
+It is a service that you can use to create and manage blockchain networks with open-source frameworks. Blockchain is a distributed ledger system that lets multiple parties run transactions and share data without a central authority.
+#### DynamoDB Accelerator 
+DAX is an in-memory cache for DynamoDB. It helps improve response times from single-digit milliseconds to microseconds.
+
