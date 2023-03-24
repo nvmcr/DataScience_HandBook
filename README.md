@@ -9,4 +9,4 @@ As someone who is learning data science, looking for jobs and a ghajini/brainfar
 
 TL;DR: I need to write things down to remember and need a not so detailed but a simple revision guide. This is why I decided to create this reference guide that simplifies the world of data science in a way that is easy to understand for me and hopefully to others too.
 ### Inspired From
-I love the Google Research's [Tuning Playbook](https://github.com/google-research/tuning_playbook) and [Bert](https://github.com/google-research/bert) README markdowns. While they have a lot of content available, the material can be easily covered in a short amount of time. In general, Github README's are simple, clear, easy to update and maintain with a straight forward layout.
+I love Google Research's [Tuning Playbook](https://github.com/google-research/tuning_playbook) and [Bert](https://github.com/google-research/bert) README markdowns. While they have a lot of content available, the material can be easily covered in a short amount of time. In general, Github README's are simple, clear, easy to update and maintain with a straight forward layout.
