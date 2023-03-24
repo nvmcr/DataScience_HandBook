@@ -12,6 +12,8 @@
     6. [Other services](#Quick-bites-of-other-services)
 3. [Networking](#Networking)
 4. [Storage and Databases](#Storage-and-Databases)
+    1. [EBS](Elastic-Block-Store-EBS)
+    2. [S3](Simple-Storage-Service-S3)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
@@ -81,3 +83,7 @@ What happens when a customer clicks on our application say a website?
 
 Once a customer reuests data drom application, Amazon **Route 53** uses DNS resolution which gets IP address through the domain name and then the customer request is sent to nearest edge location (a data centre string cache data for low latency) through Amazon **CloudFront**. The Amazn CloudFront connects to the appliction load balancer which sends the incoming packets to EC2 instance.
 ## Storage and Databases
+While we are using EC2 instance, the virtuaal server comes with compute (CPU), memory, network and storage. Looking into the storage part, it is a block-level storage which means the storage is divided into blocks of data and overwrtitng a file will not overwrite all other blocks. Generally the block-level storages are stored in harddrive and EC2 instance comes with a harddrive too. We we run an EC2 instance, it comes with a local storage called **instance store volumes**. Well, EC2 insatnces are virtual and we will not be running on same host always. Everytime we start an EC2 insatnce, it will be running on a different host which means everytime our hardrive data will be deleted. So its only a temporary cached storage. 
+### Elastic Block Store (EBS)
+Amazon EBS is used to store the data that is needed outside an EC2 instance lifecycle. With EBS, we can create virtual hard drives that are called **EBS volumes**. These are seperate drives outside of our EC2 insatnce and are connected to our instance when needed. We can define the size, type and configurations of the volume we need. To be more safe, we can take incremental backups (only new and modified data) of our data called *snapshots*. 
+### Simple Storage Service (S3)
