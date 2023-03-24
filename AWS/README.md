@@ -19,8 +19,8 @@
         1. [EFS vs EBS](#EFS-vs-EBS)
     4. [RDS](#Relational-Database-Service-rds)
     5. [DynamoDB](#DynamoDB)
-    6. [Redshift](#Redshift)
-    7. [Database Migration Service](#Database-Migration-Service)
+    6. [Database vs Data Warehouse vs Data Lake](#Database-vs-Data-Warehouse-vs-Data-Lake)
+    7. [Redshift](#Redshift)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
@@ -138,4 +138,3 @@ A data lake is a system that stores and manages large volumes of **raw, unstruct
 In summary, a database is a system that manages structured data for transactional processing, a data warehouse is a system that manages large volumes of historical data for analytical processing, and a data lake is a system that manages large volumes of raw data for exploratory and analytical processing. Each type of data management system has its own strengths and weaknesses, and the choice of system depends on the specific use case and requirements.
 ### Redshift
 > Redshift is a massively scalable data warehousing service that can be used for big data analytics.
-### Database Migration Service
