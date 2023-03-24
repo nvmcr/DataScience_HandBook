@@ -18,6 +18,9 @@
     3. [EFS](#Elastic-File-System-efs)
         1. [EFS vs EBS](#EFS-vs-EBS)
     4. [RDS](#Relational-Database-Service-rds)
+    5. [DynamoDB](#DynamoDB)
+    6. [Redshift](#Redshift)
+    7. [Database Migration Service](#Database-Migration-Service)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
@@ -116,5 +119,23 @@ In **file storage**, multiple clients (such as users, applications, servers, and
 #### EFS vs EBS
 Just like EFS has data that can be accessed by EC2 insatnces, we saw even EBS does the same. The difference is, EBS is an *Availabilty Zone-level* resource so to attach an EBS to EC2, we need to be in same availability zone (physical data center). And also, EBS doesn't scale automatically. Its nothing but a **virtual hard disk**. Whereas EFS is a **true file system** for Linux, it can have multiple insatnces reading and writing from it at the same time. As we write more data, it scales automatically. Also it is regional based instance (multiple availabilty zones in a single region).
 ### Relational Database Service (RDS)
-Check [here](https://github.com/nvmcr/Blog/tree/main/DBMS) to know more about relational database. 
+In a relational database, data is stored in a way that relates it to other pieces of data. In layman terms, realtional database is a bunch of tables with relations between them. Check [here](https://github.com/nvmcr/Blog/tree/main/DBMS) to know more about relational and nonrelational databases. AWS supports many database systems like MySQL, PostgreSQL, Oracle, Mircosoft SQL Server and MariaDB. We can migrate our database from on-premise to cloud easily using **Lift-and-Shift**. The other option is RDS.
+> RDS is a service that enables us to run relational databases on AWS cloud.
 
+It supports before mentioned database systems plus more backup and security options. AWS also comes with its own database system called **Amazon Aurora** which is compatible with MySQL and PostgreSQL but 5 and 3 times faster than those two database systems relatively. Aurora replicates six copies of your data across three Availability Zones and continuously backs up your data to Amazon S3.
+### DynamoDB
+DynamoDB is a non-relational and serverless database. We create tables where we store and query data but instead of rows and cols, data is organized using structures like key-value pairs similar to dictionaries. Instead of having rigid schemas like relational databases, DynamoDB has a flexible schema and queries are simple and doesn't span multiple tables. So they have quick response time and highlt scalable.
+> DynamoDB is a key-value serverless database service with high scalability and performance.
+### Database vs Data Warehouse vs Data Lake
+A database, data warehouse, and data lake are all types of data management systems, but they differ in their design, purpose, and usage.
+
+A database is a system that stores and manages structured data in a **highly organized manner**. Databases are typically used for transactional processing, which involves frequent read and write operations on small amounts of data. Databases use a schema to define the structure of the data and enforce consistency and integrity of the data.
+
+A data warehouse, on the other hand, is a system that stores and manages **large volumes of historical data from multiple sources**. Data warehouses are typically used for analytical processing, which involves complex queries and analysis of large amounts of data. Data warehouses use a schema to define the structure of the data and transform the data into a format that is optimized for analytics and reporting.
+
+A data lake is a system that stores and manages large volumes of **raw, unstructured, and semi-structured data from multiple sources**. Data lakes are designed to store data in its original form and enable a variety of data analysis and processing tasks, such as data exploration, machine learning, and advanced analytics. Data lakes do not enforce a rigid schema, and the data can be transformed and processed in a variety of ways.
+
+In summary, a database is a system that manages structured data for transactional processing, a data warehouse is a system that manages large volumes of historical data for analytical processing, and a data lake is a system that manages large volumes of raw data for exploratory and analytical processing. Each type of data management system has its own strengths and weaknesses, and the choice of system depends on the specific use case and requirements.
+### Redshift
+> Redshift is a massively scalable data warehousing service that can be used for big data analytics.
+### Database Migration Service
