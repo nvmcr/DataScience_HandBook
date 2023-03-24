@@ -7,13 +7,17 @@
     1. [EC2 Instance Types](#types-of-ec2-instances)
     2. [Pricing](#pricing)
     3. [Scaling](#auto-scaling)
-    4. [Elastic Load Balancing](#elastic-loa--ba-ancing)
+    4. [Elastic Load Balancing](#elastic-load-balancing)
     5. [Messaging and Queuing](#Messaging-and-queuing)
     6. [Other services](#Quick-bites-of-other-services)
 3. [Networking](#Networking)
 4. [Storage and Databases](#Storage-and-Databases)
-    1. [EBS](elastic-block-store-ebs)
-    2. [S3](simple-storage-service-s3)
+    1. [EBS](#elastic-block-store-ebs)
+    2. [S3](#simple-storage-service-s3)
+        1. [EBS vs S3](#EBS-vs-S3)
+    3. [EFS](#Elastic-File-System-efs)
+        1. [EFS vs EBS](#EFS-vs-EBS)
+    4. [RDS](#Relational-Database-Service-rds)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
@@ -87,3 +91,30 @@ While we are using EC2 instance, the virtuaal server comes with compute (CPU), m
 ### Elastic Block Store (EBS)
 Amazon EBS is used to store the data that is needed outside an EC2 instance lifecycle. With EBS, we can create virtual hard drives that are called **EBS volumes**. These are seperate drives outside of our EC2 insatnce and are connected to our instance when needed. We can define the size, type and configurations of the volume we need. To be more safe, we can take incremental backups (only new and modified data) of our data called *snapshots*. 
 ### Simple Storage Service (S3)
+While EBS provides low latency and consistent performace for EC2 instances, we need something to store different types of data to be more precise *unstructured data* and something that is highly durable, scalable and accessable.
+> S3 is an object storage service that is designed for storing and retrieving unlimited amounts of unstructured data, such as images, videos, log files, and backups.
+
+In object storage, each object contains data, metadata and a key. Metadata containes information about the data. S3 stores them in *buckets* which is like a directory for objects. The maximum object size is 5TB. We can even have version objects. S3 has different tires. 
+1. S3 Standard 
+
+An object stored in S3 standard is highly durable which means it remains intact even after a period of one year. Also data is stored in two seperate storage facilities. Another use case is static website hosting. We can upload all HTML files, static web assets and then host as static website. 
+2. S3 Infrequent Access(IA) 
+
+This is used for the data which is accessed less frequently but requires rapid access when needed something like backups, recovery files that require long term storage.
+3. S3 Glacier 
+
+It is used to archive the data. We use it for the data that is to be stored for long time but doesn't need rapid access. We can even set vault lock policy and set controls like write once/read many (WORM) which restricts from editing. We can even have lifecycle policies which will move the data automatically between tires based on the duration. Further tires available in Glacier based on the amount of time to retrieve the objects.
+4. S3 Intelligent-Tiering
+
+Ideal for data with unknown and changing access patterns. AWS will automatically move the data between tires based on access patterns.
+#### EBS vs S3
+S3 can be used for applications where we might need web access, URL based, high durability and also serverless without the need of EC2 instance. Ex: Most of the machine learning applications like disease detection web app or similar object finder etc. So, S3 is used where we use **complete objects and occasional changes** are needed.
+While EBS is used for changing huge files as EBS uses block-level storage unlike S3 all in one object style. Ex: Video editing. So EBS is used where we need **complex read, write, change functions**.
+### Elastic File System (EFS)
+In **file storage**, multiple clients (such as users, applications, servers, and so on) can access data that is stored in shared file folders. In this approach, a storage server uses block storage with a local file system to organize files. Clients access data through file paths. Compared to block storage and object storage, file storage is ideal for use cases in which a large number of services and resources need to access the same data at the same time. Ex: Multiple servers running analytics on large data stored in shared file system. 
+> EFS is a scalable file system used with AWS Cloud services and on-premises resources. It grows and shrinks automatically.
+#### EFS vs EBS
+Just like EFS has data that can be accessed by EC2 insatnces, we saw even EBS does the same. The difference is, EBS is an *Availabilty Zone-level* resource so to attach an EBS to EC2, we need to be in same availability zone (physical data center). And also, EBS doesn't scale automatically. Its nothing but a **virtual hard disk**. Whereas EFS is a **true file system** for Linux, it can have multiple insatnces reading and writing from it at the same time. As we write more data, it scales automatically. Also it is regional based instance (multiple availabilty zones in a single region).
+### Relational Database Service (RDS)
+Check [here](https://github.com/nvmcr/Blog/tree/main/DBMS) to know more about relational database. 
+
