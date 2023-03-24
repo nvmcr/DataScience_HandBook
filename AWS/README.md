@@ -12,7 +12,7 @@
     6. [Other services](#Quick-bites-of-other-services)
 3. [Networking](#Networking)
 4. [Storage and Databases](#Storage-and-Databases)
-    1. [EBS](Elastic-Block-Store-EBS)
+    1. [EBS](Elastic-Block-Store-(EBS))
     2. [S3](Simple-Storage-Service-S3)
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
