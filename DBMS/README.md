@@ -265,6 +265,7 @@ CREATE TABLE table2 (
       year DATE,
       FOREIGN KEY (id) REFERENCES table1(id)
 );
+```
 We cannot use a foreign key **without references**.
 ### Altering Tables
 Altering a table maybe to add new columns, removing existing columns or renaming the table.
