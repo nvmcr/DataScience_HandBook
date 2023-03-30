@@ -1,26 +1,39 @@
-# SQL
-## Table of Contents
-1. [Intro](#intro)
-2. [SELECT](#select-queries)
-3. [Constraints, Filtering, Sorting](#constraints-filtering-sorting)
-4. [Multiple Table Queries](#multi-table-queries)
-5. [Queries with Expressions](#queries-with-expressions)
-6. [Order of Execution](#order-of-execution)
-7. [Modifying Rows](#Modifying-Rows)
-      1. [Inserting Rows](#inserting-new-rows)
-      2. [Updating Rows](#updating-existing-rows)
-      3. [Deleting Rows](#deleting-rows)
-8. [Table Queries](#table-queries)
-      1. [Creating Tables](#creating-tables)
-      2. [Altering Tables](#altering-tables)
-      3. [Dropping Tables](#dropping-tables)
-9. [Subqueries](#Subqueries)
-      1. [Correlated Subqueries](#Correlated-Subqueries)
-10. [SET Queries](#set-queries)
-## Intro
-Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
+# DataBase Management Systems
+DBMS is a big program written by someone else that allows us to manage efficiently a large database and allows it to persist over long periods of time. 
+> A Data Model is a mathematical formalism to describe data. It is how we can talk about data conceptually without having to think about implementation.
+
+There are 3 parts in a Data Model.
+1. Instance : The actual data rows
+2. Schema: A description of what data is being stored.
+3. Query Language: How to retrieve or manipulate the data.
+
+Most popular data model is a relational data model. SQL is the query language used.
 * What is a relational database? 
 > A realtional database represents a collection of tables. For example, an university realtional database might have a table with `StudentId`, `Name`, `YearofPassing`, `GPA` and many other columns. There can be many other *related* tabes in that database. 
+
+## Table of Contents
+1. [SQL](#SQL)
+      1. [Intro](#intro)
+      2. [SELECT](#select-queries)
+      3. [Constraints, Filtering, Sorting](#constraints-filtering-sorting)
+      4. [Multiple Table Queries](#multi-table-queries)
+      5. [Queries with Expressions](#queries-with-expressions)
+      6. [Order of Execution](#order-of-execution)
+      7. [Modifying Rows](#Modifying-Rows)
+            1. [Inserting Rows](#inserting-new-rows)
+            2. [Updating Rows](#updating-existing-rows)
+            3. [Deleting Rows](#deleting-rows)
+      8. [Table Queries](#table-queries)
+            1. [Creating Tables](#creating-tables)
+            2. [Altering Tables](#altering-tables)
+            3. [Dropping Tables](#dropping-tables)
+      9. [Subqueries](#Subqueries)
+            1. [Correlated Subqueries](#Correlated-Subqueries)
+      10. [SET Queries](#set-queries)
+# SQL
+## Intro
+Structured Query Language (SQL) is a language designed for users to query, manipulate and transform data from a relational database. Biggest advantage of SQL is that it is efficient and scalable for large and complex databases. Popular SQL databases include: SQLite, MySQL, PostgreSQL, Oracle and Microsoft SQL Server. 
+
 ## SELECT Queries
 `SELECT` statements are used to retrieve data from a SQL database. These statements are often refered as *queries*.
 > A query is just a statement that tells the database what we want. It could be to retrieve, update or modify the data.
