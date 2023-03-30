@@ -256,6 +256,7 @@ CREATE TABLE table1 (
       package FLOAT DEFAULT 30000,
 );
 ```
+We can even make two columns into a primary key by specificying primary key seperately like `PRIMARY KEY (id, name)`.
 ### Altering Tables
 Altering a table maybe to add new columns, removing existing columns or renaming the table.
 ```
