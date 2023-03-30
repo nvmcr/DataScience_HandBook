@@ -12,20 +12,20 @@ There are 3 parts in a Data Model.
       1. [Intro](#intro)
       2. [SELECT](#select-queries)
       3. [Constraints, Filtering, Sorting](#constraints-filtering-sorting)
-      4. [Multiple Table Queries](#multi-table-queries)
-      5. [Queries with Expressions](#queries-with-expressions)
-      6. [Order of Execution](#order-of-execution)
-      7. [Modifying Rows](#Modifying-Rows)
+      5. [Multiple Table Queries](#multi-table-queries)
+      6. [Queries with Expressions](#queries-with-expressions)
+      7. [Order of Execution](#order-of-execution)
+      8. [Modifying Rows](#Modifying-Rows)
             1. [Inserting Rows](#inserting-new-rows)
             2. [Updating Rows](#updating-existing-rows)
             3. [Deleting Rows](#deleting-rows)
-      8. [Table Queries](#table-queries)
+      9. [Table Queries](#table-queries)
             1. [Creating Tables](#creating-tables)
             2. [Altering Tables](#altering-tables)
             3. [Dropping Tables](#dropping-tables)
-      9. [Subqueries](#Subqueries)
+      10. [Subqueries](#Subqueries)
             1. [Correlated Subqueries](#Correlated-Subqueries)
-      10. [SET Queries](#set-queries)
+      11. [SET Queries](#set-queries)
 # SQL
 ## Intro
 Most popular data model is a relational data model. SQL is the query language used.
@@ -59,6 +59,12 @@ SELECT name, gpa, year_of_passing
 FROM table1
 WHERE gpa > 3
       AND year_of_passing >= 2016;
+```
+We can compare above query with python for loop. `FROM` is analogus to `for`, `WHERE` to `if` and `SELECT` to the operation.
+```
+for each row in table1:
+      if gpa>3:
+            print(table1.name, table1.gpa, table1.year)
 ```
 Common operators that can be used include:
 |Operator|Example|
