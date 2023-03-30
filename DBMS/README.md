@@ -257,6 +257,15 @@ CREATE TABLE table1 (
 );
 ```
 We can even make two columns into a primary key by specificying primary key seperately like `PRIMARY KEY (id, name)`.
+Foreign key query looks like:
+```
+CREATE TABLE table2 (
+      id INT,
+      name VARCHAR(50),
+      year DATE,
+      FOREIGN KEY (id) REFERENCES table1(id)
+);
+We cannot use a foreign key **without references**.
 ### Altering Tables
 Altering a table maybe to add new columns, removing existing columns or renaming the table.
 ```
