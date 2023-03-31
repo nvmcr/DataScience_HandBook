@@ -6,6 +6,8 @@ There are 3 parts in a Data Model.
 1. Instance : The actual data rows
 2. Schema: A description of what data is being stored.
 3. Query Language: How to retrieve or manipulate the data.
+# Note
+This README file contains all the concepts related to DBMS. All the practice questions are in this [link](https://github.com/nvmcr/Reference_Guide/tree/main/DBMS/PracticeQuestions).
 
 ## Table of Contents
 1. [SQL](#SQL)
