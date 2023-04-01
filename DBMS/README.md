@@ -106,6 +106,26 @@ ORDER BY gpa
 LIMIT 10;
 ```
 `ON` condition specifies how the tables need to be joined. `INNER JOIN`/`JOIN` will join only the rows that are common to both tables. Once the tables are joined, remaining keywords can be used similar to a single table. 
+Say we have following query:
+```
+SELECT t1.name, t2.gpa
+FROM table1 AS t1
+   JOIN table2 as t2
+      ON t1.id = t2.studentid
+```
+The same query can be implicity written as:
+```
+SELECT t1.name, t2.gpa
+FROM table1 AS t1, table2 AS t2
+WHERE t1.id = t2.studentid
+```
+When we think of above both query in programming sense, the execution looks like:
+```
+for row1 in table1:
+   for row2 in table2:
+      if row1.id == row2.studnetid:
+         print(row1.name, row2.gpa)
+ ```
 Similar to `INNER JOIN`, other type of joins can also be used.
 > All types of joins combine multiple tables. In specific, `INNER JOIN` will return only the rows that are common to both tables. `OUTER JOIN` will return all the rows from both tables, `LEFT JOIN` will return all rows from first table and will return common rows from second table. `RIGHT JOIN` is the reverse case of LEFT JOIN`. 
 Usually joins other than `INNER JOIN` will result in null values. They can be retrieved using `IS/IS NOT NULL`.
