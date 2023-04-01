@@ -128,7 +128,14 @@ for row1 in table1:
  ```
 Similar to `INNER JOIN`, other type of joins can also be used.
 > All types of joins combine multiple tables. In specific, `INNER JOIN` will return only the rows that are common to both tables. `OUTER JOIN` will return all the rows from both tables, `LEFT JOIN` will return all rows from first table and will return common rows from second table. `RIGHT JOIN` is the reverse case of LEFT JOIN`. 
-Usually joins other than `INNER JOIN` will result in null values. They can be retrieved using `IS/IS NOT NULL`.
+
+Usually joins other than `INNER JOIN` will result in null values. They can be retrieved using `IS/IS NOT NULL` in `WHERE` clause. Also we might need to use self joins too.
+Say have a table with name and types of cars and we need to find who all drive mustang **and** ferrari.
+```
+SELECT t1.name, t2.car
+FROM table1 AS t1, table1 AS t2 #Using same table
+WHERE t1.name = t2.name AND t1.Car = 'mustang' AND t2.Car = 'ferrari'
+```
 ## Queries with Expressions
 Expressions are handy in writing complex logic for querying. The expressions can be combined with all other keywords that we saw before. For example, if we need is to retrieve all students who graduated in even years, the query looks like:
 ```
