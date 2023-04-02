@@ -14,6 +14,7 @@
         2. [ECS and EKS](#ecs-and-eks)
         3. [Fargate](#Fargate)
             1. [Docker vs Kubernetes](#Docker-vs-Kubernetes)
+3.[Infrastructure](#Infrastructure)
 3. [Networking](#Networking)
 4. [Storage and Databases](#Storage-and-Databases)
     1. [EBS](#elastic-block-store-ebs)
@@ -96,6 +97,25 @@ Think it like a conda or pip environment that has details needed to replicate ou
 But again these two services run over EC2 instance. We need to go serverless, then AWS offers **Fargate**. It is a serverless compute platform for ECS and EKS. In general, say we need to host applications and want access to that underlying os like windows, linux then we have to go for EC2 instance. But we want to host some short running functions or even-driven and we dont need to knw about underlying environment, we go for AWS lambda. Similarly we choose ECS and EKS and then choose to go with EC2 or Fargate.
 ##### Docker vs Kubernetes
 > Difference between docker and kubernetes is, docker is foundation of containerization and provides a way to package and deploy applications, while Kubernetes builds on top of Docker and provides tools for managing and orchestrating multiple containers across multiple hosts.
+## Infrastructure
+AWS data centers are built in large groups called **Regions** like Ohio, Hyderabad etc. In each region, there are several **Availability Zones** or AZs and each AZ with one or several data centers. 
+### Regions
+Each region is connected with every other region through a fiber network around the globe. We can pick any region we need. Choosing a region depends on 4 major factos.
+1. Compliance 
+If there are any strict restrictions like data should reside in a particular region, then there is no luxury of choosing other regions, we have to abide by restrictions.
+2. Proximity 
+If there aren't any restrictions, then next big factor is how speed. Nearest regions to our customer base gives best speeds. Thus choosing the region in proximity of our largest customer base is ideal.
+3. Feature Availability 
+Few regions might not have a few new features that we desperately need. Then we have to look for another nearest region with those features.
+4. Pricing 
+Pricing depends on the region. If none of above factors doesn't matter for you, then go for a region that has lower prices. But there will be trade-offs w.r.t speed, availability etc..
+### AZ
+When we run an EC2 instance, a virtual machine is launched on a physical hardware in some AZ. If there was any natural disaster or other uncontrollable factor, all data available in an AZ might be lost. To prevent such cases, AZs in a region are built far from each other and running more than one instance will result in machines in different locations saving our data.
+### Edge Locations
+Say our customers are in Ohio but our data is hosted in Paris region. Instead of all requests going to Paris, we can have a copy of the data locally in Ohio. Caching copies of data closer to customers all over the world is done using **Content Delivery Networks**(CDNs). AWS CDN service is called **Amazon CloudFront**. CloudFront service uses **Edge Locations** to accelerate communication with users. These edge locations are seperate from regions, so you can push content from inside a Region to a collection of Edge locations around the world, in order to accelerate communication and content delivery. AWS Edge locations, also run more than just CloudFront. They run a domain name service, or DNS, known as **Amazon Route 53**, helping direct customers to the correct web locations with reliably low latency.
+
+AWS can also install a fully operational mini Region, right inside our own data center called AWS **Outposts**. That's owned and operated by AWS, using 100% of AWS functionality, but isolated within our own building. It's not a solution most customers need, but if we have specific problems that can only be solved by staying in our own building, AWS Outposts can help. 
+
 ## Networking
 As there are millions of customers who use AWS services and vast number of resources customers created, there should be boundaries around resources such a way that network traffic would be able to flow between them unrestricted. AWS offers **Virtual Private Cloud**(VPC) to establish boundaries around AWS resources. Amazon VPC enables us an isolated section of AWS cloud. In that section, we organize our resources into subnets. To allow public traffic from internet to access our VPC, we attach an **internet gateway** to the VPC. Similarly we have only private resources in VPC, to grant access to required users, we use a **Virtual Private Network**(VPN). VPN uses same path as VPC except our traffic is encrypted. As we use the same connection as VPC, there might be slow downs. So AWS offers one more service **Direct Connect**. It provides a dedicated connection to our VPC.  This helps us to reduce network costs and increase the bandwidth.
 ![AWS Direct Cloud](direct_connect.png)
