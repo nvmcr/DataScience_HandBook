@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS tableName (
       columnName2 datatype
       );
 ```
-`IF NOT EXISTS` is an optional clause just to check if there is any other table with same name. 
+`IF NOT EXISTS` is an optional clause just to check if there is any other table with same name. If column name needs ro be seperated by spaces, enclose it in square brackets or quotation marks. 
 Common Data Types include;
 |Data Type|Description|
 |--|--|
