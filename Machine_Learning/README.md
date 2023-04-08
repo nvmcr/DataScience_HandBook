@@ -1,8 +1,17 @@
 # Machine Learning
 ## Table of contents
 1. [Introduction](#introduction)
+  1. [What is Machine Learning](#what-is-machine-learning)
+  2. [Types of Machine Learning](#Types-of-Machine-Learning)
 10. [References](#references)
 ## Introduction
+### What is Machine Learning
+Fancy way
+> A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E. 
+—Tom Mitchell, 1997
+
+I would say its just making a machine learn using data.
+### Types of Machine Learning
 ## References
 The information is pulled from various sources from internet. Major sources are:
 1. [Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow by Aurélien Géron](https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/)
