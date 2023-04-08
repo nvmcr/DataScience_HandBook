@@ -7,7 +7,10 @@ There are 3 parts in a Data Model.
 2. Schema: A description of what data is being stored.
 3. Query Language: How to retrieve or manipulate the data.
 ## Note
-This README file contains all the concepts related to DBMS. All the practice questions are in this [link](https://github.com/nvmcr/Reference_Guide/tree/main/DBMS/PracticeQuestions).
+This README file contains only the concepts related to DBMS. All the practice questions are in this [link](https://github.com/nvmcr/Reference_Guide/tree/main/DBMS/PracticeQuestions).
+
+<details>
+<summary>Table of Contents>
 
 ## Table of Contents
 1. [SQL](#SQL)
@@ -28,6 +31,9 @@ This README file contains all the concepts related to DBMS. All the practice que
       10. [Subqueries](#Subqueries)
             1. [Correlated Subqueries](#Correlated-Subqueries)
       11. [SET Queries](#set-queries)
+
+</details>
+
 # SQL
 ## Intro
 Most popular data model is a relational data model. SQL is the query language used.
