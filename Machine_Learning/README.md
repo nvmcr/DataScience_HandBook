@@ -15,19 +15,40 @@ Fancy way
 —Tom Mitchell, 1997
 
 I would say its just making a machine learn using data.
-### Types of Machine Learning
+### Types of Machine Learning<sup>1</sup>
 #### Based on human supervision
 1. Supervised Learning 
+
 If the training data has labels, it is supervised.
 2. Unsupervised Learning 
+
 Machine trained without labelled data.
 3. Semisupervised Learning 
+
 Only a few samples of the data is labelled. The machine learns to label the unlabelled samples. Example is a photo-hosting service like Google Photos.  Once
 you upload all your family photos to the service, it automatically recognizes that the
 same person A shows up in photos 1, 5, and 11, while another person B shows up in
 photos 2, 5, and 7. This is the unsupervised part of the algorithm (clustering). Now all
 the system needs is for you to tell it who these people are. Just one label per person,4
-and it is able to name everyone in every photo, which is useful for searching photos<sup>1</sup>.
+and it is able to name everyone in every photo, which is useful for searching photos.
+4. Reinforcement Learning 
+
+The learning system, called an agent
+in this context, can observe the environment, select and perform actions, and get
+rewards in return (or penalties in the form of negative rewards). It
+must then learn by itself what is the best strategy, called a policy, to get the most
+reward over time. A policy defines what action the agent should choose when it is in a
+given situation.
+#### Batch vs Online Learning
+In batch learning, the system must be trained
+using all the available data. This will generally take a lot of time and computing
+resources, so it is typically done offline. First the system is trained, and then it is
+launched into production and runs without learning anymore; it just applies what it
+has learned. This is called offline learning.
+
+In online learning, you train the system incrementally by feeding it data instances
+sequentially, either individually or by small groups called mini-batches. Each learning
+step is fast and cheap, so the system can learn about new data on the fly, as it arrives.
 ## References
 The information is pulled from various sources from internet. Major sources are:
 1. [Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow by Aurélien Géron](https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/)
