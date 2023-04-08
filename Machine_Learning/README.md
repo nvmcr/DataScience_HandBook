@@ -1,9 +1,7 @@
 # Machine Learning
 ## Table of contents
-1. [Introduction](#introduction)
-  1. [What is Machine Learning](#what-is-machine-learning)
-  2. [Types of Machine Learning](#Types-of-Machine-Learning)
-10. [References](#references)
+There will be a lot of content in this markdown file. Please use the github's interactive navigation. (Too lazy to write/generate TOC)
+
 ## Introduction
 ### What is Machine Learning
 Fancy way
