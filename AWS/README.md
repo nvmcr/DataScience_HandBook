@@ -1,5 +1,6 @@
 # Cloud Essentials
 <details>
+<summary>Table of Contents</summary>
 ## Table of Contents
 1. [Intro](#Intro)
     1. [Client-Server Model](#client-server-model)
@@ -37,6 +38,7 @@
         4. [Managed Blockchain](#managed-blockchain)
         6. [DynamoDB Accelerator](#dynamodb-accelerator)
 </details>
+
 ## Intro
 The key concept of Amazon Web Services (AWS) is that *only pay for what is used*. The best thing about cloud when compared to on-premises data centers is to get as many resources as needed at any time and no need to get rid of them when not needed, that way one will pay only for what one used.
 ### Client-Server Model
