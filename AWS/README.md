@@ -1,6 +1,7 @@
 # Cloud Essentials
 <details>
 <summary>Table of Contents</summary>
+
 ## Table of Contents
 1. [Intro](#Intro)
     1. [Client-Server Model](#client-server-model)
@@ -37,6 +38,7 @@
         3. [Quantum Ledger Database](#quantum-ledger-database)
         4. [Managed Blockchain](#managed-blockchain)
         6. [DynamoDB Accelerator](#dynamodb-accelerator)
+
 </details>
 
 ## Intro
