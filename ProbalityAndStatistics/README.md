@@ -50,10 +50,15 @@ $$ F(x) = P(X ≤ x) = \int_{-infty}^x f_X(x)dx $$
 where $P(X ≤ x)$ represents the probability that X is less than or equal to x and $f_X(x)$ represents PDF.
 
 For example, suppose we have a fair six-sided die. Let $X$ be the event of a number rolled on the die, and let P(X = x) be the probability of rolling a certain number x. Then, the CDF of X can be calculated as follows:
+
 $$ P(X ≤ 1) = P(X = 1) = 1/6 $$
+
 $$ P(X ≤ 2) = P(X = 1) + P(X = 2) = 1/6 + 1/6 = 1/3 $$
+
 $$ . $$
+
 $$.$$ 
+
 $$P(X ≤ 6) = P(X = 1) + P(X = 2) + P(X = 3) + P(X = 4) + P(X = 5) + P(X = 6) = 1$$
 
 Similarly, let's consider a simple continuous random variable X that is uniformly distributed between 0 and 1. That is, $X ~ U(0,1)$. The PDF of X is:
