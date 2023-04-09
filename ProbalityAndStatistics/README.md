@@ -14,4 +14,4 @@ Ability to think probabilistically is important to data scientists. But only few
 ### Conditional Probability
 One of the most asked questions are based on this. For example: What is the proability of a patient having a disease, given that the patient tested positive for the disease ? The questions generally asks What is the probaility of an event A given that an event B has occurred? 
 
-$$ P(A|B) = {P(B|A)P(A)}\\over P(B) $$
+$$ P(A|B) = {{P(B|A)P(A)}\\over P(B)} $$
