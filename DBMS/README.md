@@ -20,6 +20,7 @@ This README file contains only the concepts related to DBMS. All the practice qu
       5. [Multiple Table Queries](#multi-table-queries)
       6. [Queries with Expressions](#queries-with-expressions)
       7. [Order of Execution](#order-of-execution)
+      8. [Witnessing Problem](#Witnessing-Problem)
       8. [Modifying Rows](#Modifying-Rows)
             1. [Inserting Rows](#inserting-new-rows)
             2. [Updating Rows](#updating-existing-rows)
@@ -164,7 +165,6 @@ FROM table1
     ON table1.id = table2.studentid
 GROUP BY State
 ```
-> When using the GROUP BY clause, you should only include columns in the SELECT, HAVING, ORDER BY clauses that are either: * Listed in the GROUP BY clause, or * Are included in an aggregate function like SUM(), AVG(), MIN(), MAX(), or COUNT().
 
 What if we need to apply any transformations on the new column generated after `GROUP BY`? SQL provides another keyword, `HAVING` to use after `GROUP BY`. For example, if we need to find the number of students from each state who graduated in 2022. But we are intrested in the states where total package is more than 100000 the query looks like:
 ```
@@ -210,6 +210,39 @@ The rows are sorted either in ascending or descending order.
 8. OFFSET and LIMIT 
 
 What to display is controlled by these two at the end.
+## Witnessing Problem
+Say we have a table named `Profile` with columns of `UserID`,`Name`,`Job`,`Salary`. Question is: Which person has the highest salary per job? We generally do as
+```
+SELECT Name, MAX(Salary)
+FROM Profile
+GROUP BY Job;
+```
+But this will give error because:
+> When using the GROUP BY clause, you should only include columns in the SELECT, HAVING, ORDER BY clauses that are either: * Listed in the GROUP BY clause, or * Are included in an aggregate function like SUM(), AVG(), MIN(), MAX(), or COUNT().
+
+This is because, when we use `GROUP BY Job`, only Job is available in the stack. Asking for `Name` will return error as `Profile.Name is invalid`. 
+To solve this, 
+
+1. We will first use self join `FROM Profile AS P1, Profile AS P2 WHERE P1.Job = P2.Job`. This query will return rows with twice the columns with each row having same job in both P1.Job and P2.Job column. 
+2. Since we need max salary per job, we can refer P2 as `SELECT MAX(P2.Salary) ... GROUP BY P2.Job`.
+3. We need to return names so we can `P1.Name` in the GROUP BY. 
+4. Now we grouped with P1.Name and P2.Job but the output will have all salaries not just max in each job. So we can add `HAVING P1.salary = MAX(P2.Salary)`.
+5. Final query looks like:
+```
+SELECT P1.Name, P2.Job, MAX(P2.Salary)
+FROM Payroll AS P1,
+   Payroll AS P2
+WHERE P1.Job = P2.Job
+GROUP BY P1.Name, P1.Salary, P2.Job
+   HAVING P1.Salary = MAX(P2.Salary);
+```
+Following steps can be followed to solve witnessing problems 
+1. Start with a self-join
+2. Identify the group and the per-group aggregation fn
+3. Join the original tables on the grouping attribute(s)
+4. Also group on the (original) argument’s attribute
+5. Remove the groups whose values don’t match the new aggregated argument
+6. Select the argument and its aggregated value
 ## Modifying Rows
 *Schema* makes a SQL database efficient and consistent even with large amounts of data.
 >The database schema describes the structure of each table and the datatypes that each column contain.
