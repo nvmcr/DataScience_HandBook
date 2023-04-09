@@ -9,20 +9,7 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 
 ## Note
 Ability to think probabilistically is important to data scientists. But only few basic concepts are enough for interviews and these concepts will go in depth in the statistics. So the meat of the concepts are in statistics.
-
-# Probaility
-## Conditional Probability
-One of the most asked questions are based on this. For example: What is the proability of a patient having a disease, given that the patient tested positive for the disease ? The questions generally asks What is the probaility of an event A given that an event B has occurred? 
-
-$$ P(A|B) = {{P(B|A)P(A)}\\over P(B)} $$
-
-$P(A)$ is called Prior, $P(B|A)$ is likelihood and $P(A|B)$ is posterior.
-## Law of Total Proability
-If we have several disjoint events within B having occurred, we can then break down the probability of an event A having also occurred with law of total probability.
-
-$$ P(A) = P(A|B_1)P(B_1) + ... + P(A|B_n)P(B_n) $$
-
-This equation provides a handy way to think about paritioning events. If we want to model the proability of an event A happening, it can be decomposed into weighted sum of conditional probabilities based on each possible scenarios having occurred. If there is a *tree of outcomes*, then this eqn is useful. One example is the probability that a customer makes a purchase, conditional on which segment that customer falls in.
+## Basics
 ## Counting
 Just basics of permuatations and combinations. If order matters go for $^nP_r$ else $^nC_r$.
 
@@ -33,14 +20,38 @@ $$ ^nC_r = {n!\\over k!(n-r)!} $$
 For example, if you have a set of 5 letters {A, B, C, D, E}, the number of ways you can arrange 3 of these letters in a specific order (i.e., the number of 3-letter permutations) is: $^5P_3$
 
 Similarly, if you have the same set of 5 letters {A, B, C, D, E}, the number of ways you can select 3 of these letters in any order (i.e., the number of 3-letter combinations) is: $^5C_3$
+## Conditional Probability
+$$ P(A|B) = {P(A,B)\\over P(B)} $$
 
-## Random Variables
+where $P(A,B)$ is A intersection B. If A and B are independent then $P(A,B)=P(A)P(B)$
+## Chain Rule
+$$ P(A,B,C,....Z) = P(A)P(B|A)P(C|A,B)P(D|A,B,C,D)...P(Z|A,B,..Y)
+## Bayes Theorem
+One of the most asked questions are based on this. For example: What is the proability of a patient having a disease, given that the patient tested positive for the disease ? The questions generally asks What is the probaility of an event A given that an event B has occurred? 
+
+$$ P(A|B) = {{P(B|A)P(A)}\\over P(B)} $$
+
+$P(A)$ is called Prior, $P(B|A)$ is likelihood and $P(A|B)$ is posterior. 
+This can be extended to to a third event case too
+
+$$ P(A|B,C) = {{P(B|A,C)P(A|C)}\\over P(B|C)} $$
+## Law of Total Proability
+If we have several disjoint events within B having occurred, we can then break down the probability of an event A having also occurred with law of total probability.
+
+$$ P(A) = P(A|B_1)P(B_1) + ... + P(A|B_n)P(B_n) $$
+
+This equation provides a handy way to think about paritioning events. If we want to model the proability of an event A happening, it can be decomposed into weighted sum of conditional probabilities based on each possible scenarios having occurred. If there is a *tree of outcomes*, then this eqn is useful. One example is the probability that a customer makes a purchase, conditional on which segment that customer falls in.
+## Bayes 2
+Using law of total probability,
+$$ P(A|B) = {{P(B|A)P(A)}\\over P(B)} = {{P(B|A)P(A)}\\over {P(B|A)P(A} + P(B|A^C)P(A^C)} $$
+
+# Random Variables
 Say there is an outcome space $S$ which represents set of possible outcomes of an experiment and event space $F$ which is a set of subsets of $S$ then a random variable, $X$ is a **map** from $S$ to $R$ where $R$ is real numbers. $ X:S->R $ i.e a random variable takes on numerical values based on the outcome of a random experiment or process. In other words, A random variable is a quantity with an associated proability distribution. A probability distribution is a function that describes the **likelihood** of different outcomes in a random experiment or process.
 
 For example, consider rolling a fair six-sided die. The possible outcomes are the numbers 1, 2, 3, 4, 5, and 6. Let X denote the result of rolling the die. X is a random variable, since its value depends on the outcome of the random experiment (i.e., the roll of the die).
 
 Random variables can be classified as either discrete or continuous. A discrete random variable takes on a countable number of distinct values, such as the number of heads obtained when flipping a coin multiple times. A continuous random variable takes on an uncountable number of values within a given range, such as the height of individuals in a population.
-### CDF
+## CDF
 Cumulative Distribution Function (CDF) is a function that describes the probability that a random variable X is less than or equal to a given value x, for all possible values of x.
 
 The CDF of a random variable X is denoted by $F(x)$ and is defined as:
@@ -80,7 +91,7 @@ The CDF has several properties, including:
 4. The probability of X taking on a value between a and b (where a and b are real numbers and a ≤ b) is given by $F(b) - F(a)$.
 
 The CDF can be used to determine various probabilities associated with a random variable. For example, the probability that X lies in a certain interval $\[a, b]$ can be found by taking the difference between the values of F at b and a. Additionally, the CDF can be used to calculate the expected value and variance of a random variable.
-### PDF and PMF
+## PDF and PMF
 A probability mass function (PMF) is a function that describes the probability distribution of a discrete random variable. The PMF gives the probability of each possible value(x) that the random variable can take on. Specifically, the PMF of a discrete random variable X is defined as:
 
 $$ P_X(x) = Pr(X=x) $$
@@ -94,13 +105,47 @@ $$ f_X(x) = {dF(x)\\over dx} $$
 where $F(x)$ is the CDF of X, and $dF(x)\\over dx$ is the derivative of the CDF with respect to x.
 
 Both the PMF and the PDF have the property that the area under the curve equals one. For a PMF, this means that the sum of the probabilities for all possible values of X is equal to one, while for a PDF, this means that the integral of the PDF over all possible values of X is equal to one.
+## Quartiles
+Using PDF:
 
-## Multiple Random Variable
-Random variables are often analyzed with respect to other random variables.
-### Joint CDF
+The first quartile (Q1) is the value of x for which the area under the PDF to the left of x is 0.25. Similarly, the second quartile (Q2) is the value of x for which the area under the PDF to the left of x is 0.5, which is also the same as the median of the distribution. The third quartile (Q3) is the value of x for which the area under the PDF to the left of x is 0.75.
+
+Using CDF:
+
+The first quartile (Q1) is the value of x for which the CDF is 0.25. Similarly, the second quartile (Q2) is the value of x for which the CDF is 0.5, which is also the same as the median of the distribution. The third quartile (Q3) is the value of x for which the CDF is 0.75.
+# Multiple Random Variable
+Random variables are often analyzed with respect to other random variables. Below concepts assume continuous r.v, can extend to discrete r.v too.
+## Joint Distribution Functions
 The joint CDF of two random variables X and Y is a function that gives the probability that both X and Y are less than or equal to certain values x and y, respectively. It is denoted by F(x,y) and defined as:
 
 $$ F(x,y) = P(X ≤ x, Y ≤ y) = \int_{-infty}^x \int_{-infty}^y f_{X,Y}(x,y)dxdy $$
+
+where $f_{X,Y}(x,y)$ is the joint PDF.
+
+The same concept can be extended for more than two random variables. Properties of CDF remain the same for joint CDFs too.
+## Marginals
+From a joint CDF, PDF we can derive marginal CDFs and PDFs respectively. The concept is to marginal w.r.t to one r.v, extend other r.v to infinity. Say we need marginal PDF of X, integrating out Y will give mariginal of X.
+
+$$ f_X(x) = \int_{-infty}^{infty} f_{X,Y}(x,y)dy $$
+
+Now that we have marginal PDF for X, we can calculate its CDF in usual way of integrating.
+## Conditional
+For two r.vs X, Y; the conditional density function is given by:
+
+$$ f_X(x) = \int_{-infty}^{infty} f_Y(y)f_{X|Y}(x|y)dy $$
+
+where 
+
+$$ f_{X|Y}(x|y) = {f_{X,Y}(x,y)\\over f_Y(y)} = {f_{Y|X}(y|x)f_X(x)\\over f_Y(y)} $$
+
+# Expectations
+In general central tendency is represented by mean, median and mode. Expectation refers to expected value in this case its mean/average value. Expectation of r.v is given by
+
+$$ E(X) = \int_{-$infty$}^{infty} xf_X(x)dx $$
+For discrete
+
+$$ E(X) = \sum_i x_iP(X=x_i) $$
+
 
 # References
 The information is pulled from various sources from internet. Major sources are:
