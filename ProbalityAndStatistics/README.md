@@ -43,6 +43,7 @@ $$ P(A) = P(A|B_1)P(B_1) + ... + P(A|B_n)P(B_n) $$
 This equation provides a handy way to think about paritioning events. If we want to model the proability of an event A happening, it can be decomposed into weighted sum of conditional probabilities based on each possible scenarios having occurred. If there is a *tree of outcomes*, then this eqn is useful. One example is the probability that a customer makes a purchase, conditional on which segment that customer falls in.
 ## Bayes 2
 Using law of total probability,
+
 $$ P(A|B) = {{P(B|A)P(A)}\\over P(B)} = {{P(B|A)P(A)}\\over {P(B|A)P(A} + P(B|A^C)P(A^C)} $$
 
 # Random Variables
@@ -149,11 +150,17 @@ $$ E(X) = \sum_i x_iP(X=x_i) $$
 ## Variance
 It tells us how far is our r.v from its mean i.e $|X-E[X]|$ To know how far a r.v from its mean on *average*:
 
-$$ Var(X) = E[(X-E[X])^2] = E[X^2]-(E[X])^2 $$
+$$ Var(X) = E\[(X-E[X])^2] = E\[X^2]-(E\[X])^2 $$
 ## Conditional Expectation
 Let X, Y be jointly distributed r.v's. If X is continous (Y could be discrete/cont), then
 
-$$ E[g(X)|Y=y] = \int_{-\infty}^{\infty} g(x)fX|Y(x|y)dx $$
+$$ E\[g(X)|Y=y] = \int_{-\infty}^{\infty} g(x)fX|Y(x|y)dx $$
+## MGF
+$ E(X^2) = \int_{-\infty}^{\infty} x^2 f_X(x)dx $ This is called a moment. The nth moment of X is given by $E[X^n]$. Intuitively, the Moment Generating Function is a way to generate the moments of the distribution of X. The MGF can be used to find all of the moments of X.
+
+$$ M_x(t) = E\[e^tX] $$
+
+![MGF](mgf.png)
 # Inequalities
 ## Markov's Inequality
 It provides an upper bound on the probability that a non-negative random variable is greater than or equal to a certain value. Applies to any non-negative random variable.
@@ -170,12 +177,15 @@ $$ Cov(X, Y) = E\[(X - E(X))(Y - E(Y))] $$
 
 It measures how much two variables *vary*/change together. Intuitively, the covariance measures the degree to which X and Y tend to vary together. A positive covariance indicates that X and Y tend to increase or decrease together, while a negative covariance indicates that X tends to increase as Y decreases, or vice versa. A covariance of zero indicates that there is no linear relationship between X and Y. It is important to note that covariance is affected by the scales of the variables. If the scales of X and Y are different, the covariance may be difficult to interpret. To address this, the correlation coefficient is often used.
 ## Correlation
-$$ \pi(X, Y) = Cov(X, Y) / (\sqrt(var(X) \sqrt(var(Y) $$
+$$ \phi(X, Y) = Cov(X, Y)\\over {\sqrt(var(X) \sqrt(var(Y)} $$
 
 Correlation is a standardized measure of covariance. Intuitively, the correlation measures the strength and direction of the linear relationship between X and Y. A correlation of +1 indicates a perfect positive linear relationship, meaning that when X increases, Y increases proportionally. A correlation of -1 indicates a perfect negative linear relationship, meaning that when X increases, Y decreases proportionally. A correlation of 0 indicates no linear relationship between X and Y. It ranges from -1 to +1.
+# Limit Theorems
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
 2. [UW EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
+3. [UW CSE312 by Alex Tsun](https://courses.cs.washington.edu/courses/cse312/20su/)
 5. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
 6. ChatGPT :)
