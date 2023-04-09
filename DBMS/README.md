@@ -164,7 +164,7 @@ FROM table1
     ON table1.id = table2.studentid
 GROUP BY State
 ```
-> When using the GROUP BY clause, you should only include columns in the SELECT clause that are either: * Listed in the GROUP BY clause, or * Are included in an aggregate function like SUM(), AVG(), MIN(), MAX(), or COUNT().
+> When using the GROUP BY clause, you should only include columns in the SELECT, HAVING, ORDER BY clauses that are either: * Listed in the GROUP BY clause, or * Are included in an aggregate function like SUM(), AVG(), MIN(), MAX(), or COUNT().
 
 What if we need to apply any transformations on the new column generated after `GROUP BY`? SQL provides another keyword, `HAVING` to use after `GROUP BY`. For example, if we need to find the number of students from each state who graduated in 2022. But we are intrested in the states where total package is more than 100000 the query looks like:
 ```
