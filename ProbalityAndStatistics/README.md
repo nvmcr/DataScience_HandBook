@@ -6,6 +6,7 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 ![toc](Images/toc.gif)
 
 </details>
+
 ## Note
 Ability to think probabilistically is important to data scientists. But only few basic concepts are enough for interviews and these concepts will go in depth in the statistics. So the meat of the concepts are in statistics.
 # Probaility
