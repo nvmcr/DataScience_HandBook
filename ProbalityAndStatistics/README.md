@@ -10,10 +10,6 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 ## Note
 Ability to think probabilistically is important to data scientists. But only few basic concepts are enough for interviews and these concepts will go in depth in the statistics. So the meat of the concepts are in statistics.
 
-\begin{equation}
-f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
-\end{equation}
-
 # Probaility
 ## Conditional Probability
 One of the most asked questions are based on this. For example: What is the proability of a patient having a disease, given that the patient tested positive for the disease ? The questions generally asks What is the probaility of an event A given that an event B has occurred? 
@@ -54,13 +50,11 @@ $$ F(x) = P(X ≤ x) = \int_{-infty}^x f_X(x)dx $$
 where $P(X ≤ x)$ represents the probability that X is less than or equal to x and $f_X(x)$ represents PDF.
 
 For example, suppose we have a fair six-sided die. Let $X$ be the event of a number rolled on the die, and let P(X = x) be the probability of rolling a certain number x. Then, the CDF of X can be calculated as follows:
-$$
-P(X ≤ 1) = P(X = 1) = 1/6 
-P(X ≤ 2) = P(X = 1) + P(X = 2) = 1/6 + 1/6 = 1/3 
-. 
-. 
-P(X ≤ 6) = P(X = 1) + P(X = 2) + P(X = 3) + P(X = 4) + P(X = 5) + P(X = 6) = 1
-$$
+$$ P(X ≤ 1) = P(X = 1) = 1/6 $$
+$$ P(X ≤ 2) = P(X = 1) + P(X = 2) = 1/6 + 1/6 = 1/3 $$
+$$ . $$
+$$.$$ 
+$$P(X ≤ 6) = P(X = 1) + P(X = 2) + P(X = 3) + P(X = 4) + P(X = 5) + P(X = 6) = 1$$
 
 Similarly, let's consider a simple continuous random variable X that is uniformly distributed between 0 and 1. That is, $X ~ U(0,1)$. The PDF of X is:
 
