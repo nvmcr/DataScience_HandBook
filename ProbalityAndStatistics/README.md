@@ -24,4 +24,4 @@ $$ P(A) = P(A|B_1)P(B_1) + ... + P(A|B_n)P(B_n) $$
 
 This equation provides a handy way to think about paritioning events. If we want to model the proability of an event A happening, it can be decomposed into weighted sum of conditional probabilities based on each possible scenarios having occurred. If there is a *tree of outcomes*, then this eqn is useful. One example is the probability that a customer makes a purchase, conditional on which segment that customer falls in.
 ### Counting
-Just basics of permuatations and combinations. If order matters go for $<sup>n</sup>P_r$ else $<sup>n</sup>C_r$
+Just basics of permuatations and combinations. If order matters go for $ <sup>n</sup>P_r $ else $ <sup>n</sup>C_r $
