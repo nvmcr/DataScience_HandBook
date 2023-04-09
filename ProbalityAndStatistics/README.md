@@ -27,3 +27,9 @@ This equation provides a handy way to think about paritioning events. If we want
 Just basics of permuatations and combinations. If order matters go for $^nP_r$ else $^nC_r$.
 
 $$ ^nP_r = n*(n-1)....*(n-r+1) = {n!\\over (n-r)!} $$
+
+$$ ^nC_r = {n!\\over k!(n-r)!} $$
+
+For example, if you have a set of 5 letters {A, B, C, D, E}, the number of ways you can arrange 3 of these letters in a specific order (i.e., the number of 3-letter permutations) is: $^5P_3$
+
+Similarly, if you have the same set of 5 letters {A, B, C, D, E}, the number of ways you can select 3 of these letters in any order (i.e., the number of 3-letter combinations) is: $^5C_3$
