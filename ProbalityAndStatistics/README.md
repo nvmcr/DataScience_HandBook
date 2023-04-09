@@ -142,6 +142,7 @@ $$ f_{X|Y}(x|y) = {f_{X,Y}(x,y)\\over f_Y(y)} = {f_{Y|X}(y|x)f_X(x)\\over f_Y(y)
 In general central tendency is represented by mean, median and mode. Expectation refers to expected value in this case its mean/average value. Expectation of r.v is given by
 
 $$ E(X) = \int_{-$infty$}^{infty} xf_X(x)dx $$
+
 For discrete
 
 $$ E(X) = \sum_i x_iP(X=x_i) $$
