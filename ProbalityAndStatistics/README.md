@@ -153,7 +153,7 @@ $$ Var(X) = E[(X-E[X])^2] = E[X^2]-(E[X])^2 $$
 ## Conditional Expectation
 Let X, Y be jointly distributed r.v's. If X is continous (Y could be discrete/cont), then
 
-$$ E[g(X)|Y=y] = \inf_{-\infty}^{\infty} g(x)fX|Y(x|y)dx $$
+$$ E[g(X)|Y=y] = \int_{-\infty}^{\infty} g(x)fX|Y(x|y)dx $$
 # Inequalities
 ## Markov's Inequality
 It provides an upper bound on the probability that a non-negative random variable is greater than or equal to a certain value. Applies to any non-negative random variable.
@@ -163,9 +163,19 @@ $$ P(X ≥ a) ≤ {E(X)\\over a} $$
 It provides a bound on the probability that a random variable deviates from its expected value by more than a certain amount(k). The inequality applies to any random variable, regardless of its distribution.
 
 $$ P(|X-E(X)| ≥ k) ≤ {var(X)\\over k^2} $$
+# Covariance and Correlation
+Both are statistical measures that quantifies the degree to which two variables are linearly related.
+## Covariance
+$$ Cov(X, Y) = E\[(X - E(X))(Y - E(Y))] $$
+
+It measures how much two variables *vary*/change together. Intuitively, the covariance measures the degree to which X and Y tend to vary together. A positive covariance indicates that X and Y tend to increase or decrease together, while a negative covariance indicates that X tends to increase as Y decreases, or vice versa. A covariance of zero indicates that there is no linear relationship between X and Y. It is important to note that covariance is affected by the scales of the variables. If the scales of X and Y are different, the covariance may be difficult to interpret. To address this, the correlation coefficient is often used.
+## Correlation
+$$ \pi(X, Y) = Cov(X, Y) / (\sqrt(var(X) \sqrt(var(Y) $$
+
+Correlation is a standardized measure of covariance. Intuitively, the correlation measures the strength and direction of the linear relationship between X and Y. A correlation of +1 indicates a perfect positive linear relationship, meaning that when X increases, Y increases proportionally. A correlation of -1 indicates a perfect negative linear relationship, meaning that when X increases, Y decreases proportionally. A correlation of 0 indicates no linear relationship between X and Y. It ranges from -1 to +1.
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
-2. [EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
+2. [UW EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
 5. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
 6. ChatGPT :)
