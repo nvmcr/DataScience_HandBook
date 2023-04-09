@@ -56,7 +56,7 @@ Cumulative Distribution Function (CDF) is a function that describes the probabil
 
 The CDF of a random variable X is denoted by $F(x)$ and is defined as:
 
-$$ F(x) = P(X ≤ x) = \int_{-infty}^x f_X(x)dx $$
+$$ F(x) = P(X ≤ x) = \int_{-\infty}^x f_X(x)dx $$
 
 where $P(X ≤ x)$ represents the probability that X is less than or equal to x and $f_X(x)$ represents PDF.
 
@@ -118,7 +118,7 @@ Random variables are often analyzed with respect to other random variables. Belo
 ## Joint Distribution Functions
 The joint CDF of two random variables X and Y is a function that gives the probability that both X and Y are less than or equal to certain values x and y, respectively. It is denoted by F(x,y) and defined as:
 
-$$ F(x,y) = P(X ≤ x, Y ≤ y) = \int_{-infty}^x \int_{-infty}^y f_{X,Y}(x,y)dxdy $$
+$$ F(x,y) = P(X ≤ x, Y ≤ y) = \int_{-\infty}^x \int_{-\infty}^y f_{X,Y}(x,y)dxdy $$
 
 where $f_{X,Y}(x,y)$ is the joint PDF.
 
@@ -126,13 +126,13 @@ The same concept can be extended for more than two random variables. Properties 
 ## Marginals
 From a joint CDF, PDF we can derive marginal CDFs and PDFs respectively. The concept is to marginal w.r.t to one r.v, extend other r.v to infinity. Say we need marginal PDF of X, integrating out Y will give mariginal of X.
 
-$$ f_X(x) = \int_{-infty}^{infty} f_{X,Y}(x,y)dy $$
+$$ f_X(x) = \int_{-\infty}^{\infty} f_{X,Y}(x,y)dy $$
 
 Now that we have marginal PDF for X, we can calculate its CDF in usual way of integrating.
 ## Conditional
 For two r.vs X, Y; the conditional density function is given by:
 
-$$ f_X(x) = \int_{-infty}^{infty} f_Y(y)f_{X|Y}(x|y)dy $$
+$$ f_X(x) = \int_{-\infty}^{\infty} f_Y(y)f_{X|Y}(x|y)dy $$
 
 where 
 
@@ -141,13 +141,28 @@ $$ f_{X|Y}(x|y) = {f_{X,Y}(x,y)\\over f_Y(y)} = {f_{Y|X}(y|x)f_X(x)\\over f_Y(y)
 # Expectations
 In general central tendency is represented by mean, median and mode. Expectation refers to expected value in this case its mean/average value. Expectation of r.v is given by
 
-$$ E(X) = \int_{-\infty}^{infty} xf_X(x)dx $$
+$$ E(X) = \int_{-\infty}^{\infty} xf_X(x)dx $$
 
 For discrete
 
 $$ E(X) = \sum_i x_iP(X=x_i) $$
+## Variance
+It tells us how far is our r.v from its mean i.e $|X-E[X]|$ To know how far a r.v from its mean on *average*:
 
+$$ Var(X) = E[(X-E[X])^2] = E[X^2]-(E[X])^2 $$
+## Conditional Expectation
+Let X, Y be jointly distributed r.v's. If X is continous (Y could be discrete/cont), then
 
+$$ E[g(X)|Y=y] = \inf_{-\infty}^{\infty} g(x)fX|Y(x|y)dx $$
+# Inequalities
+## Markov's Inequality
+It provides an upper bound on the probability that a non-negative random variable is greater than or equal to a certain value. Applies to any non-negative random variable.
+
+$$ P(X ≥ a) ≤ {E(X)\\over a} $$
+## Chebyshev's Inequality
+It provides a bound on the probability that a random variable deviates from its expected value by more than a certain amount(k). The inequality applies to any random variable, regardless of its distribution.
+
+$$ P(|X-E(X)| ≥ k) ≤ {var(X)\\over k^2} $$
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
