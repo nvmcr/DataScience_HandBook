@@ -89,12 +89,18 @@ where x is a possible value of X, and Pr(X=x) is the probability that X takes on
 
 On the other hand, a probability density function (PDF) is a function that describes the probability distribution of a continuous random variable. The PDF gives the relative likelihood that the random variable takes on a specific value, by providing the rate at which the probability changes as the value of the random variable changes. Specifically, the PDF of a continuous random variable X is defined as:
 
-$$ f_X(x) = dF(x)\\over dx $$ 
+$$ f_X(x) = {dF(x)\\over dx} $$ 
 
 where $F(x)$ is the CDF of X, and $dF(x)\\over dx$ is the derivative of the CDF with respect to x.
 
 Both the PMF and the PDF have the property that the area under the curve equals one. For a PMF, this means that the sum of the probabilities for all possible values of X is equal to one, while for a PDF, this means that the integral of the PDF over all possible values of X is equal to one.
 
+## Multiple Random Variable
+Random variables are often analyzed with respect to other random variables.
+### Joint CDF
+The joint CDF of two random variables X and Y is a function that gives the probability that both X and Y are less than or equal to certain values x and y, respectively. It is denoted by F(x,y) and defined as:
+
+$$ F(x,y) = P(X ≤ x, Y ≤ y) = \int_{-infty}^x \int_{-infty}^y f_{X,Y}(x,y)dxdy $$
 
 # References
 The information is pulled from various sources from internet. Major sources are:
