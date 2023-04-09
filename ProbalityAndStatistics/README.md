@@ -173,11 +173,11 @@ $$ P(|X-E(X)| ≥ k) ≤ {var(X)\\over k^2} $$
 # Covariance and Correlation
 Both are statistical measures that quantifies the degree to which two variables are linearly related.
 ## Covariance
-$$ Cov(X, Y) = E\[(X - E(X))(Y - E(Y))] $$
+$$ Cov(X, Y) = {E\\over [(X - E(X))(Y - E(Y))]} $$
 
 It measures how much two variables *vary*/change together. Intuitively, the covariance measures the degree to which X and Y tend to vary together. A positive covariance indicates that X and Y tend to increase or decrease together, while a negative covariance indicates that X tends to increase as Y decreases, or vice versa. A covariance of zero indicates that there is no linear relationship between X and Y. It is important to note that covariance is affected by the scales of the variables. If the scales of X and Y are different, the covariance may be difficult to interpret. To address this, the correlation coefficient is often used.
 ## Correlation
-$$ \phi(X, Y) = Cov(X, Y)\\over {\sqrt(var(X) \sqrt(var(Y)} $$
+$$ SS(X, Y) = {Cov(X, Y)\\over \sqrt(var(X) \sqrt(var(Y)} $$
 
 Correlation is a standardized measure of covariance. Intuitively, the correlation measures the strength and direction of the linear relationship between X and Y. A correlation of +1 indicates a perfect positive linear relationship, meaning that when X increases, Y increases proportionally. A correlation of -1 indicates a perfect negative linear relationship, meaning that when X increases, Y decreases proportionally. A correlation of 0 indicates no linear relationship between X and Y. It ranges from -1 to +1.
 # Limit Theorems
