@@ -25,7 +25,7 @@ $$ P(A|B) = {P(A,B)\\over P(B)} $$
 
 where $P(A,B)$ is A intersection B. If A and B are independent then $P(A,B)=P(A)P(B)$
 ## Chain Rule
-$$ P(A,B,C,....Z) = P(A)P(B|A)P(C|A,B)P(D|A,B,C,D)...P(Z|A,B,..Y)
+$$ P(A,B,C,....Z) = P(A)P(B|A)P(C|A,B)P(D|A,B,C,D)...P(Z|A,B,..Y) $$
 ## Bayes Theorem
 One of the most asked questions are based on this. For example: What is the proability of a patient having a disease, given that the patient tested positive for the disease ? The questions generally asks What is the probaility of an event A given that an event B has occurred? 
 
@@ -156,7 +156,7 @@ Let X, Y be jointly distributed r.v's. If X is continous (Y could be discrete/co
 
 $$ E\[g(X)|Y=y] = \int_{-\infty}^{\infty} g(x)fX|Y(x|y)dx $$
 ## MGF
-$ E(X^2) = \int_{-\infty}^{\infty} x^2 f_X(x)dx $ This is called a moment. The nth moment of X is given by $E[X^n]$. Intuitively, the Moment Generating Function is a way to generate the moments of the distribution of X. The MGF can be used to find all of the moments of X.
+$E(X^2) = \int_{-\infty}^{\infty} x^2 f_X(x)dx$ This is called a moment. The nth moment of X is given by $E[X^n]$. Intuitively, the Moment Generating Function is a way to generate the moments of the distribution of X. The MGF can be used to find all of the moments of X.
 
 $$ M_x(t) = E\[e^tX] $$
 
