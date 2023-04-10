@@ -47,7 +47,7 @@ Using law of total probability,
 $$ P(A|B) = {{P(B|A)P(A)}\\over P(B)} = {{P(B|A)P(A)}\\over {P(B|A)P(A} + P(B|A^C)P(A^C)} $$
 
 # Random Variables
-Say there is an outcome space $S$ which represents set of possible outcomes of an experiment and event space $F$ which is a set of subsets of $S$ then a random variable, $X$ is a **map** from $S$ to $R$ where $R$ is real numbers. $ X:S->R $ i.e a random variable takes on numerical values based on the outcome of a random experiment or process. In other words, A random variable is a quantity with an associated proability distribution. A probability distribution is a function that describes the **likelihood** of different outcomes in a random experiment or process.
+Say there is an outcome space $S$ which represents set of possible outcomes of an experiment and event space $F$ which is a set of subsets of $S$ then a random variable, $X$ is a **map** from $S$ to $R$ where $R$ is real numbers. $X:S->R$ i.e a random variable takes on numerical values based on the outcome of a random experiment or process. In other words, A random variable is a quantity with an associated proability distribution. A probability distribution is a function that describes the **likelihood** of different outcomes in a random experiment or process.
 
 For example, consider rolling a fair six-sided die. The possible outcomes are the numbers 1, 2, 3, 4, 5, and 6. Let X denote the result of rolling the die. X is a random variable, since its value depends on the outcome of the random experiment (i.e., the roll of the die).
 
