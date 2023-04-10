@@ -182,22 +182,42 @@ $$ \rho(X, Y) = {Cov(X, Y)\\over \sqrt(var(X) \sqrt(var(Y)} $$
 Correlation is a standardized measure of covariance. Intuitively, the correlation measures the strength and direction of the linear relationship between X and Y. A correlation of +1 indicates a perfect positive linear relationship, meaning that when X increases, Y increases proportionally. A correlation of -1 indicates a perfect negative linear relationship, meaning that when X increases, Y decreases proportionally. A correlation of 0 indicates no linear relationship between X and Y. It ranges from -1 to +1.
 # Probability Distributions
 ## Discrete
-### Binomial Distribution
+### Binomial
 It gives the probability of *k* number of successes in *n* independent trials where each trail has probability *p* of success. The PMF is given by:
 
 $$ P(X = k) = ^nC_k * p^k * (1 - p)^(n - k) $$
 
-Mean is given by $\mu=np$ and $\sigma^2=np(1-p)$. 
+$\mu=np$ and $\sigma^2=np(1-p)$. 
 Common applications include number of defective products in a batch, the number of successes in a fixed number of medical trials, or the number of heads in a fixed number of coin flips.
-## Poisson Distribution
+## Poisson
 It gives the probability of the number of events occurring wihin a particular fixed interval where the known, constant rate of each event's occurrence is $\lambda$. The PMF is given by:
 
-$$ P(X = k) = {λ^k * e^(-λ)\\over k!} $$
+$$ P(X = k) = {λ^k * e^{(-λ)}\\over k!} $$
 
-Mean is given by $\mu=\sigma^2=\lambda$
+$\mu=\sigma^2=\lambda$ 
+Common applications include number of customers arriving at a store during a given time period, or the number of defects in a manufacturing process.
+## Continuous Distribution
+### Uniform
+It assumes a constant probability of an $X$ falling between values on the interval a to b. PDF is given by:
+
+$$ f(x) = {1\\over (b-a)} $$
+
+$\mu={a+b\\over 2}$ and $\sigma^2={(b-a)^2\\over 12}$. The most common applications are in sampling and hypothesis testing cases.
+### Exponential
+It gives the interval length between events of a poisson process having a set rate parameter of $\lambda$. The PDF is given by:
+
+$$ f(x) = \lambdae^{-\lambdax} $$
+
+$\mu={1\\over lambda}$ and $\sigma^2={1\\over lambda^2}$
+Common applications include time until a customer makes a purchase or the time until a default in credit occurs. 
+### Normal
+The well-known bell curve.
+
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \, e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 2. [UW EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
 3. [UW CSE312 by Alex Tsun](https://courses.cs.washington.edu/courses/cse312/20su/)
-5. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
-6. ChatGPT :)
+4. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
+5. ChatGPT :)
