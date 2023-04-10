@@ -11,11 +11,11 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 Ability to think probabilistically is important to data scientists. But only few basic concepts are enough for interviews and these concepts will go in depth in the statistics. So the meat of the concepts are in statistics.
 ## Basics
 ## Counting
-Just basics of permuatations and combinations. If order matters go for $^nP_r$ else $^nC_r$.
+Just basics of permuatations and combinations. If order matters go for $^nP_k$ else $^nC_k$.
 
-$$ ^nP_r = n*(n-1)....*(n-r+1) = {n!\\over (n-r)!} $$
+$$ ^nP_k = n*(n-1)....*(n-k+1) = {n!\\over (n-k)!} $$
 
-$$ ^nC_r = {n!\\over k!(n-r)!} $$
+$$ ^nC_k = {n!\\over k!(n-k)!} $$
 
 For example, if you have a set of 5 letters {A, B, C, D, E}, the number of ways you can arrange 3 of these letters in a specific order (i.e., the number of 3-letter permutations) is: $^5P_3$
 
@@ -181,10 +181,22 @@ $$ \rho(X, Y) = {Cov(X, Y)\\over \sqrt(var(X) \sqrt(var(Y)} $$
 
 Correlation is a standardized measure of covariance. Intuitively, the correlation measures the strength and direction of the linear relationship between X and Y. A correlation of +1 indicates a perfect positive linear relationship, meaning that when X increases, Y increases proportionally. A correlation of -1 indicates a perfect negative linear relationship, meaning that when X increases, Y decreases proportionally. A correlation of 0 indicates no linear relationship between X and Y. It ranges from -1 to +1.
 # Probability Distributions
+## Discrete
+### Binomial Distribution
+It gives the probability of *k* number of successes in *n* independent trials where each trail has probability *p* of success. The PMF is given by:
 
+$$ P(X = k) = ^nC_k * p^k * (1 - p)^(n - k) $$
+
+Mean is given by $\mu=np$ and $\sigma^2=np(1-p)$. 
+Common applications include number of defective products in a batch, the number of successes in a fixed number of medical trials, or the number of heads in a fixed number of coin flips.
+## Poisson Distribution
+It gives the probability of the number of events occurring wihin a particular fixed interval where the known, constant rate of each event's occurrence is $\lambda$. The PMF is given by:
+
+$$ P(X = k) = {λ^k * e^(-λ)\\over k!} $$
+
+Mean is given by $\mu=\sigma^2=\lambda$
 # References
 The information is pulled from various sources from internet. Major sources are:
-1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
 2. [UW EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
 3. [UW CSE312 by Alex Tsun](https://courses.cs.washington.edu/courses/cse312/20su/)
 5. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
