@@ -1,8 +1,8 @@
 # Limit Theorems
 ## Sample Mean
-Let $X_1$,..$X_n$ be a sequence of iid random variables. The sample mean is given by
+Let $X_1$,.. $X_n$ be a sequence of iid random variables. The sample mean is given by
 
-$$ S_n = {1\\over n}{\sum_{i=1}^n X_i}
+$$ S_n = {1\\over n}{\sum_{i=1}^n X_i} $$
 ## Weak Law of Large Numbers
 $$ \lim_{n\to\infty} P(|S_n-\mu|>k)=0 $$
 
