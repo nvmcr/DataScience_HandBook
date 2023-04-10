@@ -1,3 +1,12 @@
+<details>
+<summary>Table of Conetents</summary>
+
+## Table of contents
+Please use the github's interactive navigation. (Too lazy to write/generate TOC)
+![toc](../Machine_Learning/Images/toc.gif)
+
+</details>
+
 # Limit Theorems
 ## Sample Mean
 Let $X_1$,.. $X_n$ be a sequence of iid random variables. The sample mean is given by
