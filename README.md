@@ -1,6 +1,7 @@
 # Transforming Complex Tech into Simple Explanations - A Revision Guide to Data Science related concepts - Machine Learning, Statistics, AWS...
 ## Content
-* [Probability and Statistics](https://github.com/nvmcr/Blog/tree/main/ProbalityAndStatistics)
+* [Probability](https://github.com/nvmcr/Blog/tree/main/Probality)
+* [Statistics]()
 * [Machine Learning](https://github.com/nvmcr/Blog/tree/main/Machine_Learning)
 * [AWS](https://github.com/nvmcr/Blog/tree/main/AWS)
 * [DBMS](https://github.com/nvmcr/Blog/tree/main/DBMS)
