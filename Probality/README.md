@@ -206,14 +206,14 @@ $\mu={a+b\\over 2}$ and $\sigma^2={(b-a)^2\\over 12}$. The most common applicati
 ### Exponential
 It gives the interval length between events of a poisson process having a set rate parameter of $\lambda$. The PDF is given by:
 
-$$ f(x) = \lambdae^{-\lambdax} $$
+$$ f(x) = \lambda e^{-\lambda x} $$
 
-$\mu={1\\over lambda}$ and $\sigma^2={1\\over lambda^2}$
+$\mu={1\\over \lambda}$ and $\sigma^2={1\\over \lambda^2}$
 Common applications include time until a customer makes a purchase or the time until a default in credit occurs. 
 ### Normal
 The well-known bell curve.
 
-$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \, e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \ e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
 
 # References
 The information is pulled from various sources from internet. Major sources are:
