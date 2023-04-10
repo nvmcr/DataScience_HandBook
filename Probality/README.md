@@ -217,7 +217,7 @@ $$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \ e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
 
 # References
 The information is pulled from various sources from internet. Major sources are:
-2. [UW EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
-3. [UW CSE312 by Alex Tsun](https://courses.cs.washington.edu/courses/cse312/20su/)
-4. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
-5. ChatGPT :)
+1. [UW EE 505 Prabability by Rahul Trivedi](https://sites.google.com/view/ee505uwfall2022/course-material)
+2. [UW CSE312 by Alex Tsun](https://courses.cs.washington.edu/courses/cse312/20su/)
+3. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
+4. ChatGPT :)
