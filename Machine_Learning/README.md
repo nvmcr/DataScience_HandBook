@@ -1,7 +1,7 @@
 # Machine Learning
 
 <details>
-<summary>Table of Conetents</summary>
+<summary>Table of Contents</summary>
 
 ## Table of contents
 There will be a lot of content in this markdown file. Please use the github's interactive navigation. (Too lazy to write/generate TOC)
