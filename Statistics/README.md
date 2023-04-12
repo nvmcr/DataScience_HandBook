@@ -18,7 +18,7 @@ Data distribution is the frequency distribution of **individual values** in a da
 
 W.K.T standard deviation represents variability of individual data values. To get variability of sampling distribution, we calculate **standard error**. For a standard devistion of s and sample size of n, SE is given by:
 
-$$ SE = {s\\over sqrt(n)} $$
+$$ SE = {s\\over \sqrt(n)} $$
 
 > Descriptive statisics are used to summarize and describe the characteristics of a dataset. Measures like mean, median, and standard deviation are examples of descriptive statistics.
 >  Inferential statistics are used to draw conclusions about a population based on a sample of data. Techniques like hypothesis testing and confidence intervals are examples of inferential statistics.
