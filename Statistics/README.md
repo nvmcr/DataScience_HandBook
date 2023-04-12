@@ -6,6 +6,7 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 ![toc](../Machine_Learning/Images/toc.gif)
 
 </details>
+
 # Data and Sampling Distributions
 ## Random Sampling and Sample Bias
 A sample is a subset of data from a larger data set called population. 
