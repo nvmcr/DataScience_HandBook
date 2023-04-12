@@ -3,6 +3,7 @@
 
 ## Table of contents
 Please use the github's interactive navigation. (Too lazy to write/generate TOC)
+
 ![toc](../Machine_Learning/Images/toc.gif)
 
 </details>
