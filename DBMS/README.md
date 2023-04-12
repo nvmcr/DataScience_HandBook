@@ -47,30 +47,30 @@ Structured Query Language (SQL) is a language designed for users to query, manip
 `SELECT` statements are used to retrieve data from a SQL database. These statements are often refered as *queries*.
 > A query is just a statement that tells the database what we want. It could be to retrieve, update or modify the data.
 Queries have syntax. Say, there is a table named `table1` which has details of students. To retrieve specific columns the qury will look like:
-```
+```SQL
 SELECT name, gpa
 FROM table1;
 ```
 If we need to see the entire table, asterisk (\*) can be used.
-```
+```SQL
 SELECT *
 FROM table1;
 ```
 The `SELECT` and `FROM` statements need not be seperate lines they can be used in a single line too.
-```
+```SQL
 SELECT year_of_passing, name, gpa FROM table1;
 ```
 > The semi-colan (;) marje the end of a SQL statement similar to C. But in some databased it is optional. SQL is not case sensitive atleast not for keywords. Also it does not require indentation. But its better to use `;` at the end of statements, make keywords capitalized and use indentation for readability.
 ## Constraints, Filtering, Sorting
 What if we don't need all the rows. Just like we *select* required columns, we can retrieve only the required rows using `WHERE` keyword.
-```
+```SQL
 SELECT name, gpa, year_of_passing
 FROM table1
 WHERE gpa > 3
       AND year_of_passing >= 2016;
 ```
 We can compare above query with python for loop. `FROM` is analogus to `for`, `WHERE` to `if` and `SELECT` to the operation.
-```
+```SQL
 for each row in table1:
       if gpa>3:
             print(table1.name, table1.gpa, table1.year)
@@ -88,11 +88,11 @@ Common operators that can be used include:
 
 > All strings should be represneted within single or double quotations. 
 Many times databases are filled with duplicate values. To retrieve only distinct values, `DISTINCT` keyword is used.
-```
+```SQL
 SELECT DISTINCT gpa, name FROM table1;
 ```
 Also databases agre generally not ordered. To arrange the rows, we can order them by a specific column using `ORDER BY col_name ASC/DESC` clause. ALong with this `LIMIT` and `OFFSET` are commonly used together. 
-```
+```SQL
 SELECT name, gpa
 FROM table1
 ORDER BY Id DESC
@@ -103,7 +103,7 @@ After 50 rows, next 10 rows will be returned.
 ## Multi-Table Queries
 In real world data, the data is broken down into pieces and stord across multiple orthogonal tables using *normalization*. This database normalization is useful as it minimizes duplicate data in a single table and also allows the data to grow independent of each other. 
 For example, if there are two tables `table1` and `table2` where `table1` has `id`, `name`, `gpa` and `table2` has `studentid`, `state`, `city`. If we need top 10 highest gpa students from Texas, query looks like:
-```
+```SQL
 SELECT name, gpa
 FROM table1
   INNER JOIN table2
@@ -114,20 +114,20 @@ LIMIT 10;
 ```
 `ON` condition specifies how the tables need to be joined. `INNER JOIN`/`JOIN` will join only the rows that are common to both tables. Once the tables are joined, remaining keywords can be used similar to a single table. 
 Say we have following query:
-```
+```SQL
 SELECT t1.name, t2.gpa
 FROM table1 AS t1
    JOIN table2 as t2
       ON t1.id = t2.studentid
 ```
 The same query can be implicity written as:
-```
+```SQL
 SELECT t1.name, t2.gpa
 FROM table1 AS t1, table2 AS t2
 WHERE t1.id = t2.studentid
 ```
 When we think of above both query in programming sense, the execution looks like:
-```
+```SQL
 for row1 in table1:
    for row2 in table2:
       if row1.id == row2.studnetid:
@@ -138,14 +138,14 @@ Similar to `INNER JOIN`, other type of joins can also be used.
 
 Usually joins other than `INNER JOIN` will result in null values. They can be retrieved using `IS/IS NOT NULL` in `WHERE` clause. Also we might need to use self joins too.
 Say have a table with name and types of cars and we need to find who all drive mustang **and** ferrari.
-```
+```SQL
 SELECT t1.name, t2.car
 FROM table1 AS t1, table1 AS t2 #Using same table
 WHERE t1.name = t2.name AND t1.Car = 'mustang' AND t2.Car = 'ferrari'
 ```
 ## Queries with Expressions
 Expressions are handy in writing complex logic for querying. The expressions can be combined with all other keywords that we saw before. For example, if we need is to retrieve all students who graduated in even years, the query looks like:
-```
+```SQL
 SELECT name, year_of_passing
 FROM table1
   INNER JOIN table2
@@ -153,12 +153,12 @@ FROM table1
 WHERE year_of_passing % 2 = 0;
 ```
 Similarly if we can use expressions to transform the data. But for readability we name the transformed column different using `AS` keyword. For example, we need to convert student gpa into 10 point scale, the query looks like:
-```
+```SQL
 SELECT name, (gpa * 2.5) AS 10_scale_gpa
 FROM table1;
 ```
 There are common aggregate functions available such as `COUNT()`, `MIN()`, `MAX()`, `AVG()` and `SUM()`. They can be combined with `GROUP BY` clause too. For example, if we need to find average gpa of students from each state, the query looks like:
-```
+```SQL
 SELECT State, AVG(gpa) AS Avergae_Gpa
 FROM table1
   INNER JOIN table2
@@ -167,7 +167,7 @@ GROUP BY State
 ```
 
 What if we need to apply any transformations on the new column generated after `GROUP BY`? SQL provides another keyword, `HAVING` to use after `GROUP BY`. For example, if we need to find the number of students from each state who graduated in 2022. But we are intrested in the states where total package is more than 100000 the query looks like:
-```
+```SQL
 SELECT state, COUNT(*) as num_students, SUM(package) as total_package
 FROM table1
   INNER JOIN table2
@@ -212,7 +212,7 @@ The rows are sorted either in ascending or descending order.
 What to display is controlled by these two at the end.
 ## Witnessing Problem
 Say we have a table named `Profile` with columns of `UserID`,`Name`,`Job`,`Salary`. Question is: Which person has the highest salary per job? We generally do as
-```
+```SQL
 SELECT Name, MAX(Salary)
 FROM Profile
 GROUP BY Job;
@@ -228,7 +228,7 @@ To solve this,
 3. We need to return names so we can `P1.Name` in the GROUP BY. 
 4. Now we grouped with P1.Name and P2.Job but the output will have all salaries not just max in each job. So we can add `HAVING P1.salary = MAX(P2.Salary)`.
 5. Final query looks like:
-```
+```SQL
 SELECT P1.Name, P2.Job, MAX(P2.Salary)
 FROM Payroll AS P1,
    Payroll AS P2
@@ -248,14 +248,14 @@ Following steps can be followed to solve witnessing problems
 >The database schema describes the structure of each table and the datatypes that each column contain.
 ### Inserting New Rows
 We use `INSERT INTO` statement to specify the table we are modifying and use `VALUES` to specify values. Say, we need to add two new rows to our student table that has columns `Id`,`Name`,`Gpa`, the query looks like;
-```
+```SQL
 INSERT INTO table1
 VALUES
       (20, "Megha",3.94),
       (21, "Macha",3.96);
 ```
 We need to specify all the column values in our new row. If we have incomplete rows to be added in a table that support default values, we can explicitly mention.
-```
+```SQL
 INSERT INTO table1 (Name,Gpa)
 VALUES
       ("Megha", 3.94)
@@ -264,14 +264,14 @@ VALUES
 We can even specify value in form an equation like `("Megha",3.94*2.5)`.
 ### Updating Existing Rows
 To update alreaday existing rows in the table, we use `UPDATE` and `SET`. In most cases, updating rows will also include `WHERE` to specify row as we dont want to update entire columns. Say we have a table with year of passing and package columns and we want increase package by 1000 and decrease gpa by 10% for all students graduated after 2020.
-```
+```SQL
 UPDATE table1
 SET package = package + 1000, gpa = gpa*0.1
 WHERE year > 2020;
 ```
 ### Deleting Rows
 To delete the rows in a table, we use `DELETE FROM`. Using this clause without a `WHERE` statement will clear all the rows.
-```
+```SQL
 DELETE FROM table1
 WHERE Gpa < 3;
 ```
@@ -279,7 +279,7 @@ WHERE Gpa < 3;
 ## Table Queries
 ### Creating Tables
 We create tables using `CREATE TABLE` statement. The syntax looks like:
-```
+```SQL
 CREATE TABLE IF NOT EXISTS tableName (
       columnName1 datatype constraints DEFAULT default_value,
       columnName2 datatype
@@ -316,7 +316,7 @@ Commonly used constraints are:
 |CHECK (expression)|Custom expression to have a specific value in column `CHECK (gpa>0 AND gpa<4)`| 
 
 Example:
-```
+```SQL
 CREATE TABLE table1 (
       id INT PRIMARY KEY AUTOINCREMENT,
       name VARCHAR(50),
@@ -326,7 +326,7 @@ CREATE TABLE table1 (
 ```
 We can even make two columns into a primary key by specificying primary key seperately like `PRIMARY KEY (id, name)`.
 Foreign key query looks like:
-```
+```SQL
 CREATE TABLE table2 (
       id INT,
       name VARCHAR(50),
@@ -337,21 +337,21 @@ CREATE TABLE table2 (
 We cannot use a foreign key **without references**.
 ### Altering Tables
 Altering a table maybe to add new columns, removing existing columns or renaming the table.
-```
+```SQL
 ALTER TABLE table1
 ADD year_of_passing INT;
 ```
-```
+```SQL
 ALTER TABLE table1
 DROP year_of_passing;
 ```
-```
+```SQL
 ALTER TABLE table1
 RENAME TO table2;
 ```
 There are additional features provided by specific databases. For example, MySQL provides `FIRST` or `AFTER` keywords for insertion of columns.
 ### Dropping Tables
-```
+```SQL
 DROP TABLE IF EXISTS table1;
 ```
 `DELETE` without a `WHERE` will also remove all the rows which is nothing but deleting entire table.
@@ -361,13 +361,13 @@ Subqueries, also known as nested queries, are a powerful feature in SQL that all
 > A subquery is a SELECT statement that is embedded within another SELECT, INSERT, UPDATE, or DELETE statement. 
 The result of the subquery is then used as a value or a condition in the outer query. Subqueries are *enclosed in parantheses*. Will look at different ways to use subqueries. 
 For example, we have two tables `students` and `parttimeEmployees`. We need to find out the students who are also part time employees.
-```
+```SQL
 SELECT * 
 FROM students
 WHERE StudentName IN (SELECT EmployeeName FROM parttimeEmployees);
 ```
 Another example would be, say we need to update all gpa by 10% for all those who have gpa less than average gpa.
-```
+```SQL
 UPDATE students
 SET gpa = gpa*1.1
 WHERE gpa < (SELECT AVG(gpa) FROM students);
@@ -376,7 +376,7 @@ WHERE gpa < (SELECT AVG(gpa) FROM students);
 A correlated subquery is a type of subquery that relies on the outerquery for its values.
 > The key difference between a subquery and a correlated subquery is that a subquery is executed independently and its result is used by the outer query, while a correlated subquery is executed for each row of the outer query and its result depends on the values of the outer query.
 For example, we need to find average gpa of students from each state where the average gpa is lower than the overall average gpa from all states. The states information is located in a different table. The correlated subquery looks like
-```
+```SQL
 SELECT State, AVG(gpa) AS avg_gpa
 FROM table1
   INNER JOIN table2
@@ -398,7 +398,7 @@ The `UNION` operator combines results from two or more `SELECT` statements into 
 The `INTERSECT` operator returns only the common rows returned by `SELECT` two statements. 
 
 The `EXCEPT` operator returns all rows returned by first `SELECT` and that are not present in second `SELECT`.
-```
+```SQL
 SELECT col1, col2
 FROM table1
 UNION/UNION ALL/ INTERSECT/ EXCEPT
