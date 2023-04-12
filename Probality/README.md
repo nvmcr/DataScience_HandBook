@@ -1,5 +1,5 @@
 <details>
-<summary>Table of Conetents</summary>
+<summary>Table of Contents</summary>
 
 ## Table of contents
 Please use the github's interactive navigation. (Too lazy to write/generate TOC)
