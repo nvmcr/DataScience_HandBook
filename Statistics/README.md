@@ -105,11 +105,14 @@ In other words, it is the mean of your estimate plus and minus the variation in 
 
 To calculate confidence interval we need test statistics like Z-score, t-scores and sample statistics like mean.
 
-$$ CI = \hat{X} \pm (Z*(or)t*){\sigma\\over \sqrt(n)} $$
+$$ CI = \hat{X} \pm (Z^*(or)t^*){\sigma\\over \sqrt(n)} $$
 
 In case of proportions,
 
-$$ CI = \hat{p} \pm (Z*(or)t*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
+$$ CI = \hat{p} \pm (Z^*(or)t^*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
+# Hypothesis Testing
+## Test Statistics
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
