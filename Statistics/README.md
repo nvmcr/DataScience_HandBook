@@ -41,7 +41,7 @@ $$ S_n = {{X_1+X2+...X_n}\\over n} \sim N(\mu,{\sigma^2\\over n}) $$
 
 In other terms,
 
-$$ {(S_n - \mu)\\over (\sigma\\over \sqrt(n))} \sim N(0,1) $$
+$$ {(S_n - \mu)\\over {\sigma\\over \sqrt(n)}} \sim N(0,1) $$
 
 # Probability Distributions
 ## Normal Distribution
@@ -67,7 +67,7 @@ Standardization transforms data to have a mean of zero and a standard deviation 
 
 Normalization is used to rescale data to a range of 0 to 1 or -1 to 1. Normalization is often used when the absolute values of the data are less important and we dont know the underlying distributions.
 
-$$ x' = ({2*(x - min)}\\over {(max - min)}) - 1 $$
+$$ x' = ({2*(x - min)\\over (max - min)}) - 1 $$
 
 ## Chi-Square ($X^2$) Distribution
 It is a continuous probability distribution that arises in the context of hypothesis testing and confidence interval estimation for the variance of a normally distributed population. The shape of the distribution is determined by the parameter k, which represents the degrees of freedom. 
