@@ -51,7 +51,7 @@ $$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \ e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
 
 * Mean, median and mode are exactly the same.
 * Around 68%, 95% and 99.7% of values are within 1,2,3 standard deviations from the mean respectively.
-### Z-distribution/ Standard Normal
+### Z-Distribution/ Standard Normal
 Normal distribution with mean 0 and standard deviation 1. We convert normal to standard normal to calculate confidence intervals, perform hypothesis tests etc. The **z-scores** tells us how many standard deviations away from mean each value lies. This is also called **standardization**
 
 $$ z = {x-\mu}\\over \sigma $$
@@ -59,7 +59,10 @@ $$ z = {x-\mu}\\over \sigma $$
 Each z-score is associated with a probability or **p-value** that tells us the likelihood of values below that z-score occurring. This is the area under the curve left or right of that z score.
 
 ![pvalue](pval.png)
+### T-Distribution/ Student
+The t-distribution is a type of normal distribution that is used for smaller sample sizes. It has heavier tails than the normal distribution. As a result, the t-distribution has more probability in the tails and less in the center than the normal distribution. The variance in a t-distribution is estimated based on the degrees of freedom(k) of the data set (k = total number of observations minus 1). 
 
+As the degrees of freedom increases, the t-distribution will get closer and closer to matching the z-distribution, until they are almost identical (k>30).
 ### Standardization vs Normalization
 Say we have a dataset with `Age` and `Salary` columns. Range of age is usually 0-100 but salary has a bigger range and values. Using them without any feature scaling technique will make salary dominant in distance based algorithms. Two main feature scaling technique are standardization and normalization.
 
@@ -79,6 +82,11 @@ Now imagine taking samples from two standard normal distributions (Z1 and Z2). I
 More generally, if you sample from k independent standard normal distributions and then square and sum the values, you’ll produce a chi-square distribution with k degrees of freedom. 
 
 $$ Χ_k^2 = (Z_1)^2 + (Z_2)^2 + … + (Z_k)^2 $$
+
+* Mean and variance is k and 2k respectively.
+* When k is 1 or 2, the distribution looks like 90degress clockwise rotated `J`.
+* When k is greater than 2, the distribution is right-skewed normal distribution.
+* When k is greater than 90, the distribution looks like normal distribution.
 ## Sample Statistic
 A sample statistic is a numerical measure that summarizes the characteristics of a sample of data. It is calculated from the sample data and is used to estimate the corresponding population parameter. It could be mean, standard deviation, variance, median, mode etc. Sample statistics are subject to sampling variability, which means that different samples of the same size from the same population may produce different sample statistics. This is why we use histograms, boxplots, violin plots, standard errors, confidence intervals and hypothesis testing to quantify the uncertainty in our estimates and make statistical inferences.
 ## Standard Error
