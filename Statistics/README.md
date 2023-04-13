@@ -96,7 +96,7 @@ W.K.T standard deviation represents variability of individual data values (in a 
 $$ SE = {s\\over \sqrt(n)} $$
 
 ## Confidence Intervals
-We deal with two different types of data, normally distributed or proportions. Population proportion refers to the proportion or percentage of individuals in a population who have a particular characteristic of interest. For example, if we are interested in the proportion of people in a city who own a car, the population proportion ($p$) would be the percentage of all people in that city who own a car. But again estimating something from all population is not practical so we use sample proportions $\hat{p}$. We could take a random sample of 500 people from the city, and count how many of them own a car. Let's say we find that 300 people in the sample own a car. The sampling proportion is then 300/500 = 0.6, or 60%. This 0.6 also represents mean of proportion. Standard devaition is calculated by $\sqrt(\hat{p}(1-\hat{p})\\over n)$
+We deal with two different types of data, normally distributed or proportions. Population proportion refers to the proportion or percentage of individuals in a population who have a particular characteristic of interest. For example, if we are interested in the proportion of people in a city who own a car, the population proportion ($p$) would be the percentage of all people in that city who own a car. But again estimating something from all population is not practical so we use sample proportions $\hat{p}$. We could take a random sample of 500 people from the city, and count how many of them own a car. Let's say we find that 300 people in the sample own a car. The sampling proportion is then 300/500 = 0.6, or 60%. This 0.6 also represents mean of proportion. Standard devaition is calculated by $\hat{p}(1-\hat{p}$
 
 Though sampling proportions help with estimating the population proportions, how confident are we about samples? We might be different proportions with different samples. So we try to give a range of values instead of a single value called confidence interval.
 > A confidence interval is a range of values that likely contains the true value of a population parameter with a certain degree/percentage of confidence.
@@ -109,7 +109,7 @@ $$ CI = \hat{X} \pm (Z*(or)t*){\sigma\\over \sqrt(n)} $$
 
 In case of proportions,
 
-$$ CI = \hat{p} \pm (Z*(or)t*)\sqrt(\hat{p}(1-\hat{p})\\over n) $$
+$$ CI = \hat{p} \pm (Z*(or)t*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
