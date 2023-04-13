@@ -60,9 +60,10 @@ Each z-score is associated with a probability or **p-value** that tells us the l
 
 ![pvalue](pval.png)
 ### T-Distribution/ Student
-The t-distribution is a type of normal distribution that is used for smaller sample sizes. It has heavier tails than the normal distribution. As a result, the t-distribution has more probability in the tails and less in the center than the normal distribution. The variance in a t-distribution is estimated based on the degrees of freedom(k) of the data set (k = total number of observations minus 1). 
+The t-distribution is a type of normal distribution that is used for smaller sample sizes. It has heavier tails than the normal distribution. As a result, the t-distribution has more probability in the tails and less in the center than the normal distribution. The variance in a t-distribution is estimated based on the degrees of freedom(df) of the data set. A **t-score** is the number of standard deviations from the mean in a t-distribution.
+> Degrees of freedom (df) is the number of independent pieces of information used to calculate a statistic. It’s calculated as the sample size minus the number of restrictions. In most cases, df = Sample Size - 1
 
-As the degrees of freedom increases, the t-distribution will get closer and closer to matching the z-distribution, until they are almost identical (k>30).
+As the degrees of freedom increases, the t-distribution will get closer and closer to matching the z-distribution, until they are almost identical (df>30).
 ### Standardization vs Normalization
 Say we have a dataset with `Age` and `Salary` columns. Range of age is usually 0-100 but salary has a bigger range and values. Using them without any feature scaling technique will make salary dominant in distance based algorithms. Two main feature scaling technique are standardization and normalization.
 
@@ -73,35 +74,42 @@ Normalization is used to rescale data to a range of 0 to 1 or -1 to 1. Normaliza
 $$ x' = ({2*(x - min)\\over (max - min)}) - 1 $$
 
 ## Chi-Square ($X^2$) Distribution
-It is a continuous probability distribution that arises in the context of hypothesis testing and confidence interval estimation for the variance of a normally distributed population. The shape of the distribution is determined by the parameter k, which represents the degrees of freedom. 
+It is a continuous probability distribution that arises in the context of hypothesis testing and confidence interval estimation for the variance of a normally distributed population. The shape of the distribution is determined by the parameter df, which represents the degrees of freedom. 
 
-Imagine taking a random sample of a standard normal distribution (Z). If you squared all the values in the sample, you would have the chi-square distribution with k = 1. $Χ_2^1 = (Z)^2$
+Imagine taking a random sample of a standard normal distribution (Z). If you squared all the values in the sample, you would have the chi-square distribution with df = 1. $Χ_2^1 = (Z)^2$
 
-Now imagine taking samples from two standard normal distributions (Z1 and Z2). If each time you sampled a pair of values, you squared them and added them together, you would have the chi-square distribution with k = 2. $Χ_2^2 = (Z_1)^2 + (Z_2)^2$
+Now imagine taking samples from two standard normal distributions (Z1 and Z2). If each time you sampled a pair of values, you squared them and added them together, you would have the chi-square distribution with df = 2. $Χ_2^2 = (Z_1)^2 + (Z_2)^2$
 
 More generally, if you sample from k independent standard normal distributions and then square and sum the values, you’ll produce a chi-square distribution with k degrees of freedom. 
 
 $$ Χ_k^2 = (Z_1)^2 + (Z_2)^2 + … + (Z_k)^2 $$
 
 * Mean and variance is k and 2k respectively.
-* When k is 1 or 2, the distribution looks like 90degress clockwise rotated `J`.
-* When k is greater than 2, the distribution is right-skewed normal distribution.
-* When k is greater than 90, the distribution looks like normal distribution.
-## Sample Statistic
+* When df is 1 or 2, the distribution looks like 90degress clockwise rotated `J`.
+* When df is greater than 2, the distribution is right-skewed normal distribution.
+* When df is greater than 90, the distribution looks like normal distribution.
+# Sample Statistics
 A sample statistic is a numerical measure that summarizes the characteristics of a sample of data. It is calculated from the sample data and is used to estimate the corresponding population parameter. It could be mean, standard deviation, variance, median, mode etc. Sample statistics are subject to sampling variability, which means that different samples of the same size from the same population may produce different sample statistics. This is why we use histograms, boxplots, violin plots, standard errors, confidence intervals and hypothesis testing to quantify the uncertainty in our estimates and make statistical inferences.
 ## Standard Error
-W.K.T standard deviation represents variability of individual data values. To get variability of sampling distribution, we calculate **standard error**. For a standard deviation of s and sample size of n, SE is given by:
+W.K.T standard deviation represents variability of individual data values (in a single sample. To get variability of sampling distribution (over multiple samples), we calculate **standard error**. For a standard deviation of s and sample size of n, SE is given by:
 
 $$ SE = {s\\over \sqrt(n)} $$
 
 ## Confidence Intervals
-Population proportion refers to the proportion or percentage of individuals in a population who have a particular characteristic of interest. For example, if we are interested in the proportion of people in a city who own a car, the population proportion ($p$) would be the percentage of all people in that city who own a car. But again estimating something from all population is not practical so we use sample proportions $\hat{p}$. We could take a random sample of 500 people from the city, and count how many of them own a car. Let's say we find that 300 people in the sample own a car. The sampling proportion is then 300/500 = 0.6, or 60%.
+We deal with two different types of data, normally distributed or proportions. Population proportion refers to the proportion or percentage of individuals in a population who have a particular characteristic of interest. For example, if we are interested in the proportion of people in a city who own a car, the population proportion ($p$) would be the percentage of all people in that city who own a car. But again estimating something from all population is not practical so we use sample proportions $\hat{p}$. We could take a random sample of 500 people from the city, and count how many of them own a car. Let's say we find that 300 people in the sample own a car. The sampling proportion is then 300/500 = 0.6, or 60%. This 0.6 also represents mean of proportion. Standard devaition is calculated by $\sqrt(\hat{p}(1-\hat{p})\\over n)$
 
 Though sampling proportions help with estimating the population proportions, how confident are we about samples? We might be different proportions with different samples. So we try to give a range of values instead of a single value called confidence interval.
 > A confidence interval is a range of values that likely contains the true value of a population parameter with a certain degree/percentage of confidence.
 
 In other words, it is the mean of your estimate plus and minus the variation in that estimate. This is the range of values we expect our estimate to fall between if we redo our test, within a certain level of confidence. The level/percentage of confidence tells us the percentage of times we expect to reproduce an estimate between the upper and lower bounds of the confidence interval set by $CL = 1 - \alpha$. If we use $\alpha$ of 0.005, we represent 95% confidence level.
 
+To calculate confidence interval we need test statistics like Z-score, t-scores and sample statistics like mean.
+
+$$ CI = \hat{X} \pm (Z*(or)t*){\sigma\\over \sqrt(n)} $$
+
+In case of proportions,
+
+$$ CI = \hat{p} \pm (Z*(or)t*)\sqrt(\hat{p}(1-\hat{p})\\over n) $$
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
