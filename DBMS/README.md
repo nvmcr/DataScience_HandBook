@@ -32,6 +32,8 @@ This README file contains only the concepts related to DBMS. All the practice qu
       10. [Subqueries](#Subqueries)
             1. [Correlated Subqueries](#Correlated-Subqueries)
       11. [SET Queries](#set-queries)
+2. [Database Design](#database-design)
+      1. [ER Diagram](#er-diagram)
 
 </details>
 
@@ -405,3 +407,20 @@ UNION/UNION ALL/ INTERSECT/ EXCEPT
 SELECT col1, col2
 FROM table2
 ```
+
+# Database Design
+Database design or logical design or relational schema design organises data by considering what data needs to be stored and the relationship with the data. In simple terms, say we have arbitary data like csv files, text, images etc.. database design is about organising this data efficiently so that others can easily look up this data with queries.
+## ER Diagram
+To conceptualize our database design, we use Entity Relationship diagrams. They are similar to flowcharts explain relationship between the data entities. Blocks in ER diagram includes
+
+![blocks](Images/blocks.png)
+
+Think about an entity set like a class. Say we have a enity set (class) called Person which is a table. It has attributes (field) like name, address etc which are columns and each attributes will have entity (object) which is the actual piece of the data like Bob, Seattle etc.
+> In the ER diagram, attribute with an underline means its the primary key of the entity set/table. 
+### Relationships
+Most of the tables in the database are related to one another, that's the point of placing them in the same database. A relation is a subset of two entities. We can have atrributes to the relationships too.
+
+![Relation](Images/relation.png)
+The realtionships can be one-to-one (with arrows on both side of relation), many-to-one (arrow only on the right) and many-to-many(no arrows). We create a seperate table to show the relationships between entity sets using foreign keys. We can create a one-to-one mapping using `UNIQUE`.
+
+
