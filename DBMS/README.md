@@ -421,6 +421,7 @@ Think about an entity set like a class. Say we have a enity set (class) called P
 Most of the tables in the database are related to one another, that's the point of placing them in the same database. A relation is a subset of two entities. We can have atrributes to the relationships too.
 
 ![Relation](Images/relation.png)
+
 The realtionships can be one-to-one (with arrows on both side of relation), many-to-one (arrow only on the right) and many-to-many(no arrows). We create a seperate table to show the relationships between entity sets using foreign keys. We can create a one-to-one mapping using `UNIQUE`.
 
 
