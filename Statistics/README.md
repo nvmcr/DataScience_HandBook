@@ -110,6 +110,7 @@ $$ CI = \hat{X} \pm (Z^*(or)t^*){\sigma\\over \sqrt(n)} $$
 In case of proportions,
 
 $$ CI = \hat{p} \pm (Z^*(or)t^*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
+
 # Hypothesis Testing
 ## Test Statistics
 
