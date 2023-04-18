@@ -109,10 +109,11 @@ $$ CI = \hat{X} \pm (Z^\*(or)t^\*){\sigma\\over \sqrt(n)} $$
 
 In case of proportions,
 
-$$ CI = \hat{p} \pm ((Z)^*(or)(t)^*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
+$$ CI = \hat{p} \pm ((Z)^\*(or)(t)^\*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
 
 # Hypothesis Testing
 ## Test Statistics
+A test statistic is a numerical value that is calculated from sample data and used to make a decision about a hypothesis. In hypothesis testing, we start with a null hypothesis, which represents a default assumption about a population parameter, and an alternative hypothesis, which represents an alternative to the null hypothesis. The test statistic is used to determine whether we reject or fail to reject the null hypothesis.
 
 # References
 The information is pulled from various sources from internet. Major sources are:
