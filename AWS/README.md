@@ -63,7 +63,7 @@ There are different types of EC2 instances are grouped  under an instance familt
 1. General Purpose Instances 
     They provide a **balance** of compute, memory and networking tasks. They can be used for variety of workloads like application servers, gaming servers, small and medium databases, etc. They are chosen if the user doesn't need optimization in a single resource area.
 2. Compute Optimized Instances 
-    They are ideal for compute bound applications taht benefit from **high-perfomance** processors. Ideal for high perfomance web servers, compute-intensive applications servers adn also for batch processing workloads that require many transanctions in a single group.
+    They are ideal for compute bound applications taht benefit from **high-perfomance** processors. Ideal for high perfomance web servers, compute-intensive applications servers and also for batch processing workloads that require many transanctions in a single group.
 3. Memory Optimized Instances 
     They are designed to deliver fast performance for workloads that process **large datasets in memory**. If user has a workload that require large amounts of data to be preloaded before running the application, memory optimized instances are useful.
 4. Acclearated Compuing Instances 
@@ -73,7 +73,7 @@ There are different types of EC2 instances are grouped  under an instance familt
 ### Pricing
 AWS offers 5 types of pricing.
 1. On-Demand: Pay for the duration an instance runs. No commitments or contracts.
-2. Savings Plan: Commitment to aonsistent amount of usage measured in dollars per hour for one.three year term.
+2. Savings Plan: Commitment to a consistent amount of usage measured in dollars per hour for one/three year term.
 3. Reserved Instances: Suited for steady-state workloads or ones with predictable usage.
 4. Spot Instances: This plan allows user to use spare instances but AWS can claim the instance at any time.
 5. Dedicated Hosts: Physical hosts dedicated for user. Nobody else will share tenancy of that host.
