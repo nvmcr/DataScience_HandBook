@@ -127,11 +127,11 @@ Say our customers are in Ohio but our data is hosted in Paris region. Instead of
 AWS can also install a fully operational mini Region, right inside our own data center called AWS **Outposts**. That's owned and operated by AWS, using 100% of AWS functionality, but isolated within our own building. It's not a solution most customers need, but if we have specific problems that can only be solved by staying in our own building, AWS Outposts can help. 
 
 ## Networking
-As there are millions of customers who use AWS services and vast number of resources customers created, there should be boundaries around resources such a way that network traffic would be able to flow between them unrestricted. AWS offers **Virtual Private Cloud**(VPC) to establish boundaries around AWS resources. Amazon VPC enables us an isolated section of AWS cloud. In that section, we organize our resources into subnets. To allow public traffic from internet to access our VPC, we attach an **internet gateway** to the VPC. Similarly we have only private resources in VPC, to grant access to required users, we use a **Virtual Private Network**(VPN). VPN uses same path as VPC except our traffic is encrypted. As we use the same connection as VPC, there might be slow downs. So AWS offers one more service **Direct Connect**. It provides a dedicated connection to our VPC.  This helps us to reduce network costs and increase the bandwidth.
+As there are millions of customers who use AWS services and vast number of resources customers created, there should be boundaries around resources such a way that network traffic would be able to flow between them unrestricted. AWS offers **Virtual Private Cloud**(VPC) to establish boundaries around AWS resources. Amazon VPC enables us an isolated section of AWS cloud. In that section, we organize our resources into subnets. To allow public traffic from internet to access our VPC, we attach an **internet gateway** to the VPC. Similarly if we have only private resources in VPC, to grant access to required users, we use a **Virtual Private Network**(VPN). VPN uses same path as VPC except our traffic is encrypted. As we use the same connection as VPC, there might be slow downs. So AWS offers one more service **Direct Connect**. It provides a dedicated connection to our VPC.  This helps us to reduce network costs and increase the bandwidth.
 ![AWS Direct Cloud](direct_connect.png)
 What happens when a customer clicks on our application say a website? 
 
-Once a customer reuests data drom application, Amazon **Route 53** uses DNS resolution which gets IP address through the domain name and then the customer request is sent to nearest edge location (a data centre string cache data for low latency) through Amazon **CloudFront**. The Amazn CloudFront connects to the appliction load balancer which sends the incoming packets to EC2 instance.
+Once a customer requests data from application, Amazon **Route 53** uses DNS resolution which gets IP address through the domain name and then the customer request is sent to nearest edge location (a data centre string cache data for low latency) through Amazon **CloudFront**. The Amazn CloudFront connects to the appliction load balancer which sends the incoming packets to EC2 instance.
 ## Storage and Databases
 While we are using EC2 instance, the virtuaal server comes with compute (CPU), memory, network and storage. Looking into the storage part, it is a block-level storage which means the storage is divided into blocks of data and overwrtitng a file will not overwrite all other blocks. Generally the block-level storages are stored in harddrive and EC2 instance comes with a harddrive too. We we run an EC2 instance, it comes with a local storage called **instance store volumes**. Well, EC2 insatnces are virtual and we will not be running on same host always. Everytime we start an EC2 insatnce, it will be running on a different host which means everytime our hardrive data will be deleted. So its only a temporary cached storage. 
 ### Elastic Block Store (EBS)
@@ -144,12 +144,15 @@ In object storage, each object contains data, metadata and a key. Metadata conta
 1. S3 Standard 
 
 An object stored in S3 standard is highly durable which means it remains intact even after a period of one year. Also data is stored in two seperate storage facilities. Another use case is static website hosting. We can upload all HTML files, static web assets and then host as static website. 
+
 2. S3 Infrequent Access(IA) 
 
 This is used for the data which is accessed less frequently but requires rapid access when needed something like backups, recovery files that require long term storage.
+
 3. S3 Glacier 
 
 It is used to archive the data. We use it for the data that is to be stored for long time but doesn't need rapid access. We can even set vault lock policy and set controls like write once/read many (WORM) which restricts from editing. We can even have lifecycle policies which will move the data automatically between tires based on the duration. Further tires available in Glacier based on the amount of time to retrieve the objects.
+
 4. S3 Intelligent-Tiering
 
 Ideal for data with unknown and changing access patterns. AWS will automatically move the data between tires based on access patterns.
