@@ -446,4 +446,4 @@ If there are any functional dependency such that `X implies A`, then X must be a
 
 ![Anomaly](Images/anomaly.png)
 
-In the above primary table, we can see that ID implies Name and Parking Lot but not Car which makes ID not a superkey. So we decompose the table based on the dependency.
+In the above primary table, we can see that ID implies Name and Parking Lot but not Car which makes ID not a superkey. So we decompose the table based on the dependency. This is called Boyce-Codd normal form (BCNF). There are many other normal forms available like 1NF, 2NF,3NF,4NF. 1NF/ first normal form specifies that table must be *flat* and have a primary key i.e every column of the table should be atomic (values cannot be further divided) and every row should be unique (combination of all column values in that row is unique not individual value in a single column) and identifiable using primary key. For example a value like `Oranges, Grapes` is a violation of atomicity as value can be broken down to `Orange` and `Grapes`. So the column of these fruits are decomposed into seperate table with same primary key.
