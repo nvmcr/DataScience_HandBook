@@ -114,6 +114,13 @@ $$ CI = \hat{p} \pm ((Z)^\*(or)(t)^\*)\sqrt{\hat{p}(1-\hat{p})\\over n} $$
 # Hypothesis Testing
 ## Test Statistics
 A test statistic is a numerical value that is calculated from sample data and used to make a decision about a hypothesis. In hypothesis testing, we start with a null hypothesis, which represents a default assumption about a population parameter, and an alternative hypothesis, which represents an alternative to the null hypothesis. The test statistic is used to determine whether we reject or fail to reject the null hypothesis.
+## A/B Testing
+An A/B test is an experiment with two groups to establish which of two treatments/products/procedures is superior. A/B test will have two versions of products one is a regular version without any change called *control group* and other version is with new update/experiment called *treatment group*. How we measure the effect of the update is with test statistic.
+## Hypothesis Tests
+Hypothesis/significance tests purpose is to help us learn whether random chance is responsible for an observed effect. A/B testing is one type of a hypothesis testing. We get easilt fooled by random chance. When we see a coin landing on Heads for straight 6 times will make us think that coin is baised but in reality it might be pure random chance. A hypothesis test is further analysis of A/B test to assess whether random chance is a resonable explanation for the observed difference between groups A and B. 
+
+The main logic in these tests is we start with an hypothesis that difference between A and B is caused by random chance. This is our *null hypothesis*. Our hope then is that to prove this null hypothesis wrong. We will have an *alternative hypothesis* in contradictory to null. For example: Null could be No difference between A and B, then Alternative would be A is different from B.
+
 
 # References
 The information is pulled from various sources from internet. Major sources are:
