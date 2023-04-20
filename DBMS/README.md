@@ -33,7 +33,9 @@ This README file contains only the concepts related to DBMS. All the practice qu
       1. [ER Diagram](#er-diagram)
             1. [Realtionships](#relationships)
             2. [Weak Entity Set](#Weak-Entity-Set)
-            3.[Subclassing](#subclassing)
+            3. [Subclassing](#subclassing)
+      2. [Backgroud Concepts](#Backgroud-Concepts)
+      3. [BCNF](#BCNF)
 
 # SQL
 ## Intro
@@ -429,3 +431,19 @@ The entity that can not exist without another entity. It has a key from strong e
 Similar to object oriented programmin concept of subclass, an entity can have a subclass. This sublass inherits all attributes and relationships of parentclass and also can have its own attributes and relationships. When creating a subclass, we don't have to explicitly mention the attributes and realtionships of the superclass. We can just give the primary key of parentclass 
 
 ![Subclass](Images/subclass.png)
+## Backgroud Concepts
+When building a database, we have to avoid:
+* Redundant Rows with repeated values
+* Unrelated columns in same table
+
+To avoid these we seperate unrelated columns. To seperate columns, we need to identify the realtion among the columns. In a table, there might be some columns that determine other columns (functional dependency).
+
+![FD](Images/fd.png)
+
+In the above table, we can see `ID` implies Name, Phone and position i.e every unique ID has an unique Name, position and phone associated with it. Similarly every unique position has an unique phone asscoiated with it. But unique phone doesn't imply unique position. Set of all columns/attributes that can uniquely identify all attributes are called **superkey**. For example, set of ID and email address could be superkey. If superkey cannot be broken down further then it is called minimal superkey. In above example, ID and email address individually are minimal superkeys but combination of both is not.
+## BCNF
+If there are any functional dependency such that `X implies A`, then X must be a superkey. This way we can reduce redundancy. If there is any violation, then decompose the table such that X should be a superkey in one of the splitted table.
+
+![Anomaly](Images/anomaly.png)
+
+In the above primary table, we can see that ID implies Name and Parking Lot but not Car which makes ID not a superkey. So we decompose the table based on the dependency.
