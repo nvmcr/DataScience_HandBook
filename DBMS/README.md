@@ -9,9 +9,6 @@ There are 3 parts in a Data Model.
 ## Note
 This README file contains only the concepts related to DBMS. All the practice questions are in this [link](https://github.com/nvmcr/Reference_Guide/tree/main/DBMS/PracticeQuestions).
 
-<details>
-      <summary>Table of Contents</summary>
-
 ## Table of Contents
 1. [SQL](#SQL)
       1. [Intro](#intro)
@@ -34,8 +31,9 @@ This README file contains only the concepts related to DBMS. All the practice qu
       11. [SET Queries](#set-queries)
 2. [Database Design](#database-design)
       1. [ER Diagram](#er-diagram)
-
-</details>
+            1. [Realtionships](#relationships)
+            2. [Weak Entity Set](#Weak-Entity-Set)
+            3.[Subclassing](#subclassing)
 
 # SQL
 ## Intro
@@ -423,5 +421,11 @@ Most of the tables in the database are related to one another, that's the point 
 ![Relation](Images/relation.png)
 
 The realtionships can be one-to-one (with arrows on both side of relation), many-to-one (arrow only on the right) and many-to-many(no arrows). We create a seperate table to show the relationships between entity sets using foreign keys. We can create a one-to-one mapping using `UNIQUE`.
+### Weak Entity Set
+The entity that can not exist without another entity. It has a key from strong entity set. For example, a sports team wouldn't exist if the university that the team belongs doesn't exist. In an ER diagram the weak entity set and its relation is represented with double rectangle and double diamond respectively.
 
+![Weak Entity Set](Images/wes.png)
+### Subclassing
+Similar to object oriented programmin concept of subclass, an entity can have a subclass. This sublass inherits all attributes and relationships of parentclass and also can have its own attributes and relationships. When creating a subclass, we don't have to explicitly mention the attributes and realtionships of the superclass. We can just give the primary key of parentclass 
 
+![Subclass](Images/subclass.png)
