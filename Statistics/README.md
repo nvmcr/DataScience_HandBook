@@ -121,6 +121,28 @@ Hypothesis/significance tests purpose is to help us learn whether random chance 
 
 The main logic in these tests is we start with an hypothesis that difference between A and B is caused by random chance. This is our *null hypothesis*. Our hope then is that to prove this null hypothesis wrong. We will have an *alternative hypothesis* in contradictory to null. For example: Null could be No difference between A and B, then Alternative would be A is different from B.
 
+Hypothesis test are either one-tailed ot two-tailed tests. One tailed means, we know the result will go in only one direction. For example, null: A is better and alternativev: B is better. We only check if B is better. In two-tails, our alternative is both B is better and B is worse. We want to know in both directions. In general, many prefer two-tails.
+## Statistical Significance and p-Values
+If the result of the experiment is beyond the random chance, then the result is statistically significant.  **p-value** of an experiment is the probability of obtaining a result more than an observed result in other words it tells us the probability of the getting a result due to chance. Which means lesser thep value, influence of chance is less thus rejecting null hypothesis. The threshold of p-value is called **alpha-value**. Say we set an alpha value of 0.05, we are saying that we are willing to accept a 5% chance of making a **Type I error** (rejecting the null hypothesis when it is actually true). If the calculated p-value from the test is smaller than the alpha value, we reject the null hypothesis, since the observed result is unlikely to have occurred by chance alone at the chosen significance level. If the calculated p-value is larger than the alpha value, we fail to reject the null hypothesis, since the observed result could plausibly have occurred by chance, and we do not have sufficient evidence to reject it.
+## t-Tests
+All significance tests require that we specify a test statistic to measure the effect we are interested in. We use t-tests to determine whether the **means of two groups** are significantly different from each other. Our test stastistic used is t-value. The t-value is calculated by taking the difference between the means of the two groups and dividing it by the standard error of the difference between the means. Most commonly used t-tests are
+* Paired t-test
+
+It is used when we want to compare the means of the groups coming from a single population (e.g., measuring before and after an experimental treatment). 
+
+$$ t = {x1 -x2}\\over {s\\over sqrt(n)} $$
+
+where x1 and x2 are the means of the paired samples, s is the standard deviation of the differences between the pairs, and n is the number of pairs. The degrees of freedom for the paired t-test are (n-1).
+* Two-Sample t-test
+It is used when we want to compare the means of two independent groups. 
+
+$$ t = {x1-x2}\\over {s*\sqrt{1\\over n1 + 1\\over n2}} $$
+
+x1 and x2 are the means of the two groups, s is the pooled standard deviation of the two groups, n1 and n2 are the sample sizes of the two groups. The degrees of freedom for the two-sample t-test are (n1 + n2 - 2).
+
+We then calculate p-value associated with t-value to get a concluion on hypothesis.
+
+
 
 # References
 The information is pulled from various sources from internet. Major sources are:
