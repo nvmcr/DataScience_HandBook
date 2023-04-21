@@ -130,13 +130,13 @@ All significance tests require that we specify a test statistic to measure the e
 
 It is used when we want to compare the means of the groups coming from a single population (e.g., measuring before and after an experimental treatment). 
 
-$$ t = {x1 -x2}\\over {s\\over sqrt(n)} $$
+$$ t = {x1 -x2\\over {s\\over sqrt(n)}} $$
 
 where x1 and x2 are the means of the paired samples, s is the standard deviation of the differences between the pairs, and n is the number of pairs. The degrees of freedom for the paired t-test are (n-1).
 * Two-Sample t-test
 It is used when we want to compare the means of two independent groups. 
 
-$$ t = {x1-x2}\\over {s*\sqrt{1\\over n1 + 1\\over n2}} $$
+$$ t = {x1-x2\\over {s*\sqrt{1\\over n1 + 1\\over n2}}} $$
 
 x1 and x2 are the means of the two groups, s is the pooled standard deviation of the two groups, n1 and n2 are the sample sizes of the two groups. The degrees of freedom for the two-sample t-test are (n1 + n2 - 2).
 
