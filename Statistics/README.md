@@ -136,7 +136,7 @@ where x1 and x2 are the means of the paired samples, s is the standard deviation
 * Two-Sample t-test
 It is used when we want to compare the means of two independent groups. 
 
-$$ t = {x1-x2\\over {s*\sqrt{1\\over n1 + 1\\over n2}}} $$
+$$ t = {s*\sqrt{1\\over n1 + 1\\over n2}} $$
 
 x1 and x2 are the means of the two groups, s is the pooled standard deviation of the two groups, n1 and n2 are the sample sizes of the two groups. The degrees of freedom for the two-sample t-test are (n1 + n2 - 2).
 
