@@ -74,7 +74,7 @@ Normalization is used to rescale data to a range of 0 to 1 or -1 to 1. Normaliza
 $$ x' = ({2*(x - min)\\over (max - min)}) - 1 $$
 
 ## Chi-Square ($X^2$) Distribution
-It is a continuous probability distribution that arises in the context of hypothesis testing and confidence interval estimation for the variance of a normally distributed population. The shape of the distribution is determined by the parameter df, which represents the degrees of freedom. 
+Chi-square (pronounced 'kai-square') is a continuous probability distribution that arises in the context of hypothesis testing and confidence interval estimation for the variance of a normally distributed population. The shape of the distribution is determined by the parameter df, which represents the degrees of freedom. 
 
 Imagine taking a random sample of a standard normal distribution (Z). If you squared all the values in the sample, you would have the chi-square distribution with df = 1. $Χ_2^1 = (Z)^2$
 
@@ -88,6 +88,9 @@ $$ Χ_k^2 = (Z_1)^2 + (Z_2)^2 + … + (Z_k)^2 $$
 * When df is 1 or 2, the distribution looks like 90degress clockwise rotated `J`.
 * When df is greater than 2, the distribution is right-skewed normal distribution.
 * When df is greater than 90, the distribution looks like normal distribution.
+
+![Chi-Square](chi.png)
+
 # Sample Statistics
 A sample statistic is a numerical measure that summarizes the characteristics of a sample of data. It is calculated from the sample data and is used to estimate the corresponding population parameter. It could be mean, standard deviation, variance, median, mode etc. Sample statistics are subject to sampling variability, which means that different samples of the same size from the same population may produce different sample statistics. This is why we use histograms, boxplots, violin plots, standard errors, confidence intervals and hypothesis testing to quantify the uncertainty in our estimates and make statistical inferences.
 ## Standard Error
@@ -142,7 +145,9 @@ Power is usually set at 80%. This means that we set a 80% probability of correct
 ### How to do Power Analysis
 Power Analysis is used to know **minimum sample size** to chose for a test. We start by setting a power value usually 0.8. Then we determine threshold for significane (alpha) usually set to 0.5. Next is to find an **effect size** which is the magnitude of a difference between groups or a relationship between variables. Say for example, we need to do a test on drug A and drug B. We get the distributions of both drugs (usually a normal distribution). To know how different these two drugs are we can see how different respective distributions are. More overlap in distributions implies more similarity and vice-versa. Effect size is commonly determined using estimated difference in means divided by pooled estimated standard deviations. We calculate sample size using an online calculator. More overlap/ small effect size needs bigger sample size and vice -versa. 
 ## t-Tests
-All significance tests require that we specify a test statistic to measure the effect we are interested in. We use t-tests to determine whether the **means of two groups** are significantly different from each other. Our test stastistic used is t-value. The t-value is calculated by taking the difference between the means of the two groups and dividing it by the standard error of the difference between the means. Most commonly used t-tests are
+All significance tests require that we specify a test statistic to measure the effect we are interested in. The point of tests is to find if two versions/models are different from each other. Each test may choose to find difference in means/variance/frequency etc to find difference in the distributions of versions/models.
+
+We use t-tests to determine whether the **means of two groups** are significantly different from each other. Our test stastistic used is t-value. The t-value is calculated by taking the difference between the means of the two groups and dividing it by the standard error of the difference between the means. Most commonly used t-tests are
 * Paired t-test
 
 It is used when we want to compare the means of the groups coming from a single population (e.g., measuring before and after an experimental treatment). 
@@ -175,8 +180,23 @@ It is used to estimate how the mean of a quantitative variable changes according
 
 For F-statistic, we now have another extra calculations of interactions like group 1 and group2 interaction variance (A*B). Thus we can even have alternative hypotheis of whether interactions of groups has an effect on the dependent variable.
 ## Chi-Square Test
+It is a statistical test for categorical data. Instead of means or variance. chi-square test uses **frequency(count)** of the data to determine whether there is a significant association between two categorical variables. It is a common non-parametric test as it doesn't assume data to be normal distribution. If we need to test a hypothesis about the distribution of a categorical variable we’ll need to use a chi-square test or another nonparametric test. Chi-square test uses *chi-square* as the test statistic.
 
+$$ X^2 = \sum{(O-E)^2\\over E} $$
 
+where $O$ is observed frequency and $E$ is the expected frequency. 
+Chi-square uses contingency table to show the number of observations in each combination of groups.
+
+![ct](ct.png)
+
+There are two types of chi-square tests: 
+1. Chi-square goodness of fit test 
+
+It is used to test whether the frequency distribution of a categorical variable is different from our expectations. Often, but not always, the expectation is that the categories will have equal proportions. Ex: null is all three headlines share the same click rate, alternative is all three headlines share different click rate. 
+2. The chi-square test of independence 
+
+It is used to test whether two categorical variables are related to each other. If two variables are independent (unrelated), the probability of belonging to a certain group of one variable isn’t affected by the other variable. Ex: null is the proportion of people who are left-handed is the same for Americans and Canadians and alternative is the proportion of people who are left-handed differs between nationalities.
+### 
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
