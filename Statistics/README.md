@@ -131,7 +131,7 @@ Our ML brains think that more data means better results. That's not always true 
 
 In general two different versions there is high chance of rejecting null hypothesis. If we plot histograms of p-values for both, our histogram looks like right skewed as most of the sample's p-values will likely be less than 0.05. But we do the same for similar versions, our histogram looks uniform. This is a an eye-ball method of finding false values.
 
-![Eye-Ball](eye ball.png)
+![Eye-Ball](eye_ball.png)
 
 Mathematically, we sort in ascending order all p-values and give them rank from 1 to n (number of samples). We start from the nth rank and we set the adjusted value as $min(Prev.adjusted p-value, p-val*{n\\over rank})$.
 ![FDR](pval2.png)
