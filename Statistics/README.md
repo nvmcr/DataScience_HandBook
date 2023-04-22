@@ -190,15 +190,45 @@ Chi-square uses contingency table to show the number of observations in each com
 ![ct](ct.png)
 
 There are two types of chi-square tests: 
-1. Chi-square goodness of fit test 
-
+### Chi-square goodness of fit test 
 It is used to test whether the frequency distribution of a categorical variable is different from our expectations. Often, but not always, the expectation is that the categories will have equal proportions. Ex: null is all three headlines share the same click rate, alternative is all three headlines share different click rate. 
-2. The chi-square test of independence 
+
+Example: (by [Shaun Turney](https://www.scribbr.com/author/shaunt/))
+
+Problem Statement: Help a dog food company to test three new dog food flavors. (only one categorical variable in this case).
+
+We start with taking a random sample of 75 dogs (to get best sample size, use power analysis). We offer each dog a choice between three flavors(categorical varaible). Our null hypothesis is that dog population chooses the three flavors in equal proportions. So our expected values(frequency/counts) for each flavor would be 25,25 and 25. Alternative hypothesis is The dog population does not choose the three flavors in equal proportions. We do this by getting experimental data and test how well it's distribution **fits** to the expected data distribution. If it fits good, we cant reject the null hypothesis. If it doesn't fit, then find which is the most different category. Our contingency table looks like:
+
+|Flavor|Observed|Expected|
+---
+|Seattle Crunch|22|25|
+|Austin Punch|30|25|
+|Jersey Munch|23|25|
+
+One might think that, as Austin Punch has more observed values, we should prefer that flavor. But it might be just a random chance from our sample. So we calculate test statistic, chi-square using formula and we get $X^2 = 1.52$. Does this value represents high or low fit? We use crirtical chi-square value for comparison. We have a [chi-square critical value table](https://www.scribbr.com/statistics/chi-square-distribution-table/) which have critical values for each degrees of freedom and each significance value. In our case $df = Number of groups-1 = 2$ and common significance value(alpha) of 0.05. Looking up in the table we have critical value of 5.99 which is greater than our 1.52. Thus the difference between the observed and expected distributions is not statistically significant. 
+### Chi-square test of independence 
 
 It is used to test whether two categorical variables are related to each other. If two variables are independent (unrelated), the probability of belonging to a certain group of one variable isn’t affected by the other variable. Ex: null is the proportion of people who are left-handed is the same for Americans and Canadians and alternative is the proportion of people who are left-handed differs between nationalities.
-### 
+
+Example: (by [Shaun Turney](https://www.scribbr.com/author/shaunt/))
+
+Problem Statement: Help a city decide a flyer or a phone call is effective to promote a recycle campaign.
+
+We satrt with randomly selecting 300 households and randomly assigning them to the flyer, phone call, or control group (no flyer/phonecall). Our null hypothesis is The proportion of households that recycle is the same for all interventions. Alternative hypothesis is The proportion of households that recycle is not the same for all interventions. We calculate Observed and expected frequencies (In image: observed above, expected below)
+
+![chi2](chi2.png)
+
+Our contigency table looks like:
+
+![ct2](ct2.png)
+
+Calculating the test static using our formula gives, $X^2=9.79$. We calculate degrees of freedom by $(no.of category 1 groups - 1)*(no.of category 2 groups - 1) = (3-1)*(2-1) = 2$ and $\alpha=0.05$. Looking up in chi-square critical value table gives critical value = 5.99. As $X^2$ is greater than critical value, we reject the null hypothesis and conclude interventions have an effect on whether households choose to recycle. 
+## Choosing a Statistical Test
+![Tests](tests.png)
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
-5. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
-6. ChatGPT :)
+2. [Scibbr](https://www.scribbr.com/statistics/)
+3. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
+4. ChatGPT :)
