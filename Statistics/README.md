@@ -54,14 +54,14 @@ $$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \ e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
 ### Z-Distribution/ Standard Normal
 Normal distribution with mean 0 and standard deviation 1. We convert normal to standard normal to calculate confidence intervals, perform hypothesis tests etc. The **z-scores** tells us how many standard deviations away from mean each value lies. This is also called **standardization**
 
-$$ z = {x-\mu}\\over \sigma $$
+$$ z = {x-\mu\\over \sigma} $$
 
 Each z-score is associated with a probability or **p-value** that tells us the likelihood of values below that z-score occurring. This is the area under the curve left or right of that z score.
 
-![pvalue](pval.png)
+![pvalue](Images/pval.png)
 ### T-Distribution/ Student
 The t-distribution is a type of normal distribution that is used for smaller sample sizes. It has heavier tails than the normal distribution. As a result, the t-distribution has more probability in the tails and less in the center than the normal distribution. The variance in a t-distribution is estimated based on the degrees of freedom(df) of the data set. A **t-score** is the number of standard deviations from the mean in a t-distribution.
-> Degrees of freedom (df) is the number of independent pieces of information used to calculate a statistic. It’s calculated as the sample size minus the number of restrictions. In most cases, df = Sample Size - 1
+> Degrees of freedom (df) is the number of independent pieces of information used to calculate a statistic. It’s calculated as the sample size minus the number of restrictions. In most cases, df = Sample Size - 1 because in most cases we know mean. If we know n-1 values in a sample, then the last value can be calculated with mean formula which means the last value is not free to vary, it has a restricted value.
 
 As the degrees of freedom increases, the t-distribution will get closer and closer to matching the z-distribution, until they are almost identical (df>30).
 ### Standardization vs Normalization
@@ -121,9 +121,11 @@ Hypothesis/significance tests purpose is to help us learn whether random chance 
 
 The main logic in these tests is we start with an hypothesis that difference between A and B is caused by random chance. This is our *null hypothesis*. Our hope then is that to prove this null hypothesis wrong. We will have an *alternative hypothesis* in contradictory to null. For example: Null could be No difference between A and B, then Alternative would be A is different from B.
 
-Hypothesis test are either one-tailed ot two-tailed tests. One tailed means, we know the result will go in only one direction. For example, null: A is better and alternativev: B is better. We only check if B is better. In two-tails, our alternative is both B is better and B is worse. We want to know in both directions. In general, many prefer two-tails.
+Hypothesis test are either **one-tailed ot two-tailed** tests. One tailed means, we know the result will go in only one direction. For example, null: A is better and alternativev: B is better. We only check if B is better. In two-tails, our alternative is both B is better and B is worse. We want to know in both directions. In general, many prefer two-tails as we might not know which direction to choose in one tail.
 ## Statistical Significance and p-Values
 If the result of the experiment is beyond the random chance, then the result is statistically significant.  **p-value** of an experiment is the probability of obtaining a result more than an observed result in other words it tells us the probability of the getting a result due to chance. Which means lesser thep value, influence of chance is less thus rejecting null hypothesis. The threshold of p-value is called **alpha-value**. Say we set an alpha value of 0.05, we are saying that we are willing to accept a 5% chance of making a **Type I error** (rejecting the null hypothesis when it is actually true). If the calculated p-value from the test is smaller than the alpha value, we reject the null hypothesis, since the observed result is unlikely to have occurred by chance alone at the chosen significance level. If the calculated p-value is larger than the alpha value, we fail to reject the null hypothesis, since the observed result could plausibly have occurred by chance, and we do not have sufficient evidence to reject it.
+## Statistical Power
+Statistical power, or sensitivity, is the likelihood of a significance test detecting an effect when there actually is one. The more power means the more probability that we can avoid **Type II error** (accepting null hypothesis when it is not the case). 
 ## t-Tests
 All significance tests require that we specify a test statistic to measure the effect we are interested in. We use t-tests to determine whether the **means of two groups** are significantly different from each other. Our test stastistic used is t-value. The t-value is calculated by taking the difference between the means of the two groups and dividing it by the standard error of the difference between the means. Most commonly used t-tests are
 * Paired t-test
@@ -134,7 +136,7 @@ $$ t = {x1 -x2\\over {s\\over sqrt(n)}} $$
 
 where x1 and x2 are the means of the paired samples, s is the standard deviation of the differences between the pairs, and n is the number of pairs. The degrees of freedom for the paired t-test are (n-1).
 * Two-Sample t-test
-* 
+
 It is used when we want to compare the means of two independent groups. 
 
 $$ t = {x1-x2\\over {s*\sqrt{{1\\over n1} + {1\\over n2}}}} $$
