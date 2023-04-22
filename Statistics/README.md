@@ -58,7 +58,7 @@ $$ z = {x-\mu\\over \sigma} $$
 
 Each z-score is associated with a probability or **p-value** that tells us the likelihood of values below that z-score occurring. This is the area under the curve left or right of that z score.
 
-![pvalue](pval.png)
+![pvalue](Images/pval.png)
 ### T-Distribution/ Student
 The t-distribution is a type of normal distribution that is used for smaller sample sizes. It has heavier tails than the normal distribution. As a result, the t-distribution has more probability in the tails and less in the center than the normal distribution. The variance in a t-distribution is estimated based on the degrees of freedom(df) of the data set. A **t-score** is the number of standard deviations from the mean in a t-distribution.
 > Degrees of freedom (df) is the number of independent pieces of information used to calculate a statistic. It’s calculated as the sample size minus the number of restrictions. In most cases, df = Sample Size - 1 because in most cases we know mean. If we know n-1 values in a sample, then the last value can be calculated with mean formula which means the last value is not free to vary, it has a restricted value.
@@ -89,7 +89,7 @@ $$ Χ_k^2 = (Z_1)^2 + (Z_2)^2 + … + (Z_k)^2 $$
 * When df is greater than 2, the distribution is right-skewed normal distribution.
 * When df is greater than 90, the distribution looks like normal distribution.
 
-![Chi-Square](chi.png)
+![Chi-Square](Images/chi.png)
 
 # Sample Statistics
 A sample statistic is a numerical measure that summarizes the characteristics of a sample of data. It is calculated from the sample data and is used to estimate the corresponding population parameter. It could be mean, standard deviation, variance, median, mode etc. Sample statistics are subject to sampling variability, which means that different samples of the same size from the same population may produce different sample statistics. This is why we use histograms, boxplots, violin plots, standard errors, confidence intervals and hypothesis testing to quantify the uncertainty in our estimates and make statistical inferences.
@@ -134,10 +134,10 @@ Our ML brains think that more data means better results. That's not always true 
 
 In general two different versions there is high chance of rejecting null hypothesis. If we plot histograms of p-values for both, our histogram looks like right skewed as most of the sample's p-values will likely be less than 0.05. But we do the same for similar versions, our histogram looks uniform. This is a an eye-ball method of finding false values.
 
-![Eye-Ball](eye_ball.png)
+![Eye-Ball](Images/eye_ball.png)
 
 Mathematically, we sort in ascending order all p-values and give them rank from 1 to n (number of samples). We start from the nth rank and we set the adjusted value as $min(Prev.adjusted p-value, p-val*{n\\over rank})$.
-![FDR](pval2.png)
+![FDR](Images/pval2.png)
 ## Statistical Power
 Statistical power, or sensitivity, is the likelihood of a significance test detecting an effect when there actually is one. The more power means the more probability that we can avoid **Type II error** (accepting null hypothesis when it is not the case). 
 
@@ -187,7 +187,7 @@ $$ X^2 = \sum{(O-E)^2\\over E} $$
 where $O$ is observed frequency and $E$ is the expected frequency. 
 Chi-square uses contingency table to show the number of observations in each combination of groups.
 
-![ct](ct.png)
+![ct](Images/ct.png)
 
 There are two types of chi-square tests: 
 ### Chi-square goodness of fit test 
@@ -200,7 +200,7 @@ Problem Statement: Help a dog food company to test three new dog food flavors. (
 We start with taking a random sample of 75 dogs (to get best sample size, use power analysis). We offer each dog a choice between three flavors(categorical varaible). Our null hypothesis is that dog population chooses the three flavors in equal proportions. So our expected values(frequency/counts) for each flavor would be 25,25 and 25. Alternative hypothesis is The dog population does not choose the three flavors in equal proportions. We do this by getting experimental data and test how well it's distribution **fits** to the expected data distribution. If it fits good, we cant reject the null hypothesis. If it doesn't fit, then find which is the most different category. Our contingency table looks like:
 
 |Flavor|Observed|Expected|
----
+|---|--|--|
 |Seattle Crunch|22|25|
 |Austin Punch|30|25|
 |Jersey Munch|23|25|
@@ -216,15 +216,15 @@ Problem Statement: Help a city decide a flyer or a phone call is effective to pr
 
 We satrt with randomly selecting 300 households and randomly assigning them to the flyer, phone call, or control group (no flyer/phonecall). Our null hypothesis is The proportion of households that recycle is the same for all interventions. Alternative hypothesis is The proportion of households that recycle is not the same for all interventions. We calculate Observed and expected frequencies (In image: observed above, expected below)
 
-![chi2](chi2.png)
+![chi2](Images/chi2.png)
 
 Our contigency table looks like:
 
-![ct2](ct2.png)
+![ct2](Images/ct2.png)
 
 Calculating the test static using our formula gives, $X^2=9.79$. We calculate degrees of freedom by $(no.of category 1 groups - 1)*(no.of category 2 groups - 1) = (3-1)*(2-1) = 2$ and $\alpha=0.05$. Looking up in chi-square critical value table gives critical value = 5.99. As $X^2$ is greater than critical value, we reject the null hypothesis and conclude interventions have an effect on whether households choose to recycle. 
 ## Choosing a Statistical Test
-![Tests](tests.png)
+![Tests](Images/tests.png)
 
 # References
 The information is pulled from various sources from internet. Major sources are:
