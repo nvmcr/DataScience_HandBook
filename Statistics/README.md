@@ -117,7 +117,7 @@ A test statistic is a numerical value that is calculated from sample data and us
 ## A/B Testing
 An A/B test is an experiment with two groups to establish which of two treatments/products/procedures is superior. A/B test will have two versions of products one is a regular version without any change called *control group* and other version is with new update/experiment called *treatment group*. How we measure the effect of the update is with test statistic.
 ## Hypothesis Tests
-Hypothesis/significance tests purpose is to help us learn whether random chance is responsible for an observed effect. A/B testing is one type of a hypothesis testing. We get easilt fooled by random chance. When we see a coin landing on Heads for straight 6 times will make us think that coin is baised but in reality it might be pure random chance. A hypothesis test is further analysis of A/B test to assess whether random chance is a resonable explanation for the observed difference between groups A and B. 
+Hypothesis/significance tests purpose is to help us learn whether random chance is responsible for an observed effect. A/B testing is one type of a hypothesis testing. We can get easily fooled by random chance. When we see a coin landing on Heads for straight 6 times will make us think that coin is baised but in reality it might be pure random chance. A hypothesis test is further analysis of A/B test to assess whether random chance is a resonable explanation for the observed difference between groups A and B. 
 
 The main logic in these tests is we start with an hypothesis that difference between A and B is caused by random chance. This is our *null hypothesis*. Our hope then is that to prove this null hypothesis wrong. We will have an *alternative hypothesis* in contradictory to null. For example: Null could be No difference between A and B, then Alternative would be A is different from B.
 
@@ -159,7 +159,22 @@ $$ t = {x1-x2\\over {s*\sqrt{{1\\over n1} + {1\\over n2}}}} $$
 x1 and x2 are the means of the two groups, s is the pooled standard deviation of the two groups, n1 and n2 are the sample sizes of the two groups. The degrees of freedom for the two-sample t-test are (n1 + n2 - 2).
 
 We then calculate p-value associated with t-value to get a conclusion on hypothesis.
+## ANOVA
+Suppose that, instead of an A/B test, we had a comparison of multiple groups, say A/B/C/D, each with numeric data. The statistical procedure that tests for a statistically significant difference among the **means of the groups** is called analysis of variance, or ANOVA. A one-way ANOVA uses one independent variable, while a two-way ANOVA uses two independent variables.
+### One-way ANOVA
+We use a one-way ANOVA when we have data about one categorical independent variable and one quantitative dependent variable. The independent variable should have at least three levels (i.e. at least three different groups or categories A,B,C). 
+* Independent variable is social media use, and we assign groups to low, medium, and high levels of social media use to find out if there is a difference in hours of sleep per night (dependent quantitative).
+* Independent variable is brand of soda, and we collect data on Coke, Pepsi, Sprite, and Fanta to find out if there is a difference in the price per 100ml (dependent quantitative).
+* Independent variable is type of fertilizer, and you treat crop fields with mixtures 1, 2 and 3 to find out if there is a difference in crop yield (dependent quantitative).
 
+The null is there is no difference between group means. Alternative is at least one group differs significantly from the overall mean of the dependent variable. Since we have more than two groups, we use a test statistic called **F-statistic**. The F statistic is based on the ratio of the variance between the group means to the variance within the groups. The higher this ratio, the more statistically significant the result. 
+### Two-way ANOVA
+It is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables.
+* Effect of two different teaching methods (A and B) (independent variable 1) and two different class sizes (small and large) (independent variable 2) on students' test scores (dependent quantitative).
+* Effect of three fertilizer types and two levels of planting mentods on yeild per acre.
+
+For F-statistic, we now have another extra calculations of interactions like group 1 and group2 interaction variance (A*B). Thus we can even have alternative hypotheis of whether interactions of groups has an effect on the dependent variable.
+## Chi-Square Test
 
 
 # References
