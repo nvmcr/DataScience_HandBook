@@ -1,5 +1,3 @@
-# Machine Learning
-
 <details>
 <summary>Table of Contents</summary>
 
@@ -9,15 +7,15 @@ There will be a lot of content in this markdown file. Please use the github's in
 
 </details>
 
-## Introduction
-### What is Machine Learning
+# Introduction
+## What is Machine Learning
 Fancy way
 > A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E. 
 —Tom Mitchell, 1997
 
-I would say its just making a machine learn using data.
-### Types of Machine Learning<sup>1</sup>
-#### Based on human supervision
+I would say its just making a machine learn using data so that it can apply its learning on unseen data.
+## Types of Machine Learning<sup>1</sup>
+### Based on human supervision
 1. Supervised Learning 
 
 If the training data has labels, it is supervised.
@@ -43,7 +41,7 @@ rewards in return (or penalties in the form of negative rewards). It
 must then learn by itself what is the best strategy, called a policy, to get the most
 reward over time. A policy defines what action the agent should choose when it is in a
 given situation.
-#### Batch vs Online Learning
+### Batch vs Online Learning
 In batch learning, the system must be trained
 using all the available data. This will generally take a lot of time and computing
 resources, so it is typically done offline. First the system is trained, and then it is
@@ -60,7 +58,7 @@ Conversely, if you set a low learning rate, the system will have more inertia; t
 will learn more slowly, but it will also be less sensitive to noise in the new data or to
 sequences of nonrepresentative data points (outliers).
 
-#### Generative vs Discriminative Models
+### Generative vs Discriminative Models
 A Discriminative model ‌models the decision boundary between the classes (conditional probability distribution p(y|x)). A Generative Model ‌explicitly models the actual distribution of each class (joint probability distribution p(x,y)). In final both of them is predicting the conditional probability P(Output | Features). But Both models learn different probabilities. In Math, 
 
 Training classifiers involve estimating f: X -> Y, or P(Y|X)
@@ -79,7 +77,7 @@ Discriminative Classifiers.
 * Estimate parameters of P(Y|X) directly from training data
 * ‌Logistic regression, SVMs, ‌CNNs, RNNs, Nearest neighbours.
 
-#### Parametric vs Non-parametric Models
+### Parametric vs Non-parametric Models
 A paramter is something that is estimated from the training data and change (learnt) while training a model. They can be weights, coefficients, support vectors etc.
 
 A parametric model summarizes data with a set of **fixed-size** parameters (independent on the number of instances of training). Parametric machine learning algorithms are which optimizes the function to a known form. 
@@ -88,7 +86,7 @@ For example, we already assume the function is linear in linear regression. If y
 A Nonparametric models are those which do not make specific assumptions about the type of the mapping function. They are prepared to choose any functional form from the training data, by not making assumptions. The word nonparametric does not mean that the value lacks parameters existing in it, but rather that the parameters are adjustable and can change. 
 For example, in k-nearest neighbors' algorithm we make predictions for a new data instance based on the most similar training patterns k. The only assumption it makes about the data set is that the training patterns that are the most similar are most likely to have a similar result. Examples include: k-Nearest Neighbors, Decision Trees, SVMs.
 
-## References
+# References
 The information is pulled from various sources from internet. Major sources are:
 1. [Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow by Aurélien Géron](https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/)
 2. [Python Data Science Handbook by Jake VanderPlas](https://jakevdp.github.io/PythonDataScienceHandbook/)
