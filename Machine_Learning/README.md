@@ -96,6 +96,13 @@ MLE helps us find $\theta$ which maximises the probability of obtaining the data
 
 $$ \hat{\theta}_{MLE} = \arg\max_{\theta} P(D|\theta) $$
 
+In the above eqn, arg max means the value that returns the maximum value of a function. (Say we have a function, f(x) = x + 10 where x is in range \[1,5]. Max of the fn will be f(5) = 5 + 10 = 15. But arg max would be 5 beacuse that is the value that returned max value of function.)
+
+We will consider log likelihood as it is easy for calculation. Log function is monotonically increasing function which means the arg max would be same for with log or without log.
+
+$$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) $$
+
+
 # Core Concepts
 ## On Fitting
 
