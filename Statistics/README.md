@@ -57,8 +57,6 @@ Normal distribution with mean 0 and standard deviation 1. We convert normal to s
 $$ z = {x-\mu\\over \sigma} $$
 
 Each z-score is associated with a probability or **p-value** that tells us the likelihood of values below that z-score occurring. This is the area under the curve left or right of that z score.
-
-![pvalue](Images/pval.png)
 ### T-Distribution/ Student
 The t-distribution is a type of normal distribution that is used for smaller sample sizes. It has heavier tails than the normal distribution. As a result, the t-distribution has more probability in the tails and less in the center than the normal distribution. The variance in a t-distribution is estimated based on the degrees of freedom(df) of the data set. A **t-score** is the number of standard deviations from the mean in a t-distribution.
 > Degrees of freedom (df) is the number of independent pieces of information used to calculate a statistic. It’s calculated as the sample size minus the number of restrictions. In most cases, df = Sample Size - 1 because in most cases we know mean. If we know n-1 values in a sample, then the last value can be calculated with mean formula which means the last value is not free to vary, it has a restricted value.
@@ -94,9 +92,9 @@ $$ Χ_k^2 = (Z_1)^2 + (Z_2)^2 + … + (Z_k)^2 $$
 # Sample Statistics
 A sample statistic is a numerical measure that summarizes the characteristics of a sample of data. It is calculated from the sample data and is used to estimate the corresponding population parameter. It could be mean, standard deviation, variance, median, mode etc. Sample statistics are subject to sampling variability, which means that different samples of the same size from the same population may produce different sample statistics. This is why we use histograms, boxplots, violin plots, standard errors, confidence intervals and hypothesis testing to quantify the uncertainty in our estimates and make statistical inferences.
 ## Standard Error
-W.K.T standard deviation represents variability of individual data values (in a single sample. To get variability of sampling distribution (over multiple samples), we calculate **standard error**. For a standard deviation of s and sample size of n, SE is given by:
+W.K.T standard deviation represents variability of individual data values (in a single sample). To get variability of sampling distribution (over multiple samples), we calculate **standard error**. For a standard deviation of $\sigma$ and sample size of n, SE is given by:
 
-$$ SE = {s\\over \sqrt(n)} $$
+$$ SE = {$\sigma\\over \sqrt(n)} $$
 
 ## Confidence Intervals
 We deal with two different types of data, normally distributed or proportions. Population proportion refers to the proportion or percentage of individuals in a population who have a particular characteristic of interest. For example, if we are interested in the proportion of people in a city who own a car, the population proportion ($p$) would be the percentage of all people in that city who own a car. But again estimating something from all population is not practical so we use sample proportions $\hat{p}$. We could take a random sample of 500 people from the city, and count how many of them own a car. Let's say we find that 300 people in the sample own a car. The sampling proportion is then 300/500 = 0.6, or 60%. This 0.6 also represents mean of proportion. Standard devaition is calculated by $\hat{p}(1-\hat{p})$
