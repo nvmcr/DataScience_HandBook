@@ -100,8 +100,9 @@ In the above eqn, arg max means the value that returns the maximum value of a fu
 
 We will consider log likelihood as it is easy for calculation. Log function is monotonically increasing function which means the arg max would be same for with log or without log.
 
-$$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) $$
+$$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
 
+We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$
 
 # Core Concepts
 ## On Fitting
