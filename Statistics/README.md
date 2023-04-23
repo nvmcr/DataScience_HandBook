@@ -94,7 +94,7 @@ A sample statistic is a numerical measure that summarizes the characteristics of
 ## Standard Error
 W.K.T standard deviation represents variability of individual data values (in a single sample). To get variability of sampling distribution (over multiple samples), we calculate **standard error**. For a standard deviation of $\sigma$ and sample size of n, SE is given by:
 
-$$ SE = {$\sigma\\over \sqrt(n)} $$
+$$ SE = {\sigma\\over \sqrt(n)} $$
 
 ## Confidence Intervals
 We deal with two different types of data, normally distributed or proportions. Population proportion refers to the proportion or percentage of individuals in a population who have a particular characteristic of interest. For example, if we are interested in the proportion of people in a city who own a car, the population proportion ($p$) would be the percentage of all people in that city who own a car. But again estimating something from all population is not practical so we use sample proportions $\hat{p}$. We could take a random sample of 500 people from the city, and count how many of them own a car. Let's say we find that 300 people in the sample own a car. The sampling proportion is then 300/500 = 0.6, or 60%. This 0.6 also represents mean of proportion. Standard devaition is calculated by $\hat{p}(1-\hat{p})$
