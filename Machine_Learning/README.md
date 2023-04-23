@@ -102,7 +102,21 @@ We will consider log likelihood as it is easy for calculation. Log function is m
 
 $$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
 
-We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$
+We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$. Calculating, we will get $\theta = \frac{k}{n}$.
+
+## Linear Regression
+It is a parametric model where we assume our data is linear i.e our output y(house price) is a linear function of feature x(sq.ft). There might be d number of different features like sq.ft, no.of rooms, etc and we represent number of samples in training data with n. As we assume the data is linear, w.k.t y = mx where m is our paramter which is our slope. We represent the parameter/weight with w. So for each sample in our data, y = wx. The error in our model is represnted with e. A loss/cost function is used to know this error. W We optimize this loss function to get the least error. 
+![Linear Regression](Images/lr.png)
+
+Commonly we use Least Squares as the loss function.
+> Least squares is preffered over absolute values because, LS is differentiable which is a necessity for gradient descent approaches.
+
+Linear Regression has a closed form solution i.e we have a formula to get to a solution without any iterative approaches of trail and error like gradient descent. We can find this solution by taking arg min of loss function because we need to find the weight which will minimize the loss function.
+![Closed Form Solution](Images/cfs.png)
+
+We can take derivative to find the minimum and we will obtain:
+
+$$ \hat{w}_{LS} = (X^TX)^{-1}X^Ty $$
 
 # Core Concepts
 ## On Fitting
