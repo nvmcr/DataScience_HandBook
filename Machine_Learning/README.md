@@ -106,9 +106,11 @@ We know that derivative is zero at maxima and minima. So we need to find at whic
 
 ## Linear Regression
 It is a parametric model where we assume our data is linear i.e our output y(house price) is a linear function of feature x(sq.ft). There might be d number of different features like sq.ft, no.of rooms, etc and we represent number of samples in training data with n. As we assume the data is linear, w.k.t y = mx where m is our paramter which is our slope. We represent the parameter/weight with w. So for each sample in our data, y = wx. The error in our model is represnted with e. A loss/cost/objective function is used to know this error. W We optimize this loss function to get the least error. 
+
 ![Linear Regression](Images/lr.png)
 
 Linear Regression has a closed form solution i.e we have a formula to get to a solution without any iterative approaches of trail and error like gradient descent. We can find this solution by taking arg min of loss function because we need to find the weight which will minimize the loss function. Commonly we use Least Squares as the loss function.
+
 ![Closed Form Solution](Images/cfs.png)
 
 We can take derivative to find the minimum and we will obtain:
@@ -118,6 +120,7 @@ $$ \hat{w}_{LS} = (X^TX)^{-1}X^Ty $$
 > Least squares is preffered over absolute values because, LS is differentiable which is a necessity for gradient descent approaches. But more importantly, least squares closed form solution is equal to MLE closed form.
 
 But data is not always linear, we then use polynomial regression to fit to the data.
+
 ![Polynomial Regression](Images/pr.png)
 
 The more the degree of the polynomial the better is the fit but the more is the issue of overfitting.
@@ -195,6 +198,8 @@ For example, the precision at recall level 5 is 0.4, the precision at recall lev
 It is used in binaru classifiers. True Positive rate(TPR) is the number of positives correctly classified out of all positives (TP/(TP+FN)) and False Positive rate(FPR) is number of negatives classified as positives out of all negatives (FP/(TN+FP)). Receiver Operator Characteristic (ROC) curve is plotted with FPR on X-axis and TPR on Y-axis and the curve is determined by threshold. 
 
 Say we have a binary classification problem of yes and no. We set a threshold(0.5) above which we classify something as yes and below the threshold as no. We train a logistic regression and we calculate TPR and FPR for this. If TPR=1 and FPR=0, it is a perfect classifier. If TPR=1 and FPR=1, then it is a random classifier. We plot the point on the graph. Now we can change the threshold and plot the calculated values of TPR and FPR again. We repeat this process for several thresholds to get ROC curve which shows us the best threshold. 
+
+![ROC](Images/auc.png)
 
 We can change the model now to say Random Forest and plot the ROC curve. We can find the areas of both ROC curves. The more the area the better the model.
 
