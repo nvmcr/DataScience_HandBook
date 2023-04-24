@@ -172,6 +172,12 @@ It is a commonly used evaluation metric in regression tasks. It measures the squ
 $$ RMSE = \sqrt(1/n * \sum((y_pred - y_true)^2)) $$
 
 RMSE is preffered over Mean Absoulte Error (MAE) because RMSE penalizes large errors due to squaring but MAE treats all error same.
+### R squared
+as the coefficient of determination, is a statistical measure that represents the proportion of the variance in the dependent variable (i.e., the target variable) that is explained by the independent variables (i.e., the features) in a regression model. In other words, it represents how well our regression model fits the given data. R-squared is a value between 0 and 1, where 0 indicates that the model does not explain any of the variability in the dependent variable, and 1 indicates that the model explains all of the variability in the dependent variable.
+
+We first calculate variance(sum of squared residuals) along the mean of the data and later calculate variance along the new model line that is fitted to the data.
+
+$$ R^2 = \frac {Var(mean)-Var(fitted_line)}{Var(mean)} $$
 ### Confusion Matrix
 Used for classification tasks. In a confusion matrix, `True Positives` are the *positive* samples that are predicted as **positive**, `False Positives`(also called **Type 1 errors**) are the *negative* samples that are predicted as **postive**. Similarly `True Negatives` are the *negative* samples that are predicted as **negative**, `False Negatives` (Type 2 errors) are the *positive* samples that are predicted as **negative**.
 ### Accuracy
