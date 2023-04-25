@@ -36,6 +36,7 @@ This README file contains only the concepts related to DBMS. All the practice qu
             3. [Subclassing](#subclassing)
       2. [Backgroud Concepts](#Backgroud-Concepts)
       3. [BCNF](#BCNF)
+ 3. [Transactions](#Transactions)
 
 # SQL
 ## Intro
@@ -447,3 +448,29 @@ If there are any functional dependency such that `X implies A`, then X must be a
 ![Anomaly](Images/anomaly.png)
 
 In the above primary table, we can see that ID implies Name and Parking Lot but not Car which makes ID not a superkey. So we decompose the table based on the dependency. This is called Boyce-Codd normal form (BCNF). There are many other normal forms available like 1NF, 2NF,3NF,4NF. 1NF/ first normal form specifies that table must be *flat* and have a primary key i.e every column of the table should be atomic (values cannot be further divided) and every row should be unique (combination of all column values in that row is unique not individual value in a single column) and identifiable using primary key. For example a value like `Oranges, Grapes` is a violation of atomicity as value can be broken down to `Orange` and `Grapes`. So the column of these fruits are decomposed into seperate table with same primary key.
+# Transactions
+Say we are transferring money from one account to another. The bank's list of operations involve begin transaction session, check account balance and details, deduct funds in first account, add funds in second account and end the transaction. Imagine we are doing these operations in steps of sql commands whose execution happens linearly step by step. What if there is any error in adding funds to second account? But the before step of deducting amount is executed. To prevent issues like these, we need to execute all the list operations as a single operation. A transaction ensures all database operations (insert, delete,..) are executed as a single, whole operation.
+> A transaction refers to a logical unit of work that performs one or more database operations as a single, indivisible unit of work.
+
+Characteristics of transactions are:
+
+1. Atomicity
+
+It ensures that all operations within a transaction are executed(commited) or none of them are executed(rolled back). It describes an operation's encapsulation.
+
+2. Consistency
+
+It ensures that the database remains in a consistent state before and after the transaction.
+
+3. Isolation
+
+It ensures that multiple transactions can execute concurrently without interfering with each other's work.
+
+4. Durability
+
+It ensures that the effects of a committed transaction are permanent and survive system failures.
+
+Often times, there are tradeoff between each of these features. But in serious applications like banking, healthcare all ACID properties are essential. Example of a transaction:
+
+![Transaction](trnsc.png)
+
