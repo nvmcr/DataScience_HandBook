@@ -9,6 +9,8 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 </details>
 
 # Intro
+## Central Tendency
+It describes where the most of the data lies.Mostly calculated using mean and median. Mean utilizes all values but affected by outliers. Median is not sensitive to the outliers but uses only one/few values. 
 ## Random Sampling and Sample Bias
 A sample is a subset of data from a larger data set called population. 
 > Random Sampling is a process in which each member in population has equal chance of being chosen for sample.
