@@ -2,12 +2,7 @@
  
 **Objectives:** To create and import databases and to practice simple SQL queries using SQLite.
 
-**Assignment tools:** [SQLite 3](https://www.sqlite.org/), the flights dataset hosted in `hw2` directory
-on gitlab.
-
 ## Assignment Details
-
-In this homework, you will write several SQL queries on a relational flights database. 
 The data in this database is abridged from the [Bureau of Transportation Statistics](http://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236&DB_Short_Name=On-Time) 
 The database consists of four tables regarding a subset of flights that took place in 2015:
 
