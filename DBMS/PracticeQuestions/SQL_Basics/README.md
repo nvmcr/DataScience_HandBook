@@ -1,7 +1,5 @@
-Q1 
-First, create a simple table using the following steps:
-
 Q2.1
+First, create a simple table using the following steps:
 
 Write the SQL statement to create a table Edges(Source, Destination) where both Source and Destination are integers.
 ```
