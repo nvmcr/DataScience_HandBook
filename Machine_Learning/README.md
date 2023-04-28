@@ -235,9 +235,9 @@ We continue this process of computing the gradient and adjusting the parameters 
 
 ![gd](Images/gd.gif)
 
-$$ w_t \leftarrow w_t - \alpha\frac{\partial L(w)}{\partial\w_t} $$
+$$ w_t \leftarrow w_t - \alpha\frac{\partial L(w)}{\partial w_t} $$
 ### Batch GD
-We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial\w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
+We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
 
 In batch gradient descent, the gradient is computed over the entire training set at each iteration. This can be computationally expensive for large datasets, but it leads to a more accurate estimate of the true gradient.
 ```
