@@ -243,7 +243,7 @@ In batch gradient descent, the gradient is computed over the entire training set
 
 for t=1,...T do
 
-$$ w \leftarrow w + \alpha\Sigma_{i=1}^n (y^i - w^Tx^i)x^i $$
+$w \leftarrow w + \alpha\Sigma_{i=1}^n (y^i - w^Tx^i)x^i$
 
 return w
 ### Stochastic/Incremental GD
