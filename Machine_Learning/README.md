@@ -217,7 +217,7 @@ Convexity is a mathematical property of a function, and it plays an important ro
 
 ![convex](Images/convex.png)
 
-More formally, $f((1-\lanbda)x+\lambday)\le (1-\lambda)f(x)+\lambdaf(y)$ .This inequality essentially states that the value of the function f(x) is always above or on the line connecting any two points on its graph.
+More formally, $f((1-\lambda)x+\lambda y)\le (1-\lambda)f(x)+\lambda f(y)$ .This inequality essentially states that the value of the function f(x) is always above or on the line connecting any two points on its graph.
 
 Why care convexity?
 * All local minimum in convex functions are global minima.
@@ -240,7 +240,7 @@ $$ w_t \leftarrow w_t - \alpha\frac{\partial L(w)}{\partial w_t} $$
 We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
 
 In batch gradient descent, the gradient is computed over the entire training set at each iteration. This can be computationally expensive for large datasets, but it leads to a more accurate estimate of the true gradient.
-```
+```latex
 for t=1,...T do
   w \leftarrow w + \alpha\Sigma_{i=1}^n (y^i - w^Tx^i)x^i
 return w
