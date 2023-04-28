@@ -105,7 +105,7 @@ $$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \
 We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$. Calculating, we will get $\theta = \frac{k}{n}$.
 
 ## Linear Regression
-It is a parametric model where we assume our data is linear i.e our output y(house price) is a linear function of feature x(sq.ft). There might be d number of different features like sq.ft, no.of rooms, etc and we represent number of samples in training data with n. As we assume the data is linear, w.k.t y = mx where m is our paramter which is our slope. We represent the parameter/weight with w. So for each sample in our data, y = wx. The error in our model is represnted with e. A loss/cost/objective function is used to know this error. W We optimize this loss function to get the least error. 
+It is a parametric model where we assume our data is linear i.e our output y(house price) is a linear function of feature x(sq.ft). There might be d number of different features like sq.ft, no.of rooms, etc and we represent number of samples in training data with n. As we assume the data is linear, w.k.t y = mx where m is our paramter which is our slope. We represent the parameter/weight with w. So for each sample in our data, y = wx. The error in our model is represnted with e. A loss/cost/objective function is used to know this error. We optimize this loss function to get the least error. 
 
 ![Linear Regression](Images/lr.png)
 
@@ -210,7 +210,57 @@ Say we have a binary classification problem of yes and no. We set a threshold(0.
 We can change the model now to say Random Forest and plot the ROC curve. We can find the areas of both ROC curves. The more the area the better the model.
 
 AUC-ROC provides a useful summary of the classifier's performances, and can also help us to choose the optimal threshold for our specific problem.
+## Gradient Descent
+What to if we **dont have a closed form solution** like linear regression? This is where iterative approaches come into play. Lets have a look at convexity first.
+### Convexity
+Convexity is a mathematical property of a function, and it plays an important role in optimization problems. A function is said to be convex if its graph lies entirely above or on a line connecting any two points on the graph. Intuitively, this means that the function curves upward or is flat, and does not curve downward. 
 
+![convex](Images/convex.png)
+
+More formally, $f((1-\lanbda)x+\lambday)\le (1-\lambda)f(x)+\lambdaf(y)$ .This inequality essentially states that the value of the function f(x) is always above or on the line connecting any two points on its graph.
+
+Why care convexity?
+* All local minimum in convex functions are global minima.
+* Efficient to optimize.
+
+If our loss functions are convex functions, we have to find the minima of the function to find the minimum parameter where loss is less. If these functions are non-convex, there might be multiple minima. So we reach a local minima, we might assume it is the global minima.
+### GD
+Gradient descent is an optimization algorithm used to minimize a function by iteratively adjusting the parameters in the direction of steepest descent of the function.
+
+In gradient descent, we start with an initial guess (random) for the parameters (w) of the function(loss/cost fn) we want to optimize. We then calculate the gradient of the function with respect to the parameters, which tells us the direction of the steepest ascent. To minimize the function, we move in the opposite direction of the gradient, i.e., in the direction of steepest descent.
+
+The size of each step we take in the direction of steepest descent is controlled by a parameter called the learning rate($\alpha$). If the learning rate is too small, the optimization process can be slow, while if it is too large, the process can be unstable and diverge.
+
+We continue this process of computing the gradient and adjusting the parameters until we reach a point where the gradient is close to zero, i.e., we have found a local minimum of the function. This point is the optimal set of parameters that minimize the function.
+
+![gd](Images/gd.gif)
+
+$$ w_t \leftarrow w_t - \alpha\frac{\partial L(w)}{\partial\w_t} $$
+### Batch GD
+We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial\w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
+
+In batch gradient descent, the gradient is computed over the entire training set at each iteration. This can be computationally expensive for large datasets, but it leads to a more accurate estimate of the true gradient.
+```
+for t=1,...T do
+  w \leftarrow w + \alpha\Sigma_{i=1}^n (y^i - w^Tx^i)x^i
+return w
+```
+### Stochastic/Incremental GD
+The gradient is computed on a single training example at each iteration. This can be faster and more memory-efficient than batch gradient descent, but it can lead to a noisy estimate of the gradient, which can make it difficult to converge to the optimal solution. Difference in Stochastic and Incremental is, we randomize the data point in SGD and don;t randomize in Incremental. Below is logic for incremental as i is not randomize.
+```
+for t-1,...T do
+  for i=1,...n do
+    w \leftarrow w + \alpha(y^i - w^Tx^i)x^i
+return w
+```
+### Mini-Batch GD
+the gradient is computed on a small random subset (mini-batch) of the training set at each iteration. This combines the advantages of batch gradient descent and stochastic gradient descent, as it is more efficient than batch gradient descent while providing a less noisy estimate of the gradient than stochastic gradient descent. We divide the data,$D$ into partition of $D_1,D_2,..D_k$ similar to k-fold with equal size in folds.  
+```
+for t-1,...T do
+  for l=1,...k do
+    w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i
+return w
+```
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
