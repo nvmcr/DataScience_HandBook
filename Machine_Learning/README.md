@@ -240,31 +240,33 @@ $$ w_t \leftarrow w_t - \alpha\frac{\partial L(w)}{\partial w_t} $$
 We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
 
 In batch gradient descent, the gradient is computed over the entire training set at each iteration. This can be computationally expensive for large datasets, but it leads to a more accurate estimate of the true gradient.
-```latex
+
 for t=1,...T do
-  w \leftarrow w + \alpha\Sigma_{i=1}^n (y^i - w^Tx^i)x^i
+
+$$ w \leftarrow w + \alpha\Sigma_{i=1}^n (y^i - w^Tx^i)x^i $$
+
 return w
-```
 ### Stochastic/Incremental GD
 The gradient is computed on a single training example at each iteration. This can be faster and more memory-efficient than batch gradient descent, but it can lead to a noisy estimate of the gradient, which can make it difficult to converge to the optimal solution. Difference in Stochastic and Incremental is, we randomize the data point in SGD and don;t randomize in Incremental. Below is logic for incremental as i is not randomize.
-$$
+
 for t-1,...T do
 
   for i=1,...n do
 
-    w \leftarrow w + \alpha(y^i - w^Tx^i)x^i
+$$    w \leftarrow w + \alpha(y^i - w^Tx^i)x^i $$
 
 return w
-$$
 
 ### Mini-Batch GD
 the gradient is computed on a small random subset (mini-batch) of the training set at each iteration. This combines the advantages of batch gradient descent and stochastic gradient descent, as it is more efficient than batch gradient descent while providing a less noisy estimate of the gradient than stochastic gradient descent. We divide the data, D into partition of $D_1,D_2,..D_k$ similar to k-fold with equal size in folds.  
-<pre>
+
 for t-1,...T do
+
   for l=1,...k do
-    $w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i$
+
+$$ w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i $$
+
 return w
-</pre>
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
