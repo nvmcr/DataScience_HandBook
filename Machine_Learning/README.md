@@ -260,10 +260,11 @@ $$
 ### Mini-Batch GD
 the gradient is computed on a small random subset (mini-batch) of the training set at each iteration. This combines the advantages of batch gradient descent and stochastic gradient descent, as it is more efficient than batch gradient descent while providing a less noisy estimate of the gradient than stochastic gradient descent. We divide the data, D into partition of $D_1,D_2,..D_k$ similar to k-fold with equal size in folds.  
 ```
-for t-1,...T do
-  for l=1,...k do
-    $w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i$
-return w
+For $t=1,\dots,T$ do
+  For $l=1,\dots,k$ do
+    $w \leftarrow w + \alpha \sum_{i\in V_l} (y^i - w^Tx^i)x^i$
+Return $w$
+
 ```
 # References
 The information is pulled from various sources from internet. Major sources are:
