@@ -253,7 +253,7 @@ for t-1,...T do
 
   for i=1,...n do
 
-$$    w \leftarrow w + \alpha(y^i - w^Tx^i)x^i $$
+$w \leftarrow w + \alpha(y^i - w^Tx^i)x^i$
 
 return w
 
@@ -264,9 +264,27 @@ for t-1,...T do
 
   for l=1,...k do
 
-$$ w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i $$
+$w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i$
 
 return w
+## Advanced GD
+### GD Pitfalls
+Not all convex functions are good for GD. There are non-smooth functions which have sharp corners where function is not differentiable.
+> The derivative of a function at a point is defined as the slope of the tangent line to the function at that point.
+
+![GD Pitfalls](Images/GD1.png)
+
+A subgradient is the gradient at a point on the function. At the sharp corners, there can be multiple tangents leading to multiple subgradients at a single point. This makes convergence go crazy.
+
+Other two main challenges with Gradient Descent are local minima's and plateau. 
+
+![GD Pitfalls](Images/GD2.png)
+
+If the random initialization starts the algorithm on the left, then it will converge to a local minimum, which is not as good as the global minimum. If it starts on the right, then it will take a very long time to cross the plateau, and if you stop too early you will never reach the global minimum.
+
+
+
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
