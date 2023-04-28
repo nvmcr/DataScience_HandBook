@@ -249,8 +249,11 @@ return w
 The gradient is computed on a single training example at each iteration. This can be faster and more memory-efficient than batch gradient descent, but it can lead to a noisy estimate of the gradient, which can make it difficult to converge to the optimal solution. Difference in Stochastic and Incremental is, we randomize the data point in SGD and don;t randomize in Incremental. Below is logic for incremental as i is not randomize.
 
 for t-1,...T do
+
   for i=1,...n do
+
     $w \leftarrow w + \alpha(y^i - w^Tx^i)x^i$
+
 return w
 
 ### Mini-Batch GD
