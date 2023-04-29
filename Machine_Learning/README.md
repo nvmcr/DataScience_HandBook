@@ -328,9 +328,9 @@ The Adam algorithm maintains a set of exponentially decaying average of past gra
 
 Say the computed gradient of loss function be $dx$ and first and second moment are set to zero initially.
 
-$$ first moment = \beta_1*first moment + (1-\beta_1)*\dx $$
+$$ first moment = \beta_1\*first moment + (1-\beta_1)\*dx $$
 
-$$ second moment = \beta_2*second moment + (1-\beta_2)*\dx*\dx $$
+$$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
 
 $$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
