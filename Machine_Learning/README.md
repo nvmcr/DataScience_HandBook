@@ -229,15 +229,15 @@ Gradient descent is an optimization algorithm used to minimize a function by ite
 
 In gradient descent, we start with an initial guess (random) for the parameters (w) of the function(loss/cost fn) we want to optimize. We then calculate the gradient of the function with respect to the parameters, which tells us the direction of the steepest ascent. To minimize the function, we move in the opposite direction of the gradient, i.e., in the direction of steepest descent.
 
-The size of each step we take in the direction of steepest descent is controlled by a parameter called the learning rate($\alpha$). If the learning rate is too small, the optimization process can be slow, while if it is too large, the process can be unstable and diverge.
+The size of each step we take in the direction of steepest descent is controlled by a parameter called the step size/learning rate($\alpha$). If the learning rate is too small, the optimization process can be slow, while if it is too large, the process can be unstable and diverge.
 
 We continue this process of computing the gradient and adjusting the parameters until we reach a point where the gradient is close to zero, i.e., we have found a local minimum of the function. This point is the optimal set of parameters that minimize the function.
 
 ![gd](Images/gd.gif)
 
 $$ w_t \leftarrow w_t - \alpha\frac{\partial L(w)}{\partial w_t} $$
-### Batch GD
-We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
+### Batch/Vanilla GD
+Vanilla is just a fancy term used for saying something basic without additional features. We will consider our loss function explicitly as $L(w) = \frac{1}{2} (w^Tx - y)^2$. Using half for ease of calculation. If we calculate the gradient of this loss function we will get $\frac{\partial L(w)}{\partial w_t} = (w^Tx - y)x$. We can use this value in the gradient calculations.
 
 In batch gradient descent, the gradient is computed over the entire training set at each iteration. This can be computationally expensive for large datasets, but it leads to a more accurate estimate of the true gradient.
 
@@ -267,6 +267,27 @@ for t-1,...T do
 $w \leftarrow w + \alpha\Sigma_{i\in V_l} (y^i - w^Tx^i)x^i$
 
 return w
+
+### Coordinate Descent
+The goal is still the same, we need to get minimum parameter, w that minimizes the loss function. But when we have a lot of coordinates (multivariate function/multiple features), it becomes difficult to minimize w in all coordinates, so we choose only one coordinate to minimize.
+
+for t-1,...T do
+
+  Choose a random coordinate, c from $x_1,x_2,..$ or loop through a list of values
+  
+$w \leftarrow min L(w)$
+
+return w
+
+We randomly choose a coordinate and try to minimize weights/paramter only in that coordinate. All other coordinate's parameter will be fixed. Thus we are only optimizing a single coordinate at a time. There is no learning rate/step size in coordinate descent. 
+
+![CD](Images/cd.png)
+
+In the above convergence plot, there are two co-ordinates say $x_1,x_2$ plotted in X and Y-axis respectively. We start with optimizing at $x_2$ and then $x_1$ and then $x_2$ and so on till we reach convergence.
+
+The advantage of coordinate descent is that it can be efficient when the function to be optimized has some structure that makes it separable in terms of the variables like lasso regression. In other words, when the function can be expressed as a sum of functions, each depending on a single variable. In this case, coordinate descent can converge more quickly than other optimization methods.
+
+However, coordinate descent can be slow when the variables are highly correlated or when the function is not separable.
 ## Advanced GD
 ### GD Pitfalls
 Not all convex functions are good for GD. There are non-smooth functions which have sharp corners where function is not differentiable.
@@ -281,6 +302,7 @@ Other two main challenges with Gradient Descent are local minima's, saddle point
 ![GD Pitfalls](Images/GD2.png)
 
 If the random initialization starts the algorithm on the left, then it will converge to a local minimum, which is not as good as the global minimum. If it starts on the right, then it will take a very long time to cross the plateau (flat regions), and if you stop too early you will never reach the global minimum. 
+
 
 Saddle points are not local minima. They are the points where in one direction loss goes up and in other loss goes down making graident at the point zero. But the point is not local or global minima. Our GD can't get out of saddle point regions.
 
@@ -335,6 +357,7 @@ $$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
 $$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
 Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
+
 
 # References
 The information is pulled from various sources from internet. Major sources are:

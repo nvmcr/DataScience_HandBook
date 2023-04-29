@@ -36,6 +36,11 @@ This README file contains only the concepts related to DBMS. All the practice qu
             3. [Subclassing](#subclassing)
       2. [Backgroud Concepts](#Backgroud-Concepts)
       3. [BCNF](#BCNF)
+ 3. [Transactions](#Transactions)
+      1. [Serializability](#Serializability)
+            1. [Serializable Schedules](#Serializable-Schedules)
+      
+ 7. [References](#References)
 
 # SQL
 ## Intro
@@ -447,3 +452,75 @@ If there are any functional dependency such that `X implies A`, then X must be a
 ![Anomaly](Images/anomaly.png)
 
 In the above primary table, we can see that ID implies Name and Parking Lot but not Car which makes ID not a superkey. So we decompose the table based on the dependency. This is called Boyce-Codd normal form (BCNF). There are many other normal forms available like 1NF, 2NF,3NF,4NF. 1NF/ first normal form specifies that table must be *flat* and have a primary key i.e every column of the table should be atomic (values cannot be further divided) and every row should be unique (combination of all column values in that row is unique not individual value in a single column) and identifiable using primary key. For example a value like `Oranges, Grapes` is a violation of atomicity as value can be broken down to `Orange` and `Grapes`. So the column of these fruits are decomposed into seperate table with same primary key.
+# Transactions
+Say we are transferring money from one account to another. The bank's list of operations involve begin transaction session, check account balance and details, deduct funds in first account, add funds in second account and end the transaction. Imagine we are doing these operations in steps of sql commands whose execution happens linearly step by step. What if there is any error in adding funds to second account? But the before step of deducting amount is executed. To prevent issues like these, we need to execute all the list operations as a single operation. A transaction ensures all database operations (insert, delete,..) are executed as a single, whole operation.
+> A transaction refers to a logical unit of work that performs one or more database operations as a single, indivisible unit of work.
+
+Characteristics of transactions are:
+
+1. Atomicity
+
+It ensures that all operations within a transaction are executed(commited) or none of them are executed(rolled back). It describes an operation's encapsulation.
+
+2. Consistency
+
+It ensures that the database remains in a consistent state before and after the transaction.
+
+3. Isolation
+
+It ensures that multiple transactions can execute concurrently without interfering with each other's work.
+
+4. Durability
+
+It ensures that the effects of a committed transaction are permanent and survive system failures.
+
+Often times, there are tradeoff between each of these features. But in serious applications like banking, healthcare all ACID properties are essential. Example of a transaction:
+
+![Transaction](Images/trnsc.png)
+
+Schedules are a sequence of operations (like read and write) performed by transactions on a database. A schedule specifies the order in which transanctions execute their operations. Let's say that a DBMS is being used to manage inventory for an e-commerce store. The store has multiple users accessing and modifying the inventory database at the same time. Here is an example of a schedule:
+|Transaction|Operation|Item ID|Quantity|
+|---|---|---|---|
+|T1|Write|Item A|100|
+|T2|Read|Item A|-|
+|T1|Read|Item B|-|
+|T2|Write|Item B|50|
+|T1|Write|Item C|75|
+
+In this example, transaction T1 performs write operations on items A and C and a read operation on item B. Transaction T2 performs read operations on item A and a write operation on item B. The operations are executed in the order shown in the schedule.
+
+Assuming that the initial inventory quantities for items A, B, and C are 50, 75, and 100 respectively, the schedule updates the inventory as follows:
+
+* Item A: T1 adds 100, and T2 reads 100.
+* Item B: T1 reads 75, and T2 updates the quantity to 50.
+* Item C: T1 updates the quantity to 75.
+
+Note that the operations in the schedule are executed concurrently, but the order of the operations is important to ensure that the inventory remains consistent and correct. Scheduling algorithms are used to control the order of operations to ensure that the data remains consistent and the inventory quantities are updated correctly.
+## Serializability
+A serial schedule is a schedule in which transactions are executed one after the other, with no overlapping operations. In other words, each transaction is executed in its entirety before the next transaction begins. This ensures that the transactions do not interfere with each other, and the database remains in a consistent state.
+
+Here is an example of a serial schedule:
+
+|Transaction|Operation|Item ID|Quantity|
+|--|--|--|--|
+|T1|Read|Item A|-|
+|T1|Write|Item B|50|
+|T1|Write|Item C|75|
+|T2|Read|Item A|-|
+|T2|Write|Item B|100|
+|T2|Write|Item C|125|
+
+The transactions are executed in a serial order, with T1 completing its operations before T2 begins or T2 executing first and then T2 is also legal serial schedule. This ensures that the transactions do not interfere with each other and that the database remains in a consistent state.
+
+A serial schedule is simple and easy to implement, but it may not be optimal for performance in a multi-user environment. In a serial schedule, transactions have to wait for other transactions to finish, which can result in long waiting times and reduced throughput.
+### Serializable Schedules
+It is a schedule that produces the same result as a serial schedule, even though the transactions may execute concurrently. In other words, a serializable schedule ensures that the outcome of concurrent transactions is equivalent to the outcome of executing the same transactions serially. A serializable schedule can be used to optimize database performance by allowing transactions to execute concurrently, which can improve throughput and reduce waiting times.
+
+There are two types of serializable schedules: conflict serializable schedules and view serializable schedules. A conflict serializable schedule is a schedule in which transactions do not conflict with each other. A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. A view serializable schedule is a schedule in which transactions do not conflict with each other in terms of their view of the database.
+
+
+# References
+1. [SQLBolt](https://sqlbolt.com/)
+2. [CSE 414 UW](https://sites.google.com/cs.washington.edu/cse414-23sp/home)
+3. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
+4. ChatGPT :)

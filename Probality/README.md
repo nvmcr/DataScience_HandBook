@@ -185,7 +185,7 @@ Correlation is a standardized measure of covariance. Intuitively, the correlatio
 ### Binomial
 It gives the probability of *k* number of successes in *n* independent trials where each trail has probability *p* of success. The PMF is given by:
 
-$$ P(X = k) = ^nC_k * p^k * (1 - p)^(n - k) $$
+$$ P(X = k) = ^nC_k * p^k * (1 - p)^{(n - k)} $$
 
 $\mu=np$ and $\sigma^2=np(1-p)$. 
 Common applications include number of defective products in a batch, the number of successes in a fixed number of medical trials, or the number of heads in a fixed number of coin flips.
