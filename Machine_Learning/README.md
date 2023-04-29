@@ -306,9 +306,9 @@ But, we if observe we have two hyperparameters now, $\rho$ and $\alpha$. They ne
 ### AdaGrad
 AdaGrad, which stands for Adaptive Gradient, is an optimization algorithm that is designed to automatically adapt the learning rate during training. 
 
-During training, AdaGrad maintains a set of per-parameter gradient accumulators, which are initialized to zero. At each iteration, the gradient of the loss function with respect to the parameters is computed, and the accumulated sum of the squared gradients for each parameter is updated as follows: $grad_accumulator += gradient^2$. The parameter is calculated as:
+During training, AdaGrad maintains a set of per-parameter gradient accumulators, which are initialized to zero. At each iteration, the gradient of the loss function with respect to the parameters is computed, and the accumulated sum of the squared gradients for each parameter is updated as follows: $grad accumulator += gradient^2$. The parameter is calculated as:
 
-$$ parameter -= \frac{initial_learning_rate}{\sqrt{grad_accumulator} + offset to avoid zero}}* gradient $$
+$$ parameter -= \frac{initial learning rate}{\sqrt{grad accumulator} + offset to avoid zero}}* gradient $$
 
 The negative sign is turned into positive by the gradient (negative gradient means going down the slope). The initial learning rate is generally set to 0.1 or 0.01 but it doesn't matter because it is adaptively scaled. Adagrad even address issue in higher dimensional space where one parameter converges faster than the other.
 
@@ -316,9 +316,9 @@ In Adagrad, as the gradient decreases, the step size keeps decreasing as we appr
 ### RMSProp
 This is an updated version of Adagrad.
 
-$$ grad_acc = decay_rate * grad_acc + (1 - decay_rate) * gradient^2 $$
+$$ grad acc = decay rate * grad acc + (1 - decay rate) * gradient^2 $$
 
-$$ parameter -= \frac{initial_learning_rate}{\sqrt{grad_accumulator} + offset to avoid zero}}* gradient $$
+$$ parameter -= \frac{initial learning rate}{\sqrt{grad accumulator} + offset to avoid zero}}* gradient $$
 
 The first line of the update rule computes the moving average of the squared gradients using an exponential decay, which is a hyper-parameter usually set to 0.9. This effectively scales down the learning rate for parameters with large gradients and scales up the learning rate for parameters with small gradients. Thus giving us smoother convergence.
 ### Adam
@@ -328,11 +328,11 @@ The Adam algorithm maintains a set of exponentially decaying average of past gra
 
 Say the computed gradient of loss function be $dx$ and first and second moment are set to zero initially.
 
-$$ first_moment = \beta_1*first_moment + (1-\beta_1)*dx $$
+$$ first moment = \beta_1*first moment + (1-\beta_1)*dx $$
 
-$$ second_moment = \beta_2*second_moment + (1-\beta_2)*dx*dx $$
+$$ second moment = \beta_2*second moment + (1-\beta_2)*dx*dx $$
 
-$$ parameter -= \frac{\alpha*first_moment}{\sqrt{second_moment} + offset} $$
+$$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
 Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
 
