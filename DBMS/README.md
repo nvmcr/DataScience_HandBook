@@ -39,6 +39,9 @@ This README file contains only the concepts related to DBMS. All the practice qu
  3. [Transactions](#Transactions)
       1. [Serializability](#Serializability)
             1. [Serializable Schedules](#Serializable-Schedules)
+            2. [Conflicts](#Conflicts)
+            3. [Precedence Graph](#Precedence-Graph)
+      2. [Lock](#lock)
       
  7. [References](#References)
 
