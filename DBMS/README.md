@@ -45,6 +45,7 @@ This README file contains only the concepts related to DBMS. All the practice qu
             2. [Conflicts](#Conflicts)
             3. [Precedence Graph](#Precedence-Graph)
       2. [Lock](#lock)
+            1. [2 Phase Locking](#2-Phase-Locking)
       
  7. [References](#References)
  
@@ -597,6 +598,25 @@ Optimistic concurrency control assumes that conflicts between transactions are r
 
 Pessimistic concurrency control assumes that conflicts between transactions are likely to occur, and takes a cautious approach to concurrency. It uses locking mechanisms to prevent concurrent access to data, ensuring that only one transaction can access a particular data item at a time. For a database element, a transaction must acquire a lock before reading or writing to the data element. Once a txn is done with that element, it releases the lock. If another transaction wants to access a data element, it should wait for that element to be releases from lock.
 
+Now we are having this locks and making queues to make transactions serializable. But this approach will make schedules slow and hinder concurrency.
+### 2 Phase Locking
+The main idea is, for a transaction, we do all locks before any unlock.
+
+In 2PL, transactions are divided into two phases: the growing phase and the shrinking phase. In the growing phase, transactions acquire locks on the data items they need before accessing them. Once a lock is acquired, it cannot be released until the shrinking phase. This ensures that no other transaction can access the same data item until the lock is released.
+
+The shrinking phase begins when the transaction has completed all of its read and write operations and is ready to release its locks. In this phase, the transaction releases all of its locks, allowing other transactions to access the locked data items.
+
+The two-phase locking protocol ensures serializability by enforcing the following rules:
+
+* A transaction can acquire a lock only if it does not conflict with any other lock currently held by other transactions.
+* Once a transaction releases a lock, it cannot acquire any new locks.
+* All locks acquired by a transaction must be held until the transaction completes.
+
+While the two-phase locking protocol provides a high degree of concurrency while ensuring consistency, it has some limitations and problems that can affect the performance and scalability of a database system. Some of the main problems with 2PL are:
+
+1. Deadlocks
+
+Deadlocks can occur when two or more transactions are waiting for each other to release locks that they need to continue their execution. This can happen when transactions acquire locks in different orders, leading to a circular dependency that cannot be resolved without aborting one of the transactions. An example of a deadlock situation is say we have three transactions say T1 which needs element A and B, T2 which needs element B and C and T3 which needs C and A. According to 2Pl, T1 locks A and concurrently T2 locks B and T3 locks C. Each transcation does few operations but now T1 needs B but it is locked by T2 which needs C which is locked by T3 which needs a that is locked by T1. So transactions just wait forever. We can detect this by precedence graph cycle. If there is a cycle, we rollback and start over again.
 
 
 # References
