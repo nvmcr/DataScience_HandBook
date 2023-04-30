@@ -516,7 +516,8 @@ A serial schedule is simple and easy to implement, but it may not be optimal for
 ### Serializable Schedules
 It is a schedule that produces the same result as a serial schedule, even though the transactions may execute concurrently. In other words, a serializable schedule ensures that the outcome of concurrent transactions is equivalent to the outcome of executing the same transactions serially. A serializable schedule can be used to optimize database performance by allowing transactions to execute concurrently, which can improve throughput and reduce waiting times.
 
-There are two types of serializable schedules: conflict serializable schedules and view serializable schedules. A conflict serializable schedule is a schedule in which transactions do not conflict with each other. A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. There are three types of conflicts that can occur when transactions execute concurrently: read-write conflict, write-write conflict, and write-read conflict.
+### Conflicts
+A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. There are three types of conflicts that can occur when transactions execute concurrently: read-write conflict, write-write conflict, and write-read conflict.
 1. Write-Write Conflict:
 
 A write-write conflict occurs when two transactions write to the same data item. This type of conflict occurs when two transactions update the same data item, resulting in an inconsistent value. Consider below example of a serial schedule.
@@ -551,12 +552,43 @@ A read-write conflict occurs when one transaction reads a data item and another 
 
 For example, consider two transactions T1 done by user 1 and T2 done by user 2. T1 reads the value of x, while T2 writes a new value to x before T1 completes. In this case, T1's read operation is inconsistent with the new value of x, which results in a read-write conflict. Something like updaing an account while checking the balance. This is also called **Phantom Read**.
 
+One can reorder transactions that doesn't have any conflicts as mentioned above. For example, lets say we have following schedule:
+|Transaction|Operation|
+|--|--|
+|T1|Read Account1|
+|T1|Write Account1|
+|T2|Read Account2|
+|T2|Write Account2|
 
+This table can be made conflict serializable schedule as follows:
+|Transaction|Operation|
+|--|--|
+|T1|Read Account1|
+|T2|Read Account2|
+|T1|Write Account1|
+|T2|Write Account2|
 
+A conflict serializable schedule is a schedule in which transactions do not conflict with each other. To make a conflict serializable schedule we can not change orders of following transactions of same account: Write-Write, Write-Read and Read-Write. 
+### Precedence Graph
+Say we were given a schedule of transactions and we need to find if they can be reorder as conflict serializable. A precedence graph will help us if it is possible to do.
 
+In a precedence graph, each node represents a transaction in the schedule, and a directed edge is drawn between two nodes if there is a conflict between the operations of those transactions. Take a look at below schedule.
 
+![Schedule](Images/transaction.png)
 
-A view serializable schedule is a schedule in which transactions do not conflict with each other in terms of their view of the database.
+For this schedule, precedence graph looks like:
+
+![PG](Images/pg.png)
+
+There is a direct edge between T1 and T2 because there is a conflict with B. There is a direct edge between T2 and T3 as there is a conflict with A. If there is a loop in the graph (cycle), then the schedule can not be reorder as conflict serializable.
+
+## Lock
+The **concurrency control scheduler** is responsible for ensuring that multiple transactions executing concurrently do not interfere with each other, and that the consistency of the database is maintained. Pessimistic/Locking scheduler and optimistic/multi-version concurrency control are two approaches to managing concurrent access to data in a database.
+
+Optimistic concurrency control assumes that conflicts between transactions are rare, and takes an optimistic approach to concurrency. It does not use locks to prevent concurrent access to data, instead allowing multiple transactions to access the same data simultaneously. Main idea is to execute transaction first and then check while commiting. We are more intrested in other concurrency control.
+
+Pessimistic concurrency control assumes that conflicts between transactions are likely to occur, and takes a cautious approach to concurrency. It uses locking mechanisms to prevent concurrent access to data, ensuring that only one transaction can access a particular data item at a time. For a database element, a transaction must acquire a lock before reading or writing to the data element. Once a txn is done with that element, it releases the lock. If another transaction wants to access a data element, it should wait for that element to be releases from lock.
+
 
 
 # References
