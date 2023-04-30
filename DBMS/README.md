@@ -9,6 +9,9 @@ There are 3 parts in a Data Model.
 ## Note
 This README file contains only the concepts related to DBMS. All the practice questions are in this [link](https://github.com/nvmcr/Reference_Guide/tree/main/DBMS/PracticeQuestions).
 
+<details>
+<summary>Table of Contents</summary>
+
 ## Table of Contents
 1. [SQL](#SQL)
       1. [Intro](#intro)
@@ -44,6 +47,8 @@ This README file contains only the concepts related to DBMS. All the practice qu
       2. [Lock](#lock)
       
  7. [References](#References)
+ 
+</details>
 
 # SQL
 ## Intro
