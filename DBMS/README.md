@@ -516,7 +516,47 @@ A serial schedule is simple and easy to implement, but it may not be optimal for
 ### Serializable Schedules
 It is a schedule that produces the same result as a serial schedule, even though the transactions may execute concurrently. In other words, a serializable schedule ensures that the outcome of concurrent transactions is equivalent to the outcome of executing the same transactions serially. A serializable schedule can be used to optimize database performance by allowing transactions to execute concurrently, which can improve throughput and reduce waiting times.
 
-There are two types of serializable schedules: conflict serializable schedules and view serializable schedules. A conflict serializable schedule is a schedule in which transactions do not conflict with each other. A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. A view serializable schedule is a schedule in which transactions do not conflict with each other in terms of their view of the database.
+There are two types of serializable schedules: conflict serializable schedules and view serializable schedules. A conflict serializable schedule is a schedule in which transactions do not conflict with each other. A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. There are three types of conflicts that can occur when transactions execute concurrently: read-write conflict, write-write conflict, and write-read conflict.
+1. Write-Write Conflict:
+
+A write-write conflict occurs when two transactions write to the same data item. This type of conflict occurs when two transactions update the same data item, resulting in an inconsistent value. Consider below example of a serial schedule.
+
+|Transaction|Operation|
+|--|--|
+|T1|Set Account1 = 200|
+|T1|Set Account2 = 0|
+|T2|Set Account2 = 200|
+|T2|Set Account1 = 0|
+
+Final state is Account1 = 0 and Account2 = 200. This doesn't have any conflicts as it is serial schedule. Now consider this:
+
+|Transaction|Operation|
+|--|--|
+|T1|Set Account1 = 200|
+|T2|Set Account2 = 200|
+|T1|Set Account2 = 0|
+|T2|Set Account1 = 0|
+
+Final state is Account1 = 0 and Account2 = 0. This is the write-write conflict or **Lost Update**.
+
+2. Write-Read Conflict:
+
+A write-read conflict occurs when one transaction writes to a data item and another transaction reads from the same data item. This type of conflict occurs when a transaction reads a value from a data item that has been modified by another transaction, but has not yet been committed to the database.
+
+For example, consider two transactions T1 and T2. T1 writes a new value to x, while T2 reads the old value of x before T1 completes. In this case, T2's read operation is inconsistent with the new value of x, which results in a write-read conflict. Something like checking an account balance in middle of a bank transaction. This is also called **Dirty Read**.
+
+3. Read-Write Conflict
+
+A read-write conflict occurs when one transaction reads a data item and another transaction writes to the same data item. This type of conflict occurs when a transaction reads a value from a data item that has been changed by another transaction before the first transaction has completed.
+
+For example, consider two transactions T1 done by user 1 and T2 done by user 2. T1 reads the value of x, while T2 writes a new value to x before T1 completes. In this case, T1's read operation is inconsistent with the new value of x, which results in a read-write conflict. Something like updaing an account while checking the balance. This is also called **Phantom Read**.
+
+
+
+
+
+
+A view serializable schedule is a schedule in which transactions do not conflict with each other in terms of their view of the database.
 
 
 # References
