@@ -115,7 +115,7 @@ Linear Regression has a closed form solution i.e we have a formula to get to a s
 
 We can take derivative to find the minimum and we will obtain:
 
-$$ \hat{w}_{LS} = (X^TX)^{-1}X^Ty $$
+$$ \hat{w}\_{LS} = (X^TX)^{-1}X^Ty $$
 
 > Least squares is preffered over absolute values because, LS is differentiable which is a necessity for gradient descent approaches. But more importantly, least squares closed form solution is equal to MLE closed form.
 
@@ -169,7 +169,7 @@ In contrast to random or grid search, here we keep track of past evaluation resu
 ### Root Mean Square Error
 It is a commonly used evaluation metric in regression tasks. It measures the square root of the average squared difference between the predicted values and the true values.
 
-$$ RMSE = \sqrt(1/n * \sum((y_pred - y_true)^2)) $$
+$$ RMSE = \sqrt(1/n * \sum((y_{pred} - y_{true})^2)) $$
 
 RMSE is preffered over Mean Absoulte Error (MAE) because RMSE penalizes large errors due to squaring but MAE treats all error same.
 ### R squared
@@ -357,8 +357,25 @@ $$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
 $$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
 Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
+# Regularization Models
+## Ridge Regression (L2)
+For a linear model, $y=b+ w_1x_1 + w_2x_2 + ... + w_dx_d$. If model overfits, then w is large thus small changes in x will make the model vary a lot. So by limiting weights, we can improve model generalization. W.K.T, loss/cost function is to find minimum weights, w such that loss is the least. In ridge regression (also called shrinkage method), we use a regularizer $||w||^2_2$ (l2-norn) to control weights.
 
+$$ \hat{w}\_{ridge} = \arg\min_{w} \Sigma_{i=1}^n (y_i - x_i^Tw)^2 + \lambda||w||\_2^2 $$
 
+where $\lamdba$ is a regularization coefficient. More the value more the regularization.
+
+$$ \hat{w}\_{ridge} = (X^TX + \lambdaI)^{-1}X^Ty $$
+## Lasso Regression (L1)
+Lasso (Least Absolute Shrinkage and Selection Operator) is similar to ridge, except uses L1 instead of L2 norm.
+
+$$ \hat{w}\_{lasso} = \arg\min_{w} \Sigma_{i=1}^n (y_i - x_i^Tw)^2 + \lambda||w|| $$
+
+Unlike ridge where the model can shrink the values close to zero, lasso can shrink the weights to zero making the model sparse. Thus eleiminating the features that are not necessary. 
+## Elastic Net Regression
+This is a combination of L1 and L2. In this regularization coefficient looks like,
+
+$$ \lamda L1 + (1-\lambda)L2
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
