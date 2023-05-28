@@ -90,17 +90,17 @@ In one line, MLE is a method that determines values of the parameters of a model
 
 Say we have a random sample from a sequence of coin trails (H,H,T,T,..) from a binomial distribution with k heads out of n flips. Let us assume there is a parameter $\theta$ which is probability of getting heads. W.K.T, the probaility distribution of the data with a fixed unknown parameter $\theta$ is represented by, 
 
-$$ P(D|\theta) = \theta^k*(1-\theta)^{(n-k)} $$
+$$ P(D|\theta) = \theta^k\*(1-\theta)^{(n-k)} $$
 
 MLE helps us find $\theta$ which maximises the probability of obtaining the data that we saw.
 
-$$ \hat{\theta}_{MLE} = \arg\max_{\theta} P(D|\theta) $$
+$$ \hat{\theta}\_{MLE} = \arg\max_{\theta} P(D|\theta) $$
 
 In the above eqn, arg max means the value that returns the maximum value of a function. (Say we have a function, f(x) = x + 10 where x is in range \[1,5]. Max of the fn will be f(5) = 5 + 10 = 15. But arg max would be 5 beacuse that is the value that returned max value of function.)
 
 We will consider log likelihood as it is easy for calculation. Log function is monotonically increasing function which means the arg max would be same for with log or without log.
 
-$$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
+$$ \hat{\theta}\_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
 
 We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$. Calculating, we will get $\theta = \frac{k}{n}$.
 
