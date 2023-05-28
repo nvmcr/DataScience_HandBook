@@ -9,6 +9,9 @@ There are 3 parts in a Data Model.
 ## Note
 This README file contains only the concepts related to DBMS. All the practice questions are in this [link](https://github.com/nvmcr/Reference_Guide/tree/main/DBMS/PracticeQuestions).
 
+<details>
+<summary>Table of Contents</summary>
+
 ## Table of Contents
 1. [SQL](#SQL)
       1. [Intro](#intro)
@@ -39,8 +42,17 @@ This README file contains only the concepts related to DBMS. All the practice qu
  3. [Transactions](#Transactions)
       1. [Serializability](#Serializability)
             1. [Serializable Schedules](#Serializable-Schedules)
+            2. [Conflicts](#Conflicts)
+            3. [Precedence Graph](#Precedence-Graph)
+      2. [Lock](#lock)
+            1. [2 Phase Locking](#2-Phase-Locking)
+ 4. [Parallel Processing](#parallel-processing)
+ 5. [CAP](#CAP)
+      
       
  7. [References](#References)
+ 
+</details>
 
 # SQL
 ## Intro
@@ -516,8 +528,136 @@ A serial schedule is simple and easy to implement, but it may not be optimal for
 ### Serializable Schedules
 It is a schedule that produces the same result as a serial schedule, even though the transactions may execute concurrently. In other words, a serializable schedule ensures that the outcome of concurrent transactions is equivalent to the outcome of executing the same transactions serially. A serializable schedule can be used to optimize database performance by allowing transactions to execute concurrently, which can improve throughput and reduce waiting times.
 
-There are two types of serializable schedules: conflict serializable schedules and view serializable schedules. A conflict serializable schedule is a schedule in which transactions do not conflict with each other. A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. A view serializable schedule is a schedule in which transactions do not conflict with each other in terms of their view of the database.
+### Conflicts
+A conflict occurs when two or more transactions attempt to access the same data item at the same time, and at least one of the transactions modifies the data. There are three types of conflicts that can occur when transactions execute concurrently: read-write conflict, write-write conflict, and write-read conflict.
+1. Write-Write Conflict:
 
+A write-write conflict occurs when two transactions write to the same data item. This type of conflict occurs when two transactions update the same data item, resulting in an inconsistent value. Consider below example of a serial schedule.
+
+|Transaction|Operation|
+|--|--|
+|T1|Set Account1 = 200|
+|T1|Set Account2 = 0|
+|T2|Set Account2 = 200|
+|T2|Set Account1 = 0|
+
+Final state is Account1 = 0 and Account2 = 200. This doesn't have any conflicts as it is serial schedule. Now consider this:
+
+|Transaction|Operation|
+|--|--|
+|T1|Set Account1 = 200|
+|T2|Set Account2 = 200|
+|T1|Set Account2 = 0|
+|T2|Set Account1 = 0|
+
+Final state is Account1 = 0 and Account2 = 0. This is the write-write conflict or **Lost Update**.
+
+2. Write-Read Conflict:
+
+A write-read conflict occurs when one transaction writes to a data item and another transaction reads from the same data item. This type of conflict occurs when a transaction reads a value from a data item that has been modified by another transaction, but has not yet been committed to the database.
+
+For example, consider two transactions T1 and T2. T1 writes a new value to x, while T2 reads the old value of x before T1 completes. In this case, T2's read operation is inconsistent with the new value of x, which results in a write-read conflict. Something like checking an account balance in middle of a bank transaction. This is also called **Dirty Read**.
+
+3. Read-Write Conflict
+
+A read-write conflict occurs when one transaction reads a data item and another transaction writes to the same data item. This type of conflict occurs when a transaction reads a value from a data item that has been changed by another transaction before the first transaction has completed.
+
+For example, consider two transactions T1 done by user 1 and T2 done by user 2. T1 reads the value of x, while T2 writes a new value to x before T1 completes. In this case, T1's read operation is inconsistent with the new value of x, which results in a read-write conflict. Something like updaing an account while checking the balance. This is also called **Phantom Read**.
+
+One can reorder transactions that doesn't have any conflicts as mentioned above. For example, lets say we have following schedule:
+|Transaction|Operation|
+|--|--|
+|T1|Read Account1|
+|T1|Write Account1|
+|T2|Read Account2|
+|T2|Write Account2|
+
+This table can be made conflict serializable schedule as follows:
+|Transaction|Operation|
+|--|--|
+|T1|Read Account1|
+|T2|Read Account2|
+|T1|Write Account1|
+|T2|Write Account2|
+
+A conflict serializable schedule is a schedule in which transactions do not conflict with each other. To make a conflict serializable schedule we can not change orders of following transactions of same account: Write-Write, Write-Read and Read-Write. 
+### Precedence Graph
+Say we were given a schedule of transactions and we need to find if they can be reorder as conflict serializable. A precedence graph will help us if it is possible to do.
+
+In a precedence graph, each node represents a transaction in the schedule, and a directed edge is drawn between two nodes if there is a conflict between the operations of those transactions. Take a look at below schedule.
+
+![Schedule](Images/transaction.png)
+
+For this schedule, precedence graph looks like:
+
+![PG](Images/pg.png)
+
+There is a direct edge between T1 and T2 because there is a conflict with B. There is a direct edge between T2 and T3 as there is a conflict with A. If there is a loop in the graph (cycle), then the schedule can not be reorder as conflict serializable.
+
+## Lock
+The **concurrency control scheduler** is responsible for ensuring that multiple transactions executing concurrently do not interfere with each other, and that the consistency of the database is maintained. Pessimistic/Locking scheduler and optimistic/multi-version concurrency control are two approaches to managing concurrent access to data in a database.
+
+Optimistic concurrency control assumes that conflicts between transactions are rare, and takes an optimistic approach to concurrency. It does not use locks to prevent concurrent access to data, instead allowing multiple transactions to access the same data simultaneously. Main idea is to execute transaction first and then check while commiting. We are more intrested in other concurrency control.
+
+Pessimistic concurrency control assumes that conflicts between transactions are likely to occur, and takes a cautious approach to concurrency. It uses locking mechanisms to prevent concurrent access to data, ensuring that only one transaction can access a particular data item at a time. For a database element, a transaction must acquire a lock before reading or writing to the data element. Once a txn is done with that element, it releases the lock. If another transaction wants to access a data element, it should wait for that element to be releases from lock.
+
+Now we are having this locks and making queues to make transactions serializable. But this approach will make schedules slow and hinder concurrency.
+### 2 Phase Locking
+The main idea is, for a transaction, we do all locks before any unlock.
+
+In 2PL, transactions are divided into two phases: the growing phase and the shrinking phase. In the growing phase, transactions acquire locks on the data items they need before accessing them. Once a lock is acquired, it cannot be released until the shrinking phase. This ensures that no other transaction can access the same data item until the lock is released.
+
+The shrinking phase begins when the transaction has completed all of its read and write operations and is ready to release its locks. In this phase, the transaction releases all of its locks, allowing other transactions to access the locked data items.
+
+The two-phase locking protocol ensures serializability by enforcing the following rules:
+
+* A transaction can acquire a lock only if it does not conflict with any other lock currently held by other transactions.
+* Once a transaction releases a lock, it cannot acquire any new locks.
+* All locks acquired by a transaction must be held until the transaction completes.
+
+While the two-phase locking protocol provides a high degree of concurrency while ensuring consistency, it has some limitations and problems that can affect the performance and scalability of a database system. Some of the main problems with 2PL are:
+
+1. Deadlocks
+
+Deadlocks can occur when two or more transactions are waiting for each other to release locks that they need to continue their execution. This can happen when transactions acquire locks in different orders, leading to a circular dependency that cannot be resolved without aborting one of the transactions. An example of a deadlock situation is say we have three transactions say T1 which needs element A and B, T2 which needs element B and C and T3 which needs C and A. According to 2Pl, T1 locks A and concurrently T2 locks B and T3 locks C. Each transcation does few operations but now T1 needs B but it is locked by T2 which needs C which is locked by T3 which needs a that is locked by T1. So transactions just wait forever. We can detect this by precedence graph cycle. If there is a cycle, we rollback and start over again.
+# Parallel Processing
+The rates at which we generate and use information have outpaced the capabilities of a single computer. We need more speed and scale. OLTP (Online Transaction Processing) is a database system designed for transaction-oriented applications. It is optimized for handling large numbers of small, individual transactions in real-time. OLTP databases are typically used in operational environments where data is constantly updated, inserted, or deleted, such as in banking systems, e-commerce platforms, or airline reservation systems. OLAP (Online Analytical Processing) is designed for analytical processing and decision support. It is optimized for complex queries and aggregations performed on large volumes of historical data. OLAP databases are commonly used in business intelligence, data warehousing, and reporting applications. To implement database parallelism. 
+1. Architecture Parallelsim
+
+Shared Memory Architecture involves sharing main memory and disks. This is the easiest to implement but expensive to scale. Ex: MySQL, SQLite etc.
+
+Shared disk architecture involves storage dedicated network where memory is dedicated for respective cpus. But disk is shared. Ex: Oracle database.
+
+Shared nothing architecture has dedictaed hardware for each cpu. It is hardest to work on but scales infinitely theoretically. Ex: Apache Spark
+
+![Architecture](Images/architecture.png)
+
+2. Query Parallelism
+
+For OLTP each query is processed on its own node called inter-query parallelism. For OLAP, each operator insatance is processed by multiple nodes (Parallelism within query).
+
+3. Data Partitioning
+
+# CAP
+RDMS can not maintain ACID properties with scaling up. That resulted in NoSQL systems. Just like ACID for RDMS, there is BASE for NoSQL systems. **B**asically Available (don't cause full system outage), **S**oft State (Not always write-consistent) and **E**ventually Consistent (Eventually converge to agreed values).
+
+The CAP theorem, also known as Brewer's theorem, states that in a distributed computer system, it is impossible to simultaneously guarantee all of the following three properties: consistency, availability, and partition tolerance.
+
+Three properties defined by the CAP theorem:
+
+Consistency: It refers to the requirement that all nodes in a distributed system should have the same view of the data at the same time. In other words, if a data item is updated, all subsequent accesses to that item should reflect the updated value. Consistency ensures that the data remains valid and conforms to specified integrity constraints.
+
+Availability: It means that every request to a non-failing node in the system must receive a response, regardless of the state of the system. Availability ensures that the system remains operational and responsive even in the presence of failures or network partitions.
+
+Partition tolerance: It refers to the system's ability to continue operating and functioning correctly despite network partitions or communication failures between nodes. A partition occurs when nodes in a distributed system are unable to communicate with each other due to network issues or failures.
+
+According to the CAP theorem, in a distributed system, you can only achieve two out of the three properties—consistency, availability, and partition tolerance. When a network partition occurs, forcing a trade-off between consistency and availability, the system must choose to sacrifice one in favor of the other.
+
+**NoSQL (Not only SQL) systems prioritize availability and partition tolerance over strong consistency.**
+
+![CAP](Images/CAP.png)
+
+NOSQL data models come in many variations. Key-Value Database (redis, DynamoDB), Wide-Column Store (Cassandra), Graph Database (Amazon Neptune) and Document Store (mongoDB and Couch DB).
 
 # References
 1. [SQLBolt](https://sqlbolt.com/)
