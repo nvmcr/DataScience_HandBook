@@ -409,6 +409,11 @@ To choose a best linear classifier to seperate say two classes, how should the d
 $$ d = \frac{y_i (w^Tx_i + b)}{||w||\_2} $$
 
 What if the data is not linearly seperable (for higher dimenions)?
+
+One get away method is to introduce a slack where we ignore few points while optimizing the distance. Better way is to lift the features to higher dimensions (kernel). The general idea is that making a non seperable 2D features to a 3D features making them seperable. Say we have X1 and X2 features, we can create new feature to make it 3D by using X1^2 or X1X2 or X2^2 with degree 2 and many other features like X1^2+X2^2. But its hard to know whihc feature map will work to get linearly seperable feature space. At the same time we can not use entire feature space as it requires a lot of memeory. This is where kernels help. The kernel trick overcomes this limitation by implicitly mapping the original feature space into a higher-dimensional space using a kernel function. The kernel function computes the similarity or inner product between pairs of data points in the higher-dimensional space, without explicitly calculating the coordinates of those points. Thus everytime if we want to do a dot product we can do a kernel function and use it implicitly. 
+
+![](Images/kernels.png)
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
