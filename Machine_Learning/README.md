@@ -90,17 +90,17 @@ In one line, MLE is a method that determines values of the parameters of a model
 
 Say we have a random sample from a sequence of coin trails (H,H,T,T,..) from a binomial distribution with k heads out of n flips. Let us assume there is a parameter $\theta$ which is probability of getting heads. W.K.T, the probaility distribution of the data with a fixed unknown parameter $\theta$ is represented by, 
 
-$$ P(D|\theta) = \theta^k*(1-\theta)^{(n-k)} $$
+$$ P(D|\theta) = \theta^k\*(1-\theta)^{(n-k)} $$
 
 MLE helps us find $\theta$ which maximises the probability of obtaining the data that we saw.
 
-$$ \hat{\theta}_{MLE} = \arg\max_{\theta} P(D|\theta) $$
+$$ \hat{\theta}\_{MLE} = \arg\max_{\theta} P(D|\theta) $$
 
 In the above eqn, arg max means the value that returns the maximum value of a function. (Say we have a function, f(x) = x + 10 where x is in range \[1,5]. Max of the fn will be f(5) = 5 + 10 = 15. But arg max would be 5 beacuse that is the value that returned max value of function.)
 
 We will consider log likelihood as it is easy for calculation. Log function is monotonically increasing function which means the arg max would be same for with log or without log.
 
-$$ \hat{\theta}_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
+$$ \hat{\theta}\_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
 
 We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$. Calculating, we will get $\theta = \frac{k}{n}$.
 
@@ -115,7 +115,7 @@ Linear Regression has a closed form solution i.e we have a formula to get to a s
 
 We can take derivative to find the minimum and we will obtain:
 
-$$ \hat{w}_{LS} = (X^TX)^{-1}X^Ty $$
+$$ \hat{w}\_{LS} = (X^TX)^{-1}X^Ty $$
 
 > Least squares is preffered over absolute values because, LS is differentiable which is a necessity for gradient descent approaches. But more importantly, least squares closed form solution is equal to MLE closed form.
 
@@ -169,7 +169,7 @@ In contrast to random or grid search, here we keep track of past evaluation resu
 ### Root Mean Square Error
 It is a commonly used evaluation metric in regression tasks. It measures the square root of the average squared difference between the predicted values and the true values.
 
-$$ RMSE = \sqrt(1/n * \sum((y_pred - y_true)^2)) $$
+$$ RMSE = \sqrt(1/n * \sum((y_{pred} - y_{true})^2)) $$
 
 RMSE is preffered over Mean Absoulte Error (MAE) because RMSE penalizes large errors due to squaring but MAE treats all error same.
 ### R squared
@@ -357,7 +357,62 @@ $$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
 $$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
 Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
+# Regularization Models
+## Ridge Regression (L2)
+For a linear model, $y=b+ w_1x_1 + w_2x_2 + ... + w_dx_d$. If model overfits, then w is large thus small changes in x will make the model vary a lot. So by limiting weights, we can improve model generalization. W.K.T, loss/cost function is to find minimum weights, w such that loss is the least. In ridge regression (also called shrinkage method), we use a regularizer $||w||^2_2$ (l2-norn) to control weights.
 
+$$ \hat{w}\_{ridge} = \arg\min_{w} \Sigma_{i=1}^n (y_i - x_i^Tw)^2 + \lambda||w||\_2^2 $$
+
+where $\lambda$ is a regularization coefficient. More the value more the regularization.
+
+$$ \hat{w}\_{ridge} = (X^TX + \lambda I)^{-1}X^Ty $$
+## Lasso Regression (L1)
+Lasso (Least Absolute Shrinkage and Selection Operator) is similar to ridge, except uses L1 instead of L2 norm.
+
+$$ \hat{w}\_{lasso} = \arg\min_{w} \Sigma_{i=1}^n (y_i - x_i^Tw)^2 + \lambda||w|| $$
+
+Unlike ridge where the model can shrink the values close to zero, lasso can shrink the weights to zero making the model sparse. Thus eleiminating the features that are not necessary. 
+## Elastic Net Regression
+This is a combination of L1 and L2. In this regularization coefficient looks like,
+
+$$ \lambda L1 + (1-\lambda)L2 $$
+# Classification Models
+## Logistic Regression
+Similar to linear regression except the target is categorical instead of continous (so its not exactly regression problem). Input of logistic can be continous or categorical. The model aims to categorize the input samples into classes. The decision boundary is linear. The main difference from linear regression is the loss function.
+### Loss Functions
+#### 0-1 Loss
+![0-1](Images/binaryloss.png)
+
+This is the ideal loss function. If we make a correct prediction, loss is 0 and wrong prediction gives loss 1. But we can't use this, as the loss function is not convex so can't be optimized.
+#### Quadratic Loss
+![](Images/quadraticloss.png)
+
+Similar to loss function used in linear regression. If observed, we get high loss even if we predicted correctly. See the left side parabola increasing loss when it should be 0. 
+#### Sigmoid Loss
+![](Images/sigmoidloss.png)
+
+$$ l(\hat{y},y) = \frac{1}{1+e^{y\hat{y}}} $$
+
+This is a differentiable approximation of 0-1 loss. The edges of funtion is flat which makes gradients long time to converge.
+#### Logistic Loss
+![](Images/logisticloss)
+
+$$ l(\hat{y},y) = 1+e^{-y\hat{y}} $$
+
+Resoles all our issue. Thus quite popular choice.
+
+![Logistic](Images/logistic.png)
+
+## Support Vector Machines
+To choose a best linear classifier to seperate say two classes, how should the decision boundary be? Should the decision boundary be close to class A or class B. Ideal boundary will be far from the both classes because small change should change the output drastically thus making the model more generalizable. In a 2D case, decision boundary is a line and in higher dimensions it is a hyperplane. The distance is measured from a point in each class which are nearest to the hyperplane. So only the points closest to the hyperplane matter in finding the decision boundary. Those points from each class are called support vectors. The distance from a point i is measured by:
+
+$$ d = \frac{y_i (w^Tx_i + b)}{||w||\_2} $$
+
+What if the data is not linearly seperable (for higher dimenions)?
+
+One get away method is to introduce a slack where we ignore few points while optimizing the distance. Better way is to lift the features to higher dimensions (kernel). The general idea is that making a non seperable 2D features to a 3D features making them seperable. Say we have X1 and X2 features, we can create new feature to make it 3D by using X1^2 or X1X2 or X2^2 with degree 2 and many other features like X1^2+X2^2. But its hard to know whihc feature map will work to get linearly seperable feature space. At the same time we can not use entire feature space as it requires a lot of memeory. This is where kernels help. The kernel trick overcomes this limitation by implicitly mapping the original feature space into a higher-dimensional space using a kernel function. The kernel function computes the similarity or inner product between pairs of data points in the higher-dimensional space, without explicitly calculating the coordinates of those points. Thus everytime if we want to do a dot product we can do a kernel function and use it implicitly. 
+
+![](Images/kernels.png)
 
 # References
 The information is pulled from various sources from internet. Major sources are:
