@@ -363,9 +363,9 @@ For a linear model, $y=b+ w_1x_1 + w_2x_2 + ... + w_dx_d$. If model overfits, th
 
 $$ \hat{w}\_{ridge} = \arg\min_{w} \Sigma_{i=1}^n (y_i - x_i^Tw)^2 + \lambda||w||\_2^2 $$
 
-where $\lamdba$ is a regularization coefficient. More the value more the regularization.
+where $\lambda$ is a regularization coefficient. More the value more the regularization.
 
-$$ \hat{w}\_{ridge} = (X^TX + \lambdaI)^{-1}X^Ty $$
+$$ \hat{w}\_{ridge} = (X^TX + \lambda I)^{-1}X^Ty $$
 ## Lasso Regression (L1)
 Lasso (Least Absolute Shrinkage and Selection Operator) is similar to ridge, except uses L1 instead of L2 norm.
 
@@ -375,7 +375,40 @@ Unlike ridge where the model can shrink the values close to zero, lasso can shri
 ## Elastic Net Regression
 This is a combination of L1 and L2. In this regularization coefficient looks like,
 
-$$ \lamda L1 + (1-\lambda)L2
+$$ \lambda L1 + (1-\lambda)L2 $$
+# Classification Models
+## Logistic Regression
+Similar to linear regression except the target is categorical instead of continous (so its not exactly regression problem). Input of logistic can be continous or categorical. The model aims to categorize the input samples into classes. The decision boundary is linear. The main difference from linear regression is the loss function.
+### Loss Functions
+#### 0-1 Loss
+![0-1](Images/binaryloss.png)
+
+This is the ideal loss function. If we make a correct prediction, loss is 0 and wrong prediction gives loss 1. But we can't use this, as the loss function is not convex so can't be optimized.
+#### Quadratic Loss
+![](Images/quadraticloss.png)
+
+Similar to loss function used in linear regression. If observed, we get high loss even if we predicted correctly. See the left side parabola increasing loss when it should be 0. 
+#### Sigmoid Loss
+![](Images/sigmoidloss.png)
+
+$$ l(\hat{y},y) = \frac{1}{1+e^{y\hat{y}}} $$
+
+This is a differentiable approximation of 0-1 loss. The edges of funtion is flat which makes gradients long time to converge.
+#### Logistic Loss
+![](Images/logisticloss)
+
+$$ l(\hat{y},y) = 1+e^{-y\hat{y}} $$
+
+Resoles all our issue. Thus quite popular choice.
+
+![Logistic](Images/logistic.png)
+
+## Support Vector Machines
+To choose a best linear classifier to seperate say two classes, how should the decision boundary be? Should the decision boundary be close to class A or class B. Ideal boundary will be far from the both classes because small change should change the output drastically thus making the model more generalizable. In a 2D case, decision boundary is a line and in higher dimensions it is a hyperplane. The distance is measured from a point in each class which are nearest to the hyperplane. So only the points closest to the hyperplane matter in finding the decision boundary. Those points from each class are called support vectors. The distance from a point i is measured by:
+
+$$ d = \frac{y_i (w^Tx_i + b)}{||w||\_2} $$
+
+What if the data is not linearly seperable (for higher dimenions)?
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
