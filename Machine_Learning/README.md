@@ -461,7 +461,14 @@ Except for prior probabilties, other probabilties are likelihoods calculated fro
 
 6. Sometimes the model can even be used to find the most important features from the distribution plots if the features differs a lot.
 ## K-NN
+K Nearest Neighbors is a non parametric model that can be used for both classification and regression. 
+1. Given a new, unseen input feature vector, the algorithm identifies the k nearest neighbors to that vector in the training dataset. "k" is a user-defined parameter that determines the number of neighbors to consider.
+2. The distance metric (e.g., Euclidean distance or Manhattan distance) is typically used to measure the distance between the new input vector and the training instances.
+3. The majority class label (for classification) or the mean/median of the target values (for regression) among the k nearest neighbors is then assigned as the predicted label or target value for the new input vector.
 
+The key idea behind the KNN algorithm is that similar instances are likely to have similar labels or target values. By considering the labels or target values of the k nearest neighbors, the algorithm makes predictions based on the local structure of the data. Remember to pick od number of k to avoiding tie between categories, scale the features (normalize) first as this is a distance based algorithm and for categorical features, appropriate distance metrics (such as Hamming distance or Jaccard similarity) need to be used instead of Euclidean or Manhattan distance.
+## Tree Methods
+### Decision Trees
 
 # References
 The information is pulled from various sources from internet. Major sources are:
