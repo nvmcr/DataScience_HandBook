@@ -48,6 +48,7 @@ This README file contains only the concepts related to DBMS. All the practice qu
             1. [2 Phase Locking](#2-Phase-Locking)
  4. [Parallel Processing](#parallel-processing)
  5. [CAP](#CAP)
+ 6. [MapReduce and Spark](#MapReduce-and-Spark)
       
       
  7. [References](#References)
@@ -653,11 +654,52 @@ Partition tolerance: It refers to the system's ability to continue operating and
 
 According to the CAP theorem, in a distributed system, you can only achieve two out of the three properties—consistency, availability, and partition tolerance. When a network partition occurs, forcing a trade-off between consistency and availability, the system must choose to sacrifice one in favor of the other.
 
-**NoSQL (Not only SQL) systems prioritize availability and partition tolerance over strong consistency.**
-
 ![CAP](Images/CAP.png)
 
+**NoSQL (Not only SQL) systems prioritize availability and partition tolerance over strong consistency.**
+
 NOSQL data models come in many variations. Key-Value Database (redis, DynamoDB), Wide-Column Store (Cassandra), Graph Database (Amazon Neptune) and Document Store (mongoDB and Couch DB).
+
+In a key-value store, data model involves simple (key, value) pairs like a hash map. Basic operations include get(key) and put(key, value). For distribution/partitioning, access to a value is provided through a hash function. 
+
+Semi structured documents are parseable files and contains explicit tags to indicate metadata. The schema is within the document body. Ex: XML, JSON.
+# MapReduce and Spark
+MapReduce is a programming model and software framework for processing and analyzing large-scale data sets in a distributed computing environment. It was first introduced by Google and has since become popular for big data processing.
+
+The MapReduce model divides a computation into two main phases: the map phase and the reduce phase.
+
+During the map phase, the input data is divided into chunks and processed independently by multiple map tasks. Each map task applies a user-defined map function to the input data, producing a set of intermediate key-value pairs. These intermediate results are not yet in their final form but are grouped/shuffled based on their keys.
+
+In the reduce phase, the intermediate results with the same key are gathered together and processed by the reduce tasks. The user-defined reduce function is applied to the values associated with each key, generating the final output. The reduce tasks can run in parallel, allowing for efficient processing of large datasets.
+
+For example, we have a massive text file on a distributed system on a cluster. For now, we will assume we have two input files on seperate nodes. First input file has a line 'This is an Apple' and second file has the line 'Apple is red in color' and our task is to count number of occurences of each word in that file.  In the map phase, we will have a mapper functions for each file which maps key value pairs where key is the word and value is the occurence of each word. In both files each word occures one time. Then the data is shuffled/ grouped based on the key values. In the reduce phase, a group of intermediate key-value pairs are taken and reduce function is applied. In our example, reduce function takes the word and a list of values (1s) associated with that word. It sums up the values to get the total count of occurrences of that word. Each reduce task gives the key value value pairs combined into a single output file.
+
+![](Images/mapreduce.png)
+
+MapReduce provides automatic parallelization and fault tolerance, as the framework handles the distribution of tasks across a cluster of machines and manages failures by automatically rerunning failed tasks on other nodes. This makes it suitable for large-scale data processing, where data is distributed across multiple nodes in a cluster.
+
+The MapReduce model is often used in conjunction with distributed file systems like Hadoop Distributed File System (HDFS) to store and access the input and output data. Hadoop, an open-source implementation of MapReduce, is widely used in the big data ecosystem.
+
+Though mapreduce has its pros, it lacks real time processing of data and the data is read from disk which creates overhead for large datasets and iterative algorithms in machine learning.
+
+Apache Spark is an open-source, distributed computing system that provides an interface for programming and processing large-scale data sets. It was designed to overcome the limitations of MapReduce and offers faster and more flexible data processing capabilities.
+
+Spark provides a unified computing engine that supports various data processing tasks, including batch processing, real-time streaming, machine learning, and graph processing. It achieves high performance by optimizing the execution of tasks and by leveraging in-memory computing, allowing data to be stored and processed in memory rather than on disk.
+
+Key features and concepts of Apache Spark include:
+
+Resilient Distributed Datasets (RDD): RDD is the fundamental data structure in Spark. It is an immutable distributed collection of objects that can be processed in parallel across a cluster. RDDs can be created from data stored in Hadoop Distributed File System (HDFS), distributed databases, or other data sources.
+
+DataFrame and Dataset APIs: Spark provides high-level APIs, such as DataFrames and Datasets, that provide a more structured and efficient way of working with structured and semi-structured data. These APIs allow for easier manipulation, querying, and analysis of data using SQL-like operations and support for various programming languages like Scala, Java, Python, and R.
+
+Spark Streaming: Spark Streaming enables real-time processing of data streams, allowing applications to process and analyze data in near real-time. It provides high-level abstractions for handling streaming data and supports integration with various data sources, such as Kafka, Flume, and HDFS.
+
+Spark SQL: Spark SQL allows for querying structured data using SQL syntax, providing a unified interface for working with structured data and RDDs. It enables seamless integration of SQL queries with Spark programs and supports reading and writing data from various data formats and databases.
+
+MLlib: MLlib is Spark's machine learning library, offering a wide range of scalable machine learning algorithms and tools. It provides easy-to-use APIs for building machine learning models and includes support for common tasks like classification, regression, clustering, and collaborative filtering.
+
+GraphX: GraphX is a graph processing library in Spark, which provides a distributed and fault-tolerant graph computation framework. It offers a set of graph operators and algorithms for analyzing and processing large-scale graph data.
+
 
 # References
 1. [SQLBolt](https://sqlbolt.com/)
