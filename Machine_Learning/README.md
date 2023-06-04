@@ -434,7 +434,9 @@ Like the name mentioned, this model is based on the Bayes theorem and conditiona
 Say we have a message 'Hello Money'. We need to calculate P(Spam|Hello, Money) and P(Normal|Hello, Money). Based on the probablities we decide the output label. We will take P(Spam|Hello, Money) for calculation. From applying Bayes theorem at every step below,
 
 $$ P(Spam|Hello, Money) = \frac{P(Spam, Hello, Money)}{P(Hello, Money)} $$
+
 $$ P(Spam, Hello, Money) = P(Hello | Money, Spam)P(Money, Spam) $$
+
 As we know by doing bayes $P(Money, Spam) = P(Money|Spam)P(Spam)$,
 
 $$ P(Spam, Hello, Money) = P(Hello | Money, Spam)P(Money|Spam)P(Spam) $$
@@ -452,7 +454,7 @@ Now for the Gaussian Naive Bayes (features are continous unlike nominal as above
 2. From the samples, a gaussian distribution is plotted for every feature given buys a ticket and doesn't buy a ticket i.e from data, for all 'distance' samples where a person buys a ticket, we plot normal distribution using mean and std from the data and similarly for all 'distance' samples where a person doesn't buy ticket, we plot normal distribution and we repeat this for all features. 
 3. To do a prediction for a new sample, we calculate probabilities as 
 
-$$ P(Buys Ticket|distance=value,price=value) = P(Buys Ticket)\*P(distance=value|Buys Ticket)\*P(price=value|Buys Ticket)` $$
+$$ P(Buys Ticket|distance=value,price=value) = P(Buys Ticket)\*P(distance=value|Buys Ticket)\*P(price=value|Buys Ticket) $$
 
 Except for prior probabilties, other probabilties are likelihoods calculated from gaussian distribution we plotted. Likelihood is the y axis value at X-axis (price or distance = given value).
 
@@ -467,8 +469,8 @@ K Nearest Neighbors is a non parametric model that can be used for both classifi
 3. The majority class label (for classification) or the mean/median of the target values (for regression) among the k nearest neighbors is then assigned as the predicted label or target value for the new input vector.
 
 The key idea behind the KNN algorithm is that similar instances are likely to have similar labels or target values. By considering the labels or target values of the k nearest neighbors, the algorithm makes predictions based on the local structure of the data. Remember to pick od number of k to avoiding tie between categories, scale the features (normalize) first as this is a distance based algorithm and for categorical features, appropriate distance metrics (such as Hamming distance or Jaccard similarity) need to be used instead of Euclidean or Manhattan distance.
-## Tree Methods
-### Decision Trees
+# Tree Methods
+## Decision Trees
 Tree methods are the best choice for the tabular data. Lets see how they work.
 1. Decision trees start with the root and have Nodes (decisions). Each of these nodes can again have nodes. The node without any following nodes (children) is called a leaf.
 2. Imagine we have a dataset with features 
@@ -504,7 +506,9 @@ Decision trees are powerful but they generally overfit as trees grow too long tr
 
 2. Other technique is called post-pruning. We typically tune only `ccp_aplha` which stands for Cost Complexity Pruning. It is similar to regularization where aplha is similar to lambda. As the tree size increases the loss value increases. More the value of aplha more the decion tree is pruned. 
 
-#### Entropy
+Decision Trees are scale invariant, visually interpretable, and gives feature importance as these are decisions made on features.
+
+### Entropy
 To decide which feature to consider for root node, we use Gini impurity. Alternatively we can even use entropy. It is a measure of the impurity or uncertainty in a set of data. It is calculated as $Entropy = -\Sigma p_i log_2(p_i) bits$. p_i represents the proportion of samples belonging to the i-th class or category. Suppose we have a dataset with 100 samples, and the target variable has two classes: "A" and "B". Let's assume the distribution of classes is as follows:
 
 Class "A": 60 samples
@@ -517,13 +521,73 @@ p_B = 40 / 100 = 0.4
 
 Next, we substitute these proportions into the entropy formula:
 
-$$ Entropy = - (p_A * log2(p_A) + p_B * log2(p_B)) $$
+$$ Entropy = - (p_A * log_2(p_A) + p_B * log_2(p_B)) $$
 
 It comes around 1.47 bits. Higher the entropy higher the dataset is balanced. As balanced datasets will have all classes evenly distributed and no class is favored thus high uncertainity.
 Similarly gini impurity is calculated without logarithm (thus simple calculations) as $Gini = 1-\Sigma p_i^2$. 
+## Ensemble Models
+Ensemble methods are combinations of several base estimators. There are two types of ensemble methods:  
+1. Averaging:  
+
+They combine several base estimators and then average their predictions to give final predictions. It is like voting with each vote carrying same power i.e each base estimator has equal effect on final output. **Reduces Variance**  
+
+Ex: Bagging (Mix of bagging and any other base estimator), Random Forest (Combination of Decision trees)
+    
+2. Boosting:  
+
+Base estimators are built sequentially i.e one after another. Present estimator decides the next estimator effect on final predictions. It is also voting but not all votes have equal power. The motivation is to combine several weak models to produce a powerful ensemble. **Reduces Bias**  
+
+Ex: AdaBoost, Gradient Tree Boosting
 ### Random Forest
+Decision trees are almost perfect but they just overfit. Random forest push performance trading explainability and computational performance. Random forest algorithm involves following steps:  
+1. Bootstrap the dataset (take random samples from the dataset with repetition and make another dataset with equal size as original).
+2.  For each decision tree in the Random Forest, a random subset of features is selected. This subset is typically smaller than the total number of features available in the dataset (usually for classification its sr root of number of features and for regression one third of features).
+3. Repeat the step 1 and 2 for n times creating a forest of trees using random features (Hence the name Random Forest).
+4. Predict the output of a new sample is done through maximum similar output resulted from n trees (voting). 
+### AdaBoost
+1. The core principle of AdaBoost is to fit a sequence of weak learners on repeatedly modified versions of the data.  
+2. These weak learners are many a times stumps(decision tree with only one node(leaf<--Root-->Leaf). We create forest of these stumps.  
+3. Each sample is given a sample weight. Initially sample weight is equal for all sammples (1/No.of.samples).  
+4. To create our first stump, out of all features, best feature is choosed as the node(similar to decision tree, Gini Index). This stump is used to predict the output. The amount of say is then calculated for the stump using $0.5\*log((1-TotalError)/Total Error)$.  
+5. Training samples that are incorrectly classified will now have increased sample weight and correctly classified will have decreased sample weight. Amount of increase is determined by $New Weight = sample weight * e^{amount of say}$. Similarly decrease is given by `New Weight = sample weight * e^-(amount of say)`.  
+6. Each subsequent weak learner is thereby forced to concentrate on the examples that are missed by the previous ones in the sequence.  
+7. Using these new sample weights, repeat above steps again i.e create a stump, predict and calculate amount of say, ...
+8. After creating all these stumps, to give the final prediction, each of predictions from a stump is weighted using respective amount of say and then the final prediction is decided.
 
+### Gradient Boosting
+In a way, gradient boosting is similar to adaboost where gradient boost uses log loss function (gradient) but the latter uses exponential loss function. Also trees in gradient boosting are not restricted to stumps (usually 8 to 32 leaves). Will have a closer look to understand better.  
 
+In regression:
+1. Choose a differentiable loss function. `d/dPred(obs-Pred)^2`
+2. Initialize the model with a predicted value (Pred) that minimizes the above loss function. (gradient descent)
+3. Generally the initial predicted value will be the avg of the all samples output.
+4. Start the loop `for m = 1 to M` where M is the number of trees:  
+    1. Calculate residuals using Observed - Predicted where predicted value is the value predicted by previous tree (In first case, it is the value from step 3). Residuals are calculated for all the samples.
+    2. Build a decision tree to predict the calculated **residuals**. The tree might look like `Residual value 1<--(Feature < value)-->Residual value 2, 3` (Ex: -17.3<--(Height<1.55)-->14.7,2.7) where the residual says how off the predicted value is to original for that sample.
+    3. The leaves contain the average residual values if there are multiple samples coming under that decision. (Ex: -17.3<--(Height<1.55)-->8.7)
+    4. New prediction for the sample is given by `Previous prediction + learning rate * Avg residual`. (Ex: if the input is height = 1.6 then pred = previous pred + rate * 8.7 (Because height  > 1.55))
+    5. Thus new prediction comes closer to the observed value.
+    6. If the learning rate is 1, then pred = prev pred + residual which will straight give the observed avalue.
+    7. So we generally set is a small learning rate to approach the observed value slowly.
+5. Note the above steps are repeated for M trees.
+6. After calling all M trees, `Predicted value = Previous Predicted value (from M-1 tree) + learning rate*Residual of M-1 tree` which is nothing but `Predicted value = First prediction (avg of output samples) + learning rate * (residual of tree 1 + residual of tree2 + ... + residual of tree M-1)`.
+7. Which means new input goes through all the trees to predict the output.
+
+In classification, the algorithm almost remains same except for loss function.
+1. Choose a differentiable loss function. $log(likelihood) = -Observed (0 or 1) \* log(p) + (1-Obs)\*log(1-p)$ where p is probability of getting an output (0 or 1) which is calculated from output samples.
+2. But the above loss function is converted to in terms of log(odds). The final differentiable loss function is `d/dlog(odds)(-Obs * log(odds) + log(1+e^log(odds))`.
+3. Initialize the model with a prediction value (Pred = log(odds)) such that it minimizes the above loss function. Note that log(odds) is not 0 or 1 its a value calculated from samples. (Ex: Say 2 Yes and 1 No then odds = 2/1 i.e log(2/1) = 0.69).
+4. Start the loop `for m = 1 to M`
+    1. Calculate residuals which might be like (Obs - log(odds))
+    2. Build a decision tree to predict the residuals similar to regression case.
+    3. If there are two residuals in a single leaf, we might think to take average like regression but it doesnt work as they are log(odds) not plain values. It is given by `(Sum of residuals)/Sum of p(1-p) for each sample)`.(Ex: (Residual2 + Residual3)/(p2(1-p2) + p3(1-p3)))
+    4. Decision tree looks `Value <--like Likes Actor-->Value`
+    5. Next steps are same as the regression steps.
+
+The gradient boost regression kind of looks like decision trees built on linear regression and classification looks like decision trees built on logistic regression. So the residuals that are claculated in gradient boost are called **Pseudo Residuals**.
+
+### XG-Boost
+ 
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
