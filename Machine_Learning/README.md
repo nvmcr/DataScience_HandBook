@@ -469,6 +469,60 @@ K Nearest Neighbors is a non parametric model that can be used for both classifi
 The key idea behind the KNN algorithm is that similar instances are likely to have similar labels or target values. By considering the labels or target values of the k nearest neighbors, the algorithm makes predictions based on the local structure of the data. Remember to pick od number of k to avoiding tie between categories, scale the features (normalize) first as this is a distance based algorithm and for categorical features, appropriate distance metrics (such as Hamming distance or Jaccard similarity) need to be used instead of Euclidean or Manhattan distance.
 ## Tree Methods
 ### Decision Trees
+Tree methods are the best choice for the tabular data. Lets see how they work.
+1. Decision trees start with the root and have Nodes (decisions). Each of these nodes can again have nodes. The node without any following nodes (children) is called a leaf.
+2. Imagine we have a dataset with features 
+3. Each of these node decisions are decisions taken on a feature of the dataset (Hates Rose<--(left is no)loves Titanic(right is yes)-->Loves Rose). Generally the leaves are output.
+4. If there are multiple features, to decide which feature goes first on the tree, following method is used (**Gini Impurity**).
+    * Each feature is soley used to predict the outcome. Say the outcome is Buys ticket or doesn't buy. Feature be, Likes Actor (Yes or No). 
+    * Out of all samples, number of yes and no in output is calculated for liking actor and not liking actor.
+    * Which means each children (leaf) of this node will have a number of yes and no.
+    * Gini Impurity for each leaf is calculated as $1-(Probability of Yes)^2-(Probability of No)^2$.
+    * Total gini impurity of the node is calculated by averaging impurity of each leaf.
+    * If the number of samples on each of the leaf is not equal take the weighted average of each leaf and do average for node i.e `Weighted avg of each leaf = (Number of samples in leaf/Total samples in the node)*gini impurity of the leaf`.  
+
+    What if the feature has numeric data?  
+    * Let the feature be distance of theatre. Sort that column and then calculate avergae of each of the adjacent cells and calculated gini impurity.
+    * For example, let the sorted values be 7,12,18,35,38. Calulating avg of each adjacent cell gives 9.5,15,26.5,36.5.
+    * Each node will be like Distance < 9.5, then each of the leaf will have outputs yes and no. Then calculate gini impurity for this node.
+    * Repeat the above step for all 15,26.5,36.5 and decide the best value.
+    * This best value node, Distance < 15 will compete with other features like, likes actor to be decided to go first.
+4. Now we will have one feature decision as the root. If the children of this root have any impurity i.e few Yes and few No (Pure means full yes or full no), then that children will become a Node and step 3 is repeated again till we reach a node that is pure.
+5. If the node is pure then it becomes a leaf.
+6. If the leaf has No, then the decision is Doesn't buy ticket and vice-versa.
+
+What if the output is a regression value?  
+1. Choosing a feature is done by gini impurity but instead of taking yes and no probability, we take squared residual errors. 
+2. Say distance be a feature and price be output. If distance < 3, the children will be Price = (Average outputs in data when distance is less than 3) and other children will other end average.
+3. Each children gini impurity is calculated by `(Average - Actual price)^2` for each sample and add all to get impurity of that leaf.
+4. Thus choose a distance < value, such that value gives least residual errors.
+5. Compare this way for all other features to choose root.
+6. The root's children will become a leaf if there is no further reduction. This will create a leaf for each sample. To avoid this we will set a parameter ex:7 which means if a node cant avg 7 or more samples, it becomes a leaf displaying the avg value which is nothing but output.
+
+Decision trees are powerful but they generally overfit as trees grow too long trying to learn everything about the data. So we prune the tree to avoid overfitting. There are two types of pruning. 
+1. Pre-pruning technique involves tuning hyper-paramters like `max_depth`, `max_features`, `min_samples_leaf` and `min_samples_split` before training the model. This type of pre-fitting optimization is called early fitting. 
+
+2. Other technique is called post-pruning. We typically tune only `ccp_aplha` which stands for Cost Complexity Pruning. It is similar to regularization where aplha is similar to lambda. As the tree size increases the loss value increases. More the value of aplha more the decion tree is pruned. 
+
+#### Entropy
+To decide which feature to consider for root node, we use Gini impurity. Alternatively we can even use entropy. It is a measure of the impurity or uncertainty in a set of data. It is calculated as $Entropy = -\Sigma p_i log_2(p_i) bits$. p_i represents the proportion of samples belonging to the i-th class or category. Suppose we have a dataset with 100 samples, and the target variable has two classes: "A" and "B". Let's assume the distribution of classes is as follows:
+
+Class "A": 60 samples
+Class "B": 40 samples
+
+To calculate the entropy, we first determine the proportion of samples belonging to each class:
+
+p_A = 60 / 100 = 0.6
+p_B = 40 / 100 = 0.4
+
+Next, we substitute these proportions into the entropy formula:
+
+$$ Entropy = - (p_A * log2(p_A) + p_B * log2(p_B)) $$
+
+It comes around 1.47 bits. Higher the entropy higher the dataset is balanced. As balanced datasets will have all classes evenly distributed and no class is favored thus high uncertainity.
+Similarly gini impurity is calculated without logarithm (thus simple calculations) as $Gini = 1-\Sigma p_i^2$. 
+### Random Forest
+
 
 # References
 The information is pulled from various sources from internet. Major sources are:
