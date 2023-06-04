@@ -470,8 +470,8 @@ K Nearest Neighbors is a non parametric model that can be used for both classifi
 
 The key idea behind the KNN algorithm is that similar instances are likely to have similar labels or target values. By considering the labels or target values of the k nearest neighbors, the algorithm makes predictions based on the local structure of the data. Remember to pick od number of k to avoiding tie between categories, scale the features (normalize) first as this is a distance based algorithm and for categorical features, appropriate distance metrics (such as Hamming distance or Jaccard similarity) need to be used instead of Euclidean or Manhattan distance.
 # Tree Methods
+Tree methods are the best choice for the tabular data adn can be used for both classification and regression. Lets see how they work.
 ## Decision Trees
-Tree methods are the best choice for the tabular data. Lets see how they work.
 1. Decision trees start with the root and have Nodes (decisions). Each of these nodes can again have nodes. The node without any following nodes (children) is called a leaf.
 2. Imagine we have a dataset with features 
 3. Each of these node decisions are decisions taken on a feature of the dataset (Hates Rose<--(left is no)loves Titanic(right is yes)-->Loves Rose). Generally the leaves are output.
