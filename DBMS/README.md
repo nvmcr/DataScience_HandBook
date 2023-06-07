@@ -46,6 +46,7 @@ This README file contains only the concepts related to DBMS. All the practice qu
             3. [Precedence Graph](#Precedence-Graph)
       2. [Lock](#lock)
             1. [2 Phase Locking](#2-Phase-Locking)
+      3. [Isolation Levels](#isolation-levels)
  4. [Parallel Processing](#parallel-processing)
  5. [CAP](#CAP)
  6. [MapReduce and Spark](#MapReduce-and-Spark)
@@ -622,6 +623,20 @@ While the two-phase locking protocol provides a high degree of concurrency while
 1. Deadlocks
 
 Deadlocks can occur when two or more transactions are waiting for each other to release locks that they need to continue their execution. This can happen when transactions acquire locks in different orders, leading to a circular dependency that cannot be resolved without aborting one of the transactions. An example of a deadlock situation is say we have three transactions say T1 which needs element A and B, T2 which needs element B and C and T3 which needs C and A. According to 2Pl, T1 locks A and concurrently T2 locks B and T3 locks C. Each transcation does few operations but now T1 needs B but it is locked by T2 which needs C which is locked by T3 which needs a that is locked by T1. So transactions just wait forever. We can detect this by precedence graph cycle. If there is a cycle, we rollback and start over again.
+## Isolation Levels
+These define how transactions interact with each other when accessing and modifying data concurrently. These levels determine the degree to which a transaction's changes are visible to other concurrent transactions, as well as the potential for concurrency-related anomalies, such as dirty reads, non-repeatable reads, and phantom reads.
+
+There are generally four standard isolation levels defined by the ANSI/ISO SQL standard, although different database systems may provide additional levels or variations. The four standard isolation levels are:
+
+Read Uncommitted: This is the lowest isolation level where transactions can see uncommitted changes made by other transactions. It allows dirty reads, meaning a transaction can read data that has been modified but not yet committed by another transaction. It offers the highest level of concurrency but provides the least data consistency and integrity.
+
+Read Committed: In this isolation level, a transaction can only see changes that have been committed by other transactions. It prevents dirty reads by waiting until a transaction commits before allowing other transactions to access its changes. However, it can still encounter non-repeatable reads and phantom reads.
+
+Repeatable Read: This isolation level ensures that a transaction sees a consistent snapshot of the data throughout its execution. It guarantees that any data read by a transaction will not be changed or deleted by other transactions until it completes. It prevents dirty reads and non-repeatable reads but can still have phantom reads.
+
+Serializable: This is the highest isolation level that provides strict data consistency. It ensures that transactions are executed in a way that appears as if they were executed serially, one after another. It offers the highest level of data integrity by preventing dirty reads, non-repeatable reads, and phantom reads. However, it can also result in decreased concurrency and increased contention.
+
+Each isolation level provides a trade-off between concurrency and data consistency. It is essential to choose the appropriate isolation level based on the requirements of the application to balance performance and data integrity.
 # Parallel Processing
 The rates at which we generate and use information have outpaced the capabilities of a single computer. We need more speed and scale. OLTP (Online Transaction Processing) is a database system designed for transaction-oriented applications. It is optimized for handling large numbers of small, individual transactions in real-time. OLTP databases are typically used in operational environments where data is constantly updated, inserted, or deleted, such as in banking systems, e-commerce platforms, or airline reservation systems. OLAP (Online Analytical Processing) is designed for analytical processing and decision support. It is optimized for complex queries and aggregations performed on large volumes of historical data. OLAP databases are commonly used in business intelligence, data warehousing, and reporting applications. To implement database parallelism. 
 1. Architecture Parallelsim
