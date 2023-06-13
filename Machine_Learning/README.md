@@ -378,8 +378,29 @@ This is a combination of L1 and L2. In this regularization coefficient looks lik
 $$ \lambda L1 + (1-\lambda)L2 $$
 # Classification Models
 ## Logistic Regression
-Similar to linear regression except the target is categorical instead of continous (so its not exactly regression problem). Input of logistic can be continous or categorical. The model aims to categorize the input samples into classes. The decision boundary is linear. The main difference from linear regression is the loss function.
-### Loss Functions
+Similar to linear regression except the target is categorical instead of continous (so its not exactly regression problem). Input of logistic can be continous or categorical. The model aims to categorize the input samples into classes. The decision boundary is linear. The main difference from linear regression is the how we fit the line.
+
+![](Images/logreg.png)
+
+The predicted values should stay within the range of 0 and 1 and we need something like a S function to classify the samples. This function make a sample close to 1 or 0 if it is sure (high probability). Generally sigmoid function is used in this case. As we know in linear case y = wx+b, instead of directly using y, we first map it within range of 0,1 by using $\sigma (y) = \frac{1}{1+e^{-wx+b}}$ We also have a threshold value, usually 0.5, to map values between 0 to 1. For example, if we need have a value of 0.7 as the output of sigmoid function, then we make that prediction as 1 as 0.7$\ge$0.5. Similarly if it is 0.3, then the prediction is 0.
+
+To better fit (optimize) the sigmoid, we need a loss function. We cant use the L2 loss as it will become non convex for logistic. So we use something called logistic loss or binary categorical cross entropy. 
+
+$$ Loss = \(-\sum_{i=1}^{C} y_i \log(p_i)\) $$
+
+where:
+C : Number of classes; 
+y_i : True label (ground truth) for class i; 
+p_i : Predicted probability for class i
+
+Negative sign is because log of values between 0 and 1 are negative, but for general narrative of less value of loss is preferred, we add a negative sign. 
+For binary classification, loss is often calculated as average cross entropy of all n samples. 
+
+$$Loss=-\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right)$$
+
+Here $y_i$ will be either 0 or 1 and $p_i$ is the value we get after the sigmoid function. The weights are optimized using this loss and gradient descent similar to linear regression. 
+
+### Other Loss Functions
 #### 0-1 Loss
 ![0-1](Images/binaryloss.png)
 
@@ -394,14 +415,10 @@ Similar to loss function used in linear regression. If observed, we get high los
 $$ l(\hat{y},y) = \frac{1}{1+e^{y\hat{y}}} $$
 
 This is a differentiable approximation of 0-1 loss. The edges of funtion is flat which makes gradients long time to converge.
-#### Logistic Loss
-![](Images/logisticloss)
-
-$$ l(\hat{y},y) = 1+e^{-y\hat{y}} $$
+#### Categorical Cross Entropy/Logistic Loss
+![](Images/logisticloss.png)
 
 Resoles all our issue. Thus quite popular choice.
-
-![Logistic](Images/logistic.png)
 
 ## Support Vector Machines
 To choose a best linear classifier to seperate say two classes, how should the decision boundary be? Should the decision boundary be close to class A or class B. Ideal boundary will be far from the both classes because small change should change the output drastically thus making the model more generalizable. In a 2D case, decision boundary is a line and in higher dimensions it is a hyperplane. The distance is measured from a point in each class which are nearest to the hyperplane. So only the points closest to the hyperplane matter in finding the decision boundary. Those points from each class are called support vectors. The distance from a point i is measured by:
@@ -574,7 +591,7 @@ In regression:
 7. Which means new input goes through all the trees to predict the output.
 
 In classification, the algorithm almost remains same except for loss function.
-1. Choose a differentiable loss function. $log(likelihood) = -Observed (0 or 1) \* log(p) + (1-Obs)\*log(1-p)$ where p is probability of getting an output (0 or 1) which is calculated from output samples.
+1. Choose a differentiable loss function (logistic loss). $log(likelihood) = -Observed (0 or 1) \* log(p) + (1-Obs)\*log(1-p)$ where p is probability of getting an output (0 or 1) which is calculated from output samples.
 2. But the above loss function is converted to in terms of log(odds). The final differentiable loss function is `d/dlog(odds)(-Obs * log(odds) + log(1+e^log(odds))`.
 3. Initialize the model with a prediction value (Pred = log(odds)) such that it minimizes the above loss function. Note that log(odds) is not 0 or 1 its a value calculated from samples. (Ex: Say 2 Yes and 1 No then odds = 2/1 i.e log(2/1) = 0.69).
 4. Start the loop `for m = 1 to M`
@@ -587,7 +604,9 @@ In classification, the algorithm almost remains same except for loss function.
 The gradient boost regression kind of looks like decision trees built on linear regression and classification looks like decision trees built on logistic regression. So the residuals that are claculated in gradient boost are called **Pseudo Residuals**.
 
 ### XG-Boost
- 
+
+
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
