@@ -574,7 +574,7 @@ In regression:
 7. Which means new input goes through all the trees to predict the output.
 
 In classification, the algorithm almost remains same except for loss function.
-1. Choose a differentiable loss function. $log(likelihood) = -Observed (0 or 1) \* log(p) + (1-Obs)\*log(1-p)$ where p is probability of getting an output (0 or 1) which is calculated from output samples.
+1. Choose a differentiable loss function (logistic loss). $log(likelihood) = -Observed (0 or 1) \* log(p) + (1-Obs)\*log(1-p)$ where p is probability of getting an output (0 or 1) which is calculated from output samples.
 2. But the above loss function is converted to in terms of log(odds). The final differentiable loss function is `d/dlog(odds)(-Obs * log(odds) + log(1+e^log(odds))`.
 3. Initialize the model with a prediction value (Pred = log(odds)) such that it minimizes the above loss function. Note that log(odds) is not 0 or 1 its a value calculated from samples. (Ex: Say 2 Yes and 1 No then odds = 2/1 i.e log(2/1) = 0.69).
 4. Start the loop `for m = 1 to M`
@@ -587,7 +587,9 @@ In classification, the algorithm almost remains same except for loss function.
 The gradient boost regression kind of looks like decision trees built on linear regression and classification looks like decision trees built on logistic regression. So the residuals that are claculated in gradient boost are called **Pseudo Residuals**.
 
 ### XG-Boost
- 
+
+
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
