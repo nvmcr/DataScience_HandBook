@@ -395,7 +395,7 @@ $$ l(\hat{y},y) = \frac{1}{1+e^{y\hat{y}}} $$
 
 This is a differentiable approximation of 0-1 loss. The edges of funtion is flat which makes gradients long time to converge.
 #### Logistic Loss
-![](Images/logisticloss)
+![](Images/logisticloss.png)
 
 $$ l(\hat{y},y) = 1+e^{-y\hat{y}} $$
 
