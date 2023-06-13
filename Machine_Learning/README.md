@@ -389,12 +389,11 @@ To better fit (optimize) the sigmoid, we need a loss function. We cant use the L
 $$ Loss = \(-\sum_{i=1}^{C} y_i \log(p_i)\) $$
 
 where:
-\begin{align*}
-C & : \text{{Number of classes}} \
-y_i & : \text{{True label (ground truth) for class }} i \
-p_i & : \text{{Predicted probability for class }} i
-\end{align*}
+C : Number of classes 
+y_i : True label (ground truth) for class i 
+p_i : Predicted probability for class i
 
+Negative sign is because log of values between 0 and 1 are negative, but for general narrative of less value of loss is preferred, we add a negative sign. 
 For binary classification, loss is often calculated as average cross entropy of all n samples. 
 
 $$Loss=-\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right)$$
