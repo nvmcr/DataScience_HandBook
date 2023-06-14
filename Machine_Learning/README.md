@@ -576,13 +576,13 @@ In a way, gradient boosting is similar to adaboost where gradient boost uses log
 
 In regression:
 1. Choose a differentiable loss function. `d/dPred(obs-Pred)^2`
-2. Initialize the model with a predicted value (Pred) that minimizes the above loss function. (gradient descent)
-3. Generally the initial predicted value will be the avg of the all samples output.
+2. Initialize the model with an initial tree (it will be a single value in first case).
+3. Our first tree is generally the initial predicted value which will be the avg of the all samples output.
 4. Start the loop `for m = 1 to M` where M is the number of trees:  
     1. Calculate residuals using Observed - Predicted where predicted value is the value predicted by previous tree (In first case, it is the value from step 3). Residuals are calculated for all the samples.
-    2. Build a decision tree to predict the calculated **residuals**. The tree might look like `Residual value 1<--(Feature < value)-->Residual value 2, 3` (Ex: -17.3<--(Height<1.55)-->14.7,2.7) where the residual says how off the predicted value is to original for that sample.
+    2. Build a decision tree (using gini) to predict the calculated **residuals**. The tree might look like `Residual value 1<--(Feature < value)-->Residual value 2, 3` (Ex: -17.3<--(Height<1.55)-->14.7,2.7) where the residual says how off the predicted value is to original for that sample.
     3. The leaves contain the average residual values if there are multiple samples coming under that decision. (Ex: -17.3<--(Height<1.55)-->8.7)
-    4. New prediction for the sample is given by `Previous prediction + learning rate * Avg residual`. (Ex: if the input is height = 1.6 then pred = previous pred + rate * 8.7 (Because height  > 1.55))
+    4. New prediction for the sample is given by $Previous prediction + learning rate * Avg residual$. (Ex: if the input is height = 1.6 then pred = previous pred + rate * 8.7 (Because height  > 1.55))
     5. Thus new prediction comes closer to the observed value.
     6. If the learning rate is 1, then pred = prev pred + residual which will straight give the observed avalue.
     7. So we generally set is a small learning rate to approach the observed value slowly.
@@ -590,16 +590,25 @@ In regression:
 6. After calling all M trees, `Predicted value = Previous Predicted value (from M-1 tree) + learning rate*Residual of M-1 tree` which is nothing but `Predicted value = First prediction (avg of output samples) + learning rate * (residual of tree 1 + residual of tree2 + ... + residual of tree M-1)`.
 7. Which means new input goes through all the trees to predict the output.
 
-In classification, the algorithm almost remains same except for loss function.
-1. Choose a differentiable loss function (logistic loss). $log(likelihood) = -Observed (0 or 1) \* log(p) + (1-Obs)\*log(1-p)$ where p is probability of getting an output (0 or 1) which is calculated from output samples.
-2. But the above loss function is converted to in terms of log(odds). The final differentiable loss function is `d/dlog(odds)(-Obs * log(odds) + log(1+e^log(odds))`.
-3. Initialize the model with a prediction value (Pred = log(odds)) such that it minimizes the above loss function. Note that log(odds) is not 0 or 1 its a value calculated from samples. (Ex: Say 2 Yes and 1 No then odds = 2/1 i.e log(2/1) = 0.69).
-4. Start the loop `for m = 1 to M`
-    1. Calculate residuals which might be like (Obs - log(odds))
+In classification, the algorithm almost remains same except for loss function. Before going into this, let me provide some context on odds.
+#### Odds
+Odds represent the ratio of the probability of an event happening to the probability of it not happening. For example, if the odds of winning a game are 3 to 1, it means that the probability of winning is three times higher than the probability of losing. But instead of odds we use log odds (reason explained shortly). These log odds can be shrinked down to 0 to 1 probabilities using sigmoid function. Log odds have symmetric distribution around the zero making calculations easy and they have normal distribution. Lets get back to gradient boosting.
+
+
+1. Choose a differentiable loss function like logistic loss.
+2. Initialize the model with a single tree (it will be a single value in first case).
+3. But unlike regression, we can't use average value as the starting prediction. So we use log odds. Say we have 10 samples with output classes of survived (4) and not survived(6), then log(odds) that a passenger survives is log(no.of times survived in all sample outputs/no.of times in not survived in all sample outputs)= log(4/6). This value is our first tree.
+4. For classificaion, we convert this log odds to probability by using $\frac{e^{log(odds)}}{1+e^{log(odds)}}. Say we got a value of 0.7
+5. We calculate residuals for all samples. For all survived (0), residual will be (0-0.7)=0.3 and for all not survived, residual value will be 0.3
+6. Using these residual values we build our second tree with all the features(columns).
+9. Start the loop `for m = 1 to M`
+    1. Calculate residuals which might be like (Obs - Predicted Probability)
     2. Build a decision tree to predict the residuals similar to regression case.
-    3. If there are two residuals in a single leaf, we might think to take average like regression but it doesnt work as they are log(odds) not plain values. It is given by `(Sum of residuals)/Sum of p(1-p) for each sample)`.(Ex: (Residual2 + Residual3)/(p2(1-p2) + p3(1-p3)))
-    4. Decision tree looks `Value <--like Likes Actor-->Value`
-    5. Next steps are same as the regression steps.
+    3. The residuals are obtained by using probabilities but our first tree is obtained by log odds. So we have to convert the leaves of decision tree (which are the residuals) into log odds. It is given by $\frac{\Sigma Residuals}{\Sigma(PreviousProability*(1-PreviousProbability)}$ for each leaf. Ex: Say we got a value of -0.7,0.3 as the leaves for a node. This is converted as $\frac{-0.7+0.3}{0.7*(1-0.7)+0.7*(1-0.7)}$ The 0.7 in the denominator is the previous predicted probability we got by using sigmoid function. If there is only one value as the leaf for a node, then just remove summations.
+    4. Decision tree looks `NewOddsValue <--like Likes Actor-->NewOddsValue`
+    5. New prediction for the sample is given by $Previous tree prediction + learning rate * NewOddsValue$. (Ex: Our first tree is log(4/6) so new prediction is log(4/6)+0.8\*1.4)
+    5. We convert this value back to probability using sigmoid again to calculate new residuals.
+    8. After calling all M trees, `Predicted value = Previous Predicted value (from M-1 tree) + learning rate*Residual of M-1 tree` which is nothing but `Predicted value = First prediction (avg of output samples) + learning rate * (residual of tree 1 + residual of tree2 + ... + residual of tree M-1)`.
 
 The gradient boost regression kind of looks like decision trees built on linear regression and classification looks like decision trees built on logistic regression. So the residuals that are claculated in gradient boost are called **Pseudo Residuals**.
 
