@@ -684,6 +684,25 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 4. Random forest reduces overfitting caused by decision trees.
 5. Gradient boosting methods are the most powerful models but interpretability is not so good.
 
+# Dimensionality Reduction
+As the name says it is used for decreasing dimensions/features. Often used for better computation or visualization or interpreting important features. Though it comes under unsupevised learning we will have it seperate.
+## PCA
+Principal Component Analysis is quite a popular choice for dimensionality reduction. It preserves the most important information or patterns present in the data. It achieves this by finding a set of orthogonal variables, known as principal components, that capture the maximum variance in the original data.
+1. Say we have two features and few samples. We plot those feature points on to the graph where axis are feature 1 and feature 2.
+2. We then find the mean of both features which gives us a point P(mean1, mean2).
+3. Shift the data points such that P is at the origin. This doesn't change relative positions of the points.
+4. We will try to fit a line through the points such that it passes through the origin.
+5. To find the best fit line, start with a random line passing through origin. Project the data points on to the line.
+6. Goal is to minimize the distances from the data points to the line or maximize the distance from data points from origin. 
+7. Either case works because, we we draw a perpendicular line from project point to the actual point, we will get a right angled triangle with the data point vector as hypotenus (say a) which makes other two lines (b, c) are inversely proportional to each other. b,c are described in the above point.
+8. It is generally easier to calculate c which is maximize the distance from data points to origin. So PCS calculates all the distances for every projected data point and finds the sum of squared distances (d1^2+d2^2+...).
+9. Now we rotate the line and calculate distances again and we repeat this to maxime the distance.
+10. The line with maximum value is called Principled Component 1. The slope of the line tells us on which axis the data is more spread/varied. Say we have a slope of 0.25 this means every 4 units we go along feature 1, we go 1 unit along feature2. This is like 4:1 feature mixture (linear combination of features). This 4 and 1 forms a right angled triangle on graph with 4.12 as hypotenus. Scale theese values such that hypotenus is 1. This gives us new values but with same ratio. This hypotenus is now the unit vector that consists 0.97 feature 1 and 0.242 feature 2 is called an eigen vector for PC1. The eigen value is given by $\frac{Sum of squared distances}{NUmber of data points-1}$ whihc is nothing but measure of variation. The eigen value shows the amount of say a PC1 has.
+11. The PC2 is given by a unit vector perpendicular to PC1. Scree plot is the plot with all the amounts of say for each PC.
+12. We remove everything from graph except the PC1 and PC2 lines with projected points on them. Then we rotate the PC1 and PC2 lines such that PC1 is horizantal to the screen for better visualization and map those points back on to the graph.
+13. When we have more than 2 features, we do the same thing as above, but instead of just using perpendicular PC2 we try all perpendicular lines to PC1 as there will  be more than 1 in 3D. And we just use the unit vector perpendicular to both PC1 and PC2 for PC3
+
+
 # Unsupervied Learning
 The most ideal way of doing machine learning is to train a model without labelling the data. Which means model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
 ## K means Clustering
@@ -696,8 +715,6 @@ It is used for partitioning a dataset into distinct groups or clusters based on 
 6. The new centroid is computed as the mean of all data points assigned to that cluster. It represents the center of gravity for the cluster.
 7. Repeat again from step 3 until convergence is achieved. Convergence occurs when the centroids no longer change significantly or when a maximum number of iterations is reached.
 8. The algorithm outputs the final K clusters, where each cluster contains a group of data points that are similar to each other in terms of distance.
-## Dimensionality Reduction
-### PCA
 
 # References
 The information is pulled from various sources from internet. Major sources are:
