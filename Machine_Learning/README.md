@@ -648,6 +648,57 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 8. If there are multiple disks available, XGboost splits data into both disks making reading data faster. Also it can build trees with only some amount of data instead of all data.
 9. XGboost can also be trained on GPUs!!
 
+## Which Model to choose? Pros and Cons
+### Linear Regression
+1. There should be a linear relationship between features and output.
+2. Its simple and computationally efficient.
+3. Linear Regressions have several assumptions like linearity, homoscedasticity (variance of residuals is constant), independence (all observations are independent of each other), and normality (target values are assumed to be normal but there are **Generalized Linear Models** that can use other distributions on top of linear regression like poisson regression).
+### Logistic Regression
+1. Ideal for binary classification.
+2. Choose when ranking or probabilities of labels are needed.
+3. Highly interpretable.
+4. Not best in non linear case.
+5. Not suitable for highly correlated features.
+### Naive Bayes
+1. Best for high number of categorical features (like text)
+2. Highly scalable due to being naive.
+3. Not best if features are correlated or complex.
+### SVM
+1. Works well if there is a clear margin seperation between classes.
+2. Ideal choice when there are more features than samples.
+3. Effective in high dimensions (thanks to kernels)
+4. Memory Efficient.
+5. But not suitable for large datasets.
+6. Performs poorly on imbalanced datasets.
+### KNN
+1. This should be the first choice of model when there are many data samples with few features.
+2. Better suited for small to medium sized dataset.
+3. It doesn't make any assumptions about the data distribution (non parametric) and can capture complex non linear relationships.
+4. It is robust to outliers.
+5. KNN is not best for high dimensional data.
+6. Not best for imbalanced data where one class dominates thus influencing neighbours more than it should.
+### Trees
+1. Best for tabular data even with non linear relations.
+2. Feature Importance can be interpreted from decision trees
+3. Decision trees works best but often overfits.
+4. Random forest reduces overfitting caused by decision trees.
+5. Gradient boosting methods are the most powerful models but interpretability is not so good.
+
+# Unsupervied Learning
+The most ideal way of doing machine learning is to train a model without labelling the data. Which means model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
+## K means Clustering
+It is used for partitioning a dataset into distinct groups or clusters based on their similarities. It aims to minimize the intra-cluster variance while maximizing the inter-cluster variance. The algorithm is quite simple.
+1. Select the number of clusters, K, that you want to create.
+2. Initialize K points called centroids randomly or using a predefined method. These centroids represent the center of each cluster. The data points on a graph looks like (sample1'sfeature1 value, sample1'sfeature2 value,..)
+3. For each data point, calculate the distance (e.g., Euclidean distance) to each centroid.
+4. Assign the data point to the cluster with the nearest centroid. This step is often referred to as the "nearest neighbor" assignment.
+5. After assigning all data points to clusters, calculate the new centroids for each cluster.
+6. The new centroid is computed as the mean of all data points assigned to that cluster. It represents the center of gravity for the cluster.
+7. Repeat again from step 3 until convergence is achieved. Convergence occurs when the centroids no longer change significantly or when a maximum number of iterations is reached.
+8. The algorithm outputs the final K clusters, where each cluster contains a group of data points that are similar to each other in terms of distance.
+## Dimensionality Reduction
+### PCA
+
 # References
 The information is pulled from various sources from internet. Major sources are:
 1. [CSE 546 University of Washington Autumn 22](https://courses.cs.washington.edu/courses/cse446/22au/schedule/)
