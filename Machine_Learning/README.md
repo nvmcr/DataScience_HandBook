@@ -734,6 +734,12 @@ To summarize the steps:
 1. Standardize the data.
 2. Find the covariance matrix. The covariance matrix will be of dimensions p x p where p is the number of features.
 3. Find eigenvalues and eigenvectors of the covariance matrix and sort the eigenvectors in descending order of their eigenvalues to get principal components.
+### Watchouts
+1. How many principal components to consider? In case there is no definite goal of reaching 2D or 3D, then it's better to plot the scree plot which has eigenvalues on the y-axis and principal component number of the X-axis. As we expect the plot decreases with increasing PCs. Generally, people stop with the PC when the plot stops falling rapidly.
+2. PCA assumes there is a linear correlation among features. If the features are already independent or not linear (plot the data points to know if not linear) then PCA is of no use.
+3. There is another version called kernel PCA which can be used for non-linearly related features. Similar to SVM, the data is transformed into higher dimensions and then covariance matrix is computed. But this doesn't always work. So many use tSNE for non linear relations.
+4. Also mentioned before, PCA is scale variant so we standardize the data first.
+5. Interpretability is a key issue in PCA as Principal components say nothing about the data.
 
 ## t-SNE
 # Unsupervied Learning
