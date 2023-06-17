@@ -724,7 +724,7 @@ Back to PCA, here are the steps we follow:
 1. Standardize the data first. When the ranges are different then the range of variance will also change making one feature dominant over another. So standardize ((value-mean)/std) the data before doing any transformations.
 2. We will have the data points in the feature space (similar to PCA discussed above). We need to figure out a vector $u_1$ (best fitting line) such that when we project all the data points onto that vector with maximum variance preserved.
 3. How do we find that vector? Will start with how projections look. Projection of $x_i$ (data point/vector) onto a vector $u_1$ is given by $u_1^Tx_iu$ and the mean of all projections is given by $u_1^T\bar{X} u$.
-4. We need to find the variance of these projections which is given by $\frac{1}{N} \Sigma_{n=1}^N (u_1^TX_n - u_1^T\bar{X})^2$ (remember variance of a point is square of the difference between point and mean divided by number of points). when we expand this, we get $u_1^T\[\frac{1}{N} \Sigma_{n=1}^N (X_n - \bar{X})(X_n - \bar{X})^T]u_1$. This can be rewritten as $u_1^TSu_1$ where S is the covariance matrix.
+4. We need to find the variance of these projections which is given by $\frac{1}{N} \Sigma_{n=1}^N (u_1^TX_n - u_1^T\bar{X})^2$ (remember variance of a point is square of the difference between point and mean divided by number of points, here length of each projected vector is given by $u_1^Tx$). when we expand this, we get $u_1^T\[\frac{1}{N} \Sigma_{n=1}^N (X_n - \bar{X})(X_n - \bar{X})^T]u_1$. This can be rewritten as $u_1^TSu_1$ where S is the covariance matrix.
 5. We need to maximize this equation such that $u_1$ is a unit vector because our projected vector is trying to get the direction not the magnitude (so we can use any magnitude). Reframing the constraint as $u_1^Tu_1=1$ as it is a unit vector.
 6. We saw the same optimization problem in lagrange multipliers. We need to find $u_1$ which is the **eigenvector of covariance matrix S with the maximum eigenvalue, $\lambda$**
 7. So we just need to find all eigenvalues of covariance matrix S and find the biggest eigenvalue. The corresponding eigenvector of this max eigenvalue is our required vector (PC1).
@@ -734,6 +734,8 @@ To summarize the steps:
 1. Standardize the data.
 2. Find the covariance matrix. The covariance matrix will be of dimensions p x p where p is the number of features.
 3. Find eigenvalues and eigenvectors of the covariance matrix and sort the eigenvectors in descending order of their eigenvalues to get principal components.
+
+## t-SNE
 # Unsupervied Learning
 The most ideal way of doing machine learning is to train a model without labeling the data. This means the model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
 ## K means Clustering
@@ -746,6 +748,9 @@ It is used for partitioning a dataset into distinct groups or clusters based on 
 6. The new centroid is computed as the mean of all data points assigned to that cluster. It represents the center of gravity for the cluster.
 7. Repeat again from step 3 until convergence is achieved. Convergence occurs when the centroids no longer change significantly or when a maximum number of iterations is reached.
 8. The algorithm outputs the final K clusters, where each cluster contains a group of data points that are similar to each other in terms of distance.
+
+## DBSCAN
+## Gaussian Mixture Models
 
 # References
 The information is pulled from various sources from internet. Major sources are:
