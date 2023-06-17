@@ -685,30 +685,59 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 5. Gradient boosting methods are the most powerful models but interpretability is not so good.
 
 # Dimensionality Reduction
-As the name says it is used for decreasing dimensions/features. Often used for better computation or visualization or interpreting important features. Though it comes under unsupevised learning we will have it seperate.
+As the name says it is used for decreasing dimensions/features. Often used for better computation or visualization or interpreting important features. Though it comes under unsupervised learning we will have it separate.
 ## PCA
 Principal Component Analysis is quite a popular choice for dimensionality reduction. It preserves the most important information or patterns present in the data. It achieves this by finding a set of orthogonal variables, known as principal components, that capture the maximum variance in the original data.
-1. Say we have two features and few samples. We plot those feature points on to the graph where axis are feature 1 and feature 2.
+Intuitive:
+1. Say we have two features and few samples. We plot those feature points onto the graph where axis are feature 1 and feature 2.
 2. We then find the mean of both features which gives us a point P(mean1, mean2).
-3. Shift the data points such that P is at the origin. This doesn't change relative positions of the points.
+3. Shift the data points such that P is at the origin. This doesn't change the relative positions of the points.
 4. We will try to fit a line through the points such that it passes through the origin.
 5. To find the best fit line, start with a random line passing through origin. Project the data points on to the line.
 6. Goal is to minimize the distances from the data points to the line or maximize the distance from data points from origin. 
 7. Either case works because, we we draw a perpendicular line from project point to the actual point, we will get a right angled triangle with the data point vector as hypotenus (say a) which makes other two lines (b, c) are inversely proportional to each other. b,c are described in the above point.
 8. It is generally easier to calculate c which is maximize the distance from data points to origin. So PCS calculates all the distances for every projected data point and finds the sum of squared distances (d1^2+d2^2+...).
 9. Now we rotate the line and calculate distances again and we repeat this to maxime the distance.
-10. The line with maximum value is called Principled Component 1. The slope of the line tells us on which axis the data is more spread/varied. Say we have a slope of 0.25 this means every 4 units we go along feature 1, we go 1 unit along feature2. This is like 4:1 feature mixture (linear combination of features). This 4 and 1 forms a right angled triangle on graph with 4.12 as hypotenus. Scale theese values such that hypotenus is 1. This gives us new values but with same ratio. This hypotenus is now the unit vector that consists 0.97 feature 1 and 0.242 feature 2 is called an eigen vector for PC1. The eigen value is given by $\frac{Sum of squared distances}{NUmber of data points-1}$ whihc is nothing but measure of variation. The eigen value shows the amount of say a PC1 has.
+10. The line with maximum value is called Principled Component 1. The slope of the line tells us on which axis the data is more spread/varied. Say we have a slope of 0.25 this means every 4 units we go along feature 1, we go 1 unit along feature2. This is like 4:1 feature mixture (linear combination of features). This 4 and 1 forms a right angled triangle on graph with 4.12 as hypotenuse. Scale theese values such that hypotenuse is 1. This gives us new values but with same ratio. This hypotenus is now the unit vector that consists 0.97 feature 1 and 0.242 feature 2 is called an eigen vector for PC1. The eigen value is given by $\frac{Sum of squared distances}{NUmber of data points-1}$ whihc is nothing but measure of variation. The eigen value shows the amount of say a PC1 has.
 11. The PC2 is given by a unit vector perpendicular to PC1. Scree plot is the plot with all the amounts of say for each PC.
-12. We remove everything from graph except the PC1 and PC2 lines with projected points on them. Then we rotate the PC1 and PC2 lines such that PC1 is horizantal to the screen for better visualization and map those points back on to the graph.
-13. When we have more than 2 features, we do the same thing as above, but instead of just using perpendicular PC2 we try all perpendicular lines to PC1 as there will  be more than 1 in 3D. And we just use the unit vector perpendicular to both PC1 and PC2 for PC3
+12. We remove everything from graph except the PC1 and PC2 lines with projected points on them. Then we rotate the PC1 and PC2 lines such that PC1 is horizontal to the screen for better visualization and map those points back on to the graph.
+13. When we have more than 2 features, we do the same thing as above, but instead of just using perpendicular PC2 we try all perpendicular lines to PC1 as there will  be more than 1 in 3D. And we just use the unit vector perpendicular to both PC1 and PC2 for PC3.
 
+Actual Mathematical Implementation:
+Before we go into dirty stuff, will get into basics first.
 
+### Eigen Values and Vectors
+An eigenvector of a square matrix is a non-zero vector that, when multiplied by the matrix, only changes by a scalar factor. In other words, if we have a matrix A and a vector v, the eigenvector v remains in the same direction but may be scaled by a scalar λ (the eigenvalue) when multiplied by matrix A: $Av=\lambda v$ Each eigenvector has an eigenvalue. The eigenvectors with distinct eigenvalues are linearly independent. Eigenvectors and values are quite useful in finding linear transformations. 
+
+To calculate eigenvalues and vectors for a matrix A, we solve $|A-\lambda I| = 0$ This gives us eigenvalues. We use these values in $Av=\lambda v$ to get eigenvectors. 
+### Lagrange Multipliers
+We have a formula for say loss function or success rate or some optimization as $u^TSu$ where S is some matrix. Say we need to maximize this function but we have a constraint that $u^Tu=1$ (In place of one we can have any value since we are not interested in magnitude here). To solve such problems we use lagrange multipliers. 
+
+The basic idea behind Lagrange multipliers is to incorporate the constraints into the optimization problem by introducing additional variables called Lagrange multipliers ($\lambda$. These multipliers are used to construct a new function called the Lagrangian, which combines the objective function (the function to be optimized) and the constraints. 
+
+So we update the function as $u^TSu + \lambda (1-u^Tu)$. Now this function even has constraint involved. So to find maximize we take derivate after equating to zero. W.K.T derivate of $x^TAx = 2Ax$ so when we differentate whole function w.r.t u, we get $2Su-\lambda 2u=0$. Rewriting this we get $Su=\lambda u$ which is our eigenvector equation. Multiplying with $u^T$ on both sides we get $u^TSu=\lambda$ which means biggest eigen value is what we need to maximize our function with constraint.
+
+## PCA
+Back to PCA, here are the steps we follow:
+1. Standardize the data first. When the ranges are different then range of variance will also change making one feature dominant over another. So standardize ((value-mean)/std) the data before doing any transformations.
+2. We will have the data points in the feature space (similar to PCA discussed above). We need to figure out a vector $u_1$ (best fitting line) such that when we project all the data points onto that vector with maximum variance preserved.
+3. How do we find that vector? Will start with how projections look. Projection of $x_i$ (data point/vector) onto a vector $u_1$ is given by $u_1^Tx_iu$ and the mean of all projections is given by $u_1^T\bar{X} u$.
+4. We need to find the variance of these projections which is given by $\frac{1}{N}\sum_{n=1}^{N} (u_1^TX_n - u_1^T\bar{X})^2$ (remember variance of a point is square of the difference between point and mean divided by number of points). when we expand this, we get $u_1^T[frac{1}{N}\sum_{n=1}^{N} (X_n - \bar{X})(X_n - \bar{X})^T]u_1$. This can be rewritten as $u_1^TSu_1$ where S is the covariance matrix.
+5. We need to maximize this equation such that $u_1$ is a unit vector because our projected vector is trying to get the direction not the magnitude (so we can use any magnitude). Reframing the constraint as $u1^Tu_1=1$ as it is a unit vector.
+6. We saw the same optimization problem in lagrange multipliers. We need to find **$u_1$ is the eigenvector of covariance matrix S with the maximum eigenvalue of $\lambda$**
+7. So we just need to find all eigenvalues of covariance matrix S and find the biggest eigenvalue. The corresponding eigenvector of this max eigenvalue is our required vector (PC1).
+8. We got our first eigenvector/principal component. If we need more dimensions, then find the second largest eigenvalue and its eigenvector which will be our PC2. Since both eigenvectors are linearly independent, there won't be any redundant information.
+
+To summarize the steps:
+1. Standardize the data.
+2. Find the covariance matrix. The covariance matrix will be of dimensions pxp where p is the number of features.
+3. Find eigenvalues and eigenvectors of the covariance matrix and sort the eigenvectors in descending order of their eigenvalues to get principal components.
 # Unsupervied Learning
-The most ideal way of doing machine learning is to train a model without labelling the data. Which means model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
+The most ideal way of doing machine learning is to train a model without labeling the data. This means the model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
 ## K means Clustering
 It is used for partitioning a dataset into distinct groups or clusters based on their similarities. It aims to minimize the intra-cluster variance while maximizing the inter-cluster variance. The algorithm is quite simple.
 1. Select the number of clusters, K, that you want to create.
-2. Initialize K points called centroids randomly or using a predefined method. These centroids represent the center of each cluster. The data points on a graph looks like (sample1'sfeature1 value, sample1'sfeature2 value,..)
+2. Initialize K points called centroids randomly or using a predefined method. These centroids represent the center of each cluster. The data points on a graph look like (sample1'sfeature1 value, sample1'sfeature2 value,..)
 3. For each data point, calculate the distance (e.g., Euclidean distance) to each centroid.
 4. Assign the data point to the cluster with the nearest centroid. This step is often referred to as the "nearest neighbor" assignment.
 5. After assigning all data points to clusters, calculate the new centroids for each cluster.
