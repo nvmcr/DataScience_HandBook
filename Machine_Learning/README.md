@@ -685,7 +685,7 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 5. Gradient boosting methods are the most powerful models but interpretability is not so good.
 
 # Dimensionality Reduction
-As the name says it is used for decreasing dimensions/features. Often used for better computation or visualization or interpreting important features. Though it comes under unsupervised learning we will have it separate.
+As the name says it is used for decreasing dimensions/features. Often used for better computation or visualization or interpretation of important features. I will only discuss the unsupervised ways. (Linear Discriminant Analysis is a supervised dimensionality reduction technique)
 ## PCA
 Principal Component Analysis is quite a popular choice for dimensionality reduction. It preserves the most important information or patterns present in the data. It achieves this by finding a set of orthogonal variables, known as principal components, that capture the maximum variance in the original data.
 
@@ -696,10 +696,10 @@ Intuitive Explanation:
 4. We will try to fit a line through the points such that it passes through the origin.
 5. To find the best-fit line, start with a random line passing through origin. Project the data points onto the line.
 6. Goal is to minimize the distances from the data points to the line or maximize the distance from data points from origin. 
-7. Either case works because, we draw a perpendicular line from project point to the actual point, we will get a right angled triangle with the data point vector as hypotenus (say a) which makes other two lines (b, c) are inversely proportional to each other. b,c are described in the above point.
+7. Either case works because, we draw a perpendicular line from project point to the actual point, we will get a right angled triangle with the data point vector as hypotenuse (say a) which makes other two lines (b, c) are inversely proportional to each other. b,c are described in the above point.
 8. It is generally easier to calculate c which is maximize the distance from data points to origin. So PCS calculates all the distances for every projected data point and finds the sum of squared distances (d1^2+d2^2+...).
 9. Now we rotate the line and calculate distances again and we repeat this to maxime the distance.
-10. The line with maximum value is called Principled Component 1. The slope of the line tells us on which axis the data is more spread/varied. Say we have a slope of 0.25 this means every 4 units we go along feature 1, we go 1 unit along feature2. This is like 4:1 feature mixture (linear combination of features). This 4 and 1 forms a right angled triangle on graph with 4.12 as hypotenuse. Scale theese values such that hypotenuse is 1. This gives us new values but with same ratio. This hypotenuse is now the unit vector that consists 0.97 feature 1 and 0.242 feature 2 is called an eigen vector for PC1. The eigen value is given by $\frac{Sum of squared distances}{NUmber of data points-1}$ which is nothing but measure of variation. The eigen value shows the amount of say a PC1 has.
+10. The line with maximum value is called Principled Component 1. The slope of the line tells us on which axis the data is more spread/varied. Say we have a slope of 0.25 this means every 4 units we go along feature 1, we go 1 unit along feature2. This is like 4:1 feature mixture (linear combination of features). This 4 and 1 forms a right angled triangle on graph with 4.12 as hypotenuse. Scale theese values such that hypotenuse is 1. This gives us new values but with same ratio. This hypotenuse is now the unit vector that consists 0.97 feature 1 and 0.242 feature 2 is called an eigen vector for PC1. The eigen value is given by $\frac{Sum of squared distances}{Number of data points-1}$ which is nothing but measure of variation. The eigen value shows the amount of say a PC1 has.
 11. The PC2 is given by a unit vector perpendicular to PC1. Scree plot is the plot with all the amounts of say for each PC.
 12. We remove everything from graph except the PC1 and PC2 lines with projected points on them. Then we rotate the PC1 and PC2 lines such that PC1 is horizontal to the screen for better visualization and map those points back onto the graph.
 13. When we have more than 2 features, we do the same thing as above, but instead of just using perpendicular PC2 we try all perpendicular lines to PC1 as there will  be more than 1 in 3D. And we just use the unit vector perpendicular to both PC1 and PC2 for PC3.
@@ -742,6 +742,41 @@ To summarize the steps:
 5. Interpretability is a key issue in PCA as Principal components say nothing about the data.
 
 ## t-SNE
+t-distributed Stochastic Neighbour Embedding is one of the techniques in Manifold Learning (nonlinear dimensionality reduction). Unlike linear techniques like PCA, t-SNE is based on a nonlinear approach that focuses on preserving the pairwise similarities or distances between data points. It is particularly effective at revealing the local structure and clusters in the data, making it well-suited for visualizing complex datasets.
+
+The core idea behind t-SNE is to construct a probability distribution that measures the similarity between pairs of high-dimensional data points. This is done by modeling the probability of a point choosing another point as its neighbor based on their similarities. The similarity is calculated using a Gaussian kernel, which assigns higher values to points that are closer in the original space.
+
+Next, t-SNE constructs a similar probability distribution in the low-dimensional space, where the embedded points will reside. It aims to minimize the Kullback-Leibler (KL) divergence between the two distributions, ensuring that points with high similarities in the original space are mapped to nearby locations in the low-dimensional space.
+
+The algorithm starts by randomly placing the data points in the low-dimensional space and iteratively adjusts their positions to minimize the KL divergence. It uses gradient descent optimization to update the positions based on the differences between the similarities in the high-dimensional and low-dimensional spaces. In each iteration, t-SNE calculates the gradient of the KL divergence and adjusts the positions of the points accordingly.
+
+During the optimization process, t-SNE places more emphasis on preserving the local structure rather than the global structure. This means that nearby points in the original space will have a stronger influence on the resulting embedding than distant points. Consequently, t-SNE is effective at revealing clusters and identifying similar points that are grouped together.
+
+It's important to note that t-SNE does not preserve the exact distances between points from the high-dimensional space. Therefore, the resulting visualization should be interpreted in terms of relative distances and relationships rather than exact magnitudes. Additionally, the algorithm's performance can be sensitive to the choice of parameters, such as the perplexity, which determines the balance between preserving local and global structure.
+
+### In detail
+1. The main idea is to cluster nearby neighbors together. But how do we know the nearby data points? 
+2. Say we want to use euclidean distance $|x_i-x_j|$ to know the distance between two points. Now we need to create a probability distribution that represents the similarity between points. This can be done by using conditional probability $P_{j|i}$ i.e probability of picking a data point $x_j$ as a neighbor given $x_i$. To map it to a distribution we choose gaussian. So we take **conditional probability of point $x_j$ to be next to point $x_i$ which is represented by a Gaussian distribution centered at $x_i$ with a standard deviation $\sigma _i$**
+3. Geometrically, we take our point $x_i$ and put it as mean (center) with some $\sigma$(will explain shortly) and map all other points on that distribution.
+
+![](Images/tsne.png)
+
+4. But this has an issue. If the similar data points are quite close then the distribution we got will separate the clusters well. But if the data points are spread, then clusters will also spread (probability is decreased). To tackle this, we **scale all the values to have a sum equal to 1** i.e we divide the probability by the sum of all conditional probabilities of all points given our $x_i$.
+5. Coming to standard deviation of our distribution, it is chosen by a parameter called **perplexity**. It is a number that determines number of neighbors similar to k in knn. With the value we set for perplexity, tSNE calculates $\sigma$(ignore formula needed) such that only the set number of neighbors are in our distribution.
+6. The combined formula to find the similarity looks like
+
+$$ p_{j|i} = \frac{exp(-||x_i-x_j||^2/2{\sigma _i}^2}{\Sigma_{k\neq i} exp(-||x_i-x_k||^2/2{\sigma _i}^2)} $$
+
+7. We calculate these similarities for all data points. But we look carefully, $p_{j|i}$ should be equal to $p_{i|j}$ since the similarity value between two points shouldn't change from whichever point we calculate. But gaussian distributions change as the point of focus is set as mean thus the final values will be different. So we will take joint probability distribution as final similarity value $p_{ij} = \frac{p_{j|i}+p_{i|j}}{2N}$ where N is number of dimensions/features.
+8. Uff we are done with calculating similarity values for higher dimensional data. Now we have to go to lower dimensions.
+9. Lower dimension is constructed by placing our datapoints randomly in a lower dimension subspace ((usually in 2D or 3D). Our goal is to optimize the placement of data points such that they form clusters using the similarity values calculated in higher dimensions.
+10. First we will calculate the similarity value of these randomly placed data points. It is calculated same way as higher dimensions but we use student t distribution (hence name **t**SNE) as it has longer tails. This was data points won't be cluttered too close. The new formula for lower dimensions looks like:
+
+$$ q_{i|j} = \frac{(1+||y_i-y_j||^2)^{-1}}{\Sigma_{k\neq i} (1+||y_k-y_l||^2)^{-1}}} $$
+
+11. Since its optimization problem, we have a loss function here called KL divergence that optimizes clusters by minimizing $D_{KL} = \Sigma_i \Sigma_j p_{ij} log \frac{p_{ij}}{q_{ij}}$
+12. The above loss function optimizes in such a way that if any two data points have high p value (points close in high dimensions) but low q value (points not close in lower dimensions), then model is penalized more thus concentrating more on local structure.  
+
 # Unsupervied Learning
 The most ideal way of doing machine learning is to train a model without labeling the data. This means the model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
 ## K means Clustering
