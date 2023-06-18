@@ -790,7 +790,7 @@ It is used for partitioning a dataset into distinct groups or clusters based on 
 7. Repeat again from step 3 until convergence is achieved. Convergence occurs when the centroids no longer change significantly or when a maximum number of iterations is reached.
 8. The algorithm outputs the final K clusters, where each cluster contains a group of data points that are similar to each other in terms of distance.
 
-K-means is simple, fast and can handle different-shaped clusters. But knowing the k value beforehand is a bummer. Also, as it is distance based, it is affected by outliers. It also can't handle the varying size of clusters. 
+K-means is simple and fast. But knowing the k value beforehand is a bummer. Also, as it is distance based, it is affected by outliers. It also can't handle the non-spherical clusters due to using the sum of squared errors for optimizing the distance. 
 
 ## Hierarchical Clustering
 If you are annoyed with knowing the number of clusters beforehand as in k means, then you can use hierarchical clustering.  It is called "hierarchical" because it creates a hierarchy or tree-like structure of clusters. In this approach, the data points are progressively grouped together based on their similarity, starting from individual points and gradually forming larger clusters.
@@ -815,7 +815,35 @@ In the dendrogram, the height of the vertical lines represents the relative dist
 Divisive clustering is just the opposite. We start with the entire data and will break it down into individual points. This is more computationally expensive. In general, hierarchical clustering has high time and space complexity so not suitable for large data.
 
 ## DBSCAN
+DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is a density-based clustering algorithm used to discover clusters of arbitrary shape in a dataset. DBSCAN does not require a predefined number of clusters. Instead, it identifies clusters based on the density of data points in the feature space.
+
+Here's how DBSCAN works:
+
+Density-based notion: DBSCAN defines clusters based on the density of data points. It assumes that clusters are regions of high density separated by regions of low density. The algorithm requires two parameters: eps/epsilon (ε), which defines the radius around each data point, and minPts, which specifies the minimum number of points within ε to form a dense region. Based on these two parameters, DBSCAN classify a data point into one of below three:
+
+* Core points: DBSCAN identifies core points as data points that have at least minPts neighboring points within distance ε. These points are considered to be at the core of a cluster.
+
+* Border points: Border points are data points that have fewer neighbors than minPts within ε, but they are within the ε-neighborhood of a core point. These points are part of a cluster but are not considered as core points themselves.
+
+* Noise points: Noise points are data points that are neither core points nor border points. They are isolated points that do not belong to any cluster.
+
+![](Images/dbscan.png)
+
+In this case, minPts is 4. Red points are core points because there are at least 4 points within their surrounding area with radius eps. This area is shown with the circles in the figure. The yellow points are border points because they are within a radius eps from a core point and have less than 4 points within their neighborhood. The points B and C have two points (including the point itself) within their neighborhood (i.e. the surrounding area with a radius of eps). Finally N is an outlier because it is not a core point and cannot be reached from a core point.
+
+Algorithm steps:
+1. Randomly select an unvisited data point from the dataset.
+2. If the selected point is a core point, a new cluster is created. All points that are density-reachable from this core point (i.e., within ε distance) are added to the cluster. This process continues until no more density-reachable points can be found.
+3. If the selected point is a border point, it is assigned to the cluster of its corresponding core point.
+4. If the selected point is a noise point, it is disregarded.
+5. Repeat these steps until all data points have been visited.
+6. Resulting clusters: At the end of the algorithm, each data point is assigned to one of the clusters or labeled as noise. The clusters are formed based on the density-connected components in the dataset.
+
+![](Images/dbscan.gif)
+
+DBSCAN is best used when clusters are of different sizes and is more computationally efficient than hierarchical clustering and can handle outliers. But setting the parameters epsilon and minPts is tricky in a few cases. 
 ## Gaussian Mixture Models
+
 
 # References
 The information is pulled from various sources from internet. Major sources are:
