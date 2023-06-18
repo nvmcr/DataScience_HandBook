@@ -775,7 +775,7 @@ $$ p_{j|i} = \frac{exp(-||x_i-x_j||^2/2{\sigma_i}^2)}{\Sigma_{k\neq i} exp(-||x_
 $$ q_{i|j} = \frac{(1+||y_i-y_j||^2) ^{-1}}{\Sigma_{k\neq i} (1+||y_k-y_l||^2) ^{-1}} $$
 
 11. Since its optimization problem, we have a loss function here called KL divergence that optimizes clusters by minimizing $D_{KL} = \Sigma_i \Sigma_j p_{ij} log \frac{p_{ij}}{q_{ij}}$
-12. The above loss function optimizes in such a way that if any two data points have high p value (points close in high dimensions) but low q value (points not close in lower dimensions), then model is penalized more thus concentrating more on local structure.  
+12. The above loss function optimizes in such a way that if any two data points have high p value (points close in high dimensions) but low q value (points not close in lower dimensions), then the model is penalized more thus concentrating more on local structure.  
 
 # Unsupervied Learning
 The most ideal way of doing machine learning is to train a model without labeling the data. This means the model should figure out the labels on its own. This is called Unsupervised learning. In general, supervised learning works better than unsupervised but the latter is quite useful in dimensionality reduction.
@@ -789,6 +789,30 @@ It is used for partitioning a dataset into distinct groups or clusters based on 
 6. The new centroid is computed as the mean of all data points assigned to that cluster. It represents the center of gravity for the cluster.
 7. Repeat again from step 3 until convergence is achieved. Convergence occurs when the centroids no longer change significantly or when a maximum number of iterations is reached.
 8. The algorithm outputs the final K clusters, where each cluster contains a group of data points that are similar to each other in terms of distance.
+
+K-means is simple, fast and can handle different-shaped clusters. But knowing the k value beforehand is a bummer. Also, as it is distance based, it is affected by outliers. It also can't handle the varying size of clusters. 
+
+## Hierarchical Clustering
+If you are annoyed with knowing the number of clusters beforehand as in k means, then you can use hierarchical clustering.  It is called "hierarchical" because it creates a hierarchy or tree-like structure of clusters. In this approach, the data points are progressively grouped together based on their similarity, starting from individual points and gradually forming larger clusters.
+
+The main idea behind hierarchical clustering is to determine the proximity between data points and use it to build a hierarchy of clusters. There are two main types of hierarchical clustering algorithms: agglomerative and divisive.
+
+Agglomerative clustering is the most commonly used type of hierarchical clustering. It starts by considering each data point as an individual cluster and then merges the closest clusters iteratively until all points are in a single cluster.
+The steps involved in agglomerative clustering are as follows:
+
+1. Calculate the proximity or distance between each pair of data points. The choice of distance measure depends on the nature of the data and the problem at hand. Common distance measures include Euclidean distance, Manhattan distance, and cosine similarity.
+2. Treat each data point as a separate cluster.
+3. Identify the two closest clusters based on the distance measure. These clusters can be individual data points or clusters formed in the previous iterations.
+4. Merge the two closest clusters into a single cluster.
+5. Recalculate the proximity matrix or distance matrix to reflect the distances between the newly formed cluster and the remaining clusters.
+6. Repeat steps 3 to 5 until all data points are merged into a single cluster or until a stopping criterion is met (e.g., a predefined number of clusters or a threshold distance).
+7. The output of agglomerative clustering is a tree-like structure called a dendrogram, which represents the hierarchy of clusters. The dendrogram can be visualized to determine the number of clusters at different levels of similarity.
+
+![](Images/hc.png)
+
+In the dendrogram, the height of the vertical lines represents the relative distance between the clusters. To figure out the number of clusters we need, draw a horizontal line over the dendrogram. The number of vertical lines passing through these horizontal lines are the clusters. To figure out where to draw the horizontal line is to see how freely the line can move up and down without passing new vertical lines. 
+
+Divisive clustering is just the opposite. We start with the entire data and will break it down into individual points. This is more computationally expensive. In general, hierarchical clustering has high time and space complexity so not suitable for large data.
 
 ## DBSCAN
 ## Gaussian Mixture Models
