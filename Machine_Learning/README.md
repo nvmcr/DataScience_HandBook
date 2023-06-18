@@ -765,14 +765,14 @@ It's important to note that t-SNE does not preserve the exact distances between 
 5. Coming to standard deviation of our distribution, it is chosen by a parameter called **perplexity**. It is a number that determines number of neighbors similar to k in knn. With the value we set for perplexity, tSNE calculates $\sigma$(ignore formula needed) such that only the set number of neighbors are in our distribution.
 6. The combined formula to find the similarity looks like
 
-$$ p_{j|i} = \frac{exp(-||x_i-x_j||^2/2{\sigma _i}^2}{\Sigma_{k\neq i} exp(-||x_i-x_k||^2/2{\sigma _i}^2)} $$
+$$ p_{j|i} = \frac{exp(-||x_i-x_j||^2/2{\sigma_i}^2)}{\Sigma_{k\neq i} exp(-||x_i-x_k||^2/2{\sigma_i}^2)} $$
 
 7. We calculate these similarities for all data points. But we look carefully, $p_{j|i}$ should be equal to $p_{i|j}$ since the similarity value between two points shouldn't change from whichever point we calculate. But gaussian distributions change as the point of focus is set as mean thus the final values will be different. So we will take joint probability distribution as final similarity value $p_{ij} = \frac{p_{j|i}+p_{i|j}}{2N}$ where N is number of dimensions/features.
 8. Uff we are done with calculating similarity values for higher dimensional data. Now we have to go to lower dimensions.
 9. Lower dimension is constructed by placing our datapoints randomly in a lower dimension subspace ((usually in 2D or 3D). Our goal is to optimize the placement of data points such that they form clusters using the similarity values calculated in higher dimensions.
 10. First we will calculate the similarity value of these randomly placed data points. It is calculated same way as higher dimensions but we use student t distribution (hence name **t**SNE) as it has longer tails. This was data points won't be cluttered too close. The new formula for lower dimensions looks like:
 
-$$ q_{i|j} = \frac{(1+||y_i-y_j||^2)^{-1}}{\Sigma_{k\neq i} (1+||y_k-y_l||^2)^{-1}}} $$
+$$ q_{i|j} = \frac{(1+||y_i-y_j||^2) ^{-1}}{\Sigma_{k\neq i} (1+||y_k-y_l||^2) ^{-1}} $$
 
 11. Since its optimization problem, we have a loss function here called KL divergence that optimizes clusters by minimizing $D_{KL} = \Sigma_i \Sigma_j p_{ij} log \frac{p_{ij}}{q_{ij}}$
 12. The above loss function optimizes in such a way that if any two data points have high p value (points close in high dimensions) but low q value (points not close in lower dimensions), then model is penalized more thus concentrating more on local structure.  
