@@ -3,6 +3,7 @@
 * [Probability](https://github.com/nvmcr/DataScience_HandBook/tree/main/Probability)
 * [Statistics](https://github.com/nvmcr/DataScience_HandBook/tree/main/Statistics)
 * [Machine Learning](https://github.com/nvmcr/DataScience_HandBook/tree/main/Machine_Learning)
+* [Deep Learning](https://github.com/nvmcr/DataScience_HandBook/tree/main/Deep_Learning)
 * [AWS](https://github.com/nvmcr/DataScience_HandBook/tree/main/AWS)
 * [DBMS](https://github.com/nvmcr/DataScience_HandBook/tree/main/DBMS)
 ## Motivation
