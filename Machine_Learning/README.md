@@ -851,7 +851,15 @@ Often used as an alternative to K means because K means is a deterministic algor
 
 ![](Images/gmm.png)
 
-Say we have 
+Say we have two classes/clusters in our data, Dogs (D) and Cats (C). Each of these cluster distributions can be represented by Gaussian distribution. In general, a gaussian distribution is given by mean and variance. A multivariate gaussian distribution is given by mean and covariance matrix(tells us the shape of distribution). So Dogs distribution is: $N(x| \mu_D, \Sigma_D)$ and Cats: $N(x| \mu_C, \Sigma_C)$. x is our feature matrix. If there is a new data point that is to be assigned a cluster, our GMM will try to maximize $P(x) = \pi_D N(x| \mu_D, \Sigma_D) + \pi_C N(x| \mu_C, \Sigma_C)$ by optimizing the $[\mu, \Sigma, \pi]$. Here the $\pi$(probability of being in a class) determines the amount of influence a distribution will have on a new point, so they are called mixing coefficients.
+
+The optimization of these parameters is done by the Expectation-Maximization (EM) algorithm. It starts with randomly initializing all three parameters and alternates between the expectation step (E-step) and the maximization step (M-step):
+
+E-step: In this step, the algorithm computes the probability that each data point belongs to each component, given the current estimates of the parameters. This is done using Bayes' theorem and is known as the responsibility or posterior probability.
+
+M-step: In this step, the algorithm updates the parameters of the Gaussian components and the mixing coefficients based on the computed responsibilities. The means and covariances are updated using weighted maximum likelihood estimation, where the weights are the responsibilities, and the mixing coefficients are updated based on the average responsibility of each component across all data points.
+
+The E-step and M-step are iteratively performed until convergence, where the parameters no longer significantly change. I left the mathematics part as its not too important unless you want to reimplement it yourself.
 
 # References
 The information is pulled from various sources from internet. Major sources are:
