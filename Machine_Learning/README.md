@@ -843,7 +843,15 @@ Algorithm steps:
 
 DBSCAN is best used when clusters are of different sizes and is more computationally efficient than hierarchical clustering and can handle outliers. But setting the parameters epsilon and minPts is tricky in a few cases. 
 ## Gaussian Mixture Models
+Often used as an alternative to K means because K means is a deterministic algorithm, which means there is no randomness involved, a point belongs to one cluster always. GMMs are a probabilistic approach that its more of soft clustering meaning a data point might belong to one or more clusters involving randomness. A Gaussian Mixture is a function that is comprised of several Gaussians, each identified by k ∈ {1,…, K}, where K is the number of clusters of our dataset. Each Gaussian k in the mixture is comprised of the following parameters:
 
+* A mean $\mu$ that defines its centre.
+* A covariance matrix $\Sigma$ that defines its width.
+* A mixing probability $\pi$ that defines how big or small the Gaussian function will be and $\Sigma_{k=1}^K \pi_k = 1$.
+
+![](Images/gmm.png)
+
+Say we have 
 
 # References
 The information is pulled from various sources from internet. Major sources are:
