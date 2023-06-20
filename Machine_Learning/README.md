@@ -628,7 +628,7 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 #### Classification
 1. Similar to gradient boosting, we will start with an initial prediction. Unlike taking averages, we will use a default value of 0.5.
 2. Again same as gradient boosting classification, we will take residuals from the data points to this prediction and will build a tree as the residual values as the leaves. 
-3. To choose the root node, we first need to sort the values of the feature. Choose first two data points and find average value and use this avg value to split the residuals. Only one residual will be on left and all remaining residuals to right. To know how well this split works, we calculate a quality/similarity score given by $S.S = \frac{{\Sigma Residuals_i}^2}{\Sigma(PreviousProability*(1-PreviousProbability)) + \lambda}$. Here $\lambda$ is a regularization parameter.
+3. To choose the root node, we first need to sort the values of the feature. Choose first two data points and find average value and use this avg value to split the residuals. Only one residual will be on left and all remaining residuals to right. To know how well this split works, we calculate a quality/similarity score given by $S.S = \frac{(\Sigma Residuals_i)^2}{\Sigma(PreviousProability*(1-PreviousProbability)) + \lambda}$. Here $\lambda$ is a regularization parameter.
 4. We will also calculate S.S without any split using all residuals.
 5. To find how well the split works, we calculate gain given by $Gain=LeftLeaveSimilarity + RightLeaveSimilarity-RootSimilarity$
 6. Now we take a new split and repeat the whole process. Now we compare gains of all splits and decide the best split.
