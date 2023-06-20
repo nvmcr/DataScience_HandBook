@@ -746,7 +746,7 @@ t-distributed Stochastic Neighbour Embedding is one of the techniques in Manifol
 
 The core idea behind t-SNE is to construct a probability distribution that measures the similarity between pairs of high-dimensional data points. This is done by modeling the probability of a point choosing another point as its neighbor based on their similarities. The similarity is calculated using a Gaussian kernel, which assigns higher values to points that are closer in the original space.
 
-Next, t-SNE constructs a similar probability distribution in the low-dimensional space, where the embedded points will reside. It aims to minimize the Kullback-Leibler (KL) divergence between the two distributions, ensuring that points with high similarities in the original space are mapped to nearby locations in the low-dimensional space.
+Next, t-SNE constructs a similar probability distribution in the low-dimensional space, where the embedded points will reside. It aims to minimize the Kullback-Leibler (KL) divergence (it is similar to cross-entropy loss) between the two distributions, ensuring that points with high similarities in the original space are mapped to nearby locations in the low-dimensional space.
 
 The algorithm starts by randomly placing the data points in the low-dimensional space and iteratively adjusts their positions to minimize the KL divergence. It uses gradient descent optimization to update the positions based on the differences between the similarities in the high-dimensional and low-dimensional spaces. In each iteration, t-SNE calculates the gradient of the KL divergence and adjusts the positions of the points accordingly.
 
