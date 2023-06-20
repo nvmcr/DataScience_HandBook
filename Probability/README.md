@@ -8,7 +8,7 @@ Please use the github's interactive navigation. (Too lazy to write/generate TOC)
 </details>
 
 ## Note
-Ability to think probabilistically is important to data scientists. But only few basic concepts are enough for interviews and these concepts will go in depth in the statistics. So the meat of the concepts are in statistics.
+The ability to think probabilistically is important to data scientists. But only a few basic concepts are enough for interviews and these concepts will go in depth in the statistics. So the meat of the concepts is in statistics chapter.
 ## Basics
 ## Counting
 Just basics of permuatations and combinations. If order matters go for $^nP_k$ else $^nC_k$.
