@@ -597,7 +597,7 @@ Odds represent the ratio of the probability of an event happening to the probabi
 1. Choose a differentiable loss function like logistic loss.
 2. Initialize the model with a single tree (it will be a single value in first case).
 3. But unlike regression, we can't use average value as the starting prediction. So we use log odds. Say we have 10 samples with output classes of survived (4) and not survived(6), then log(odds) that a passenger survives is log(no.of times survived in all sample outputs/no.of times in not survived in all sample outputs)= log(4/6). This value is our first tree.
-4. For classificaion, we convert this log odds to probability by using $\frac{e^{log(odds)}}{1+e^{log(odds)}}. Say we got a value of 0.7
+4. For classificaion, we convert this log odds to probability by using the sigmoid function, $\frac{e^{log(odds)}}{1+e^{log(odds)}}$. Say we got a value of 0.7
 5. We calculate residuals for all samples. For all survived (0), residual will be (0-0.7)=0.3 and for all not survived, residual value will be 0.3
 6. Using these residual values we build our second tree with all the features(columns).
 9. Start the loop `for m = 1 to M`
@@ -628,7 +628,7 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 #### Classification
 1. Similar to gradient boosting, we will start with an initial prediction. Unlike taking averages, we will use a default value of 0.5.
 2. Again same as gradient boosting classification, we will take residuals from the data points to this prediction and will build a tree as the residual values as the leaves. 
-3. To choose the root node, we first need to sort the values of the feature. Choose first two data points and find average value and use this avg value to split the residuals. Only one residual will be on left and all remaining residuals to right. To know how well this split works, we calculate a quality/similarity score given by $S.S = \frac{(\Sigma Residuals_i)^2}{\Sigma(PreviousProability*(1-PreviousProbability)) + \lambda}$. Here $\lambda$ is a regularization parameter.
+3. To choose the root node, we first need to sort the values of the feature. Choose first two data points and find average value and use this avg value to split the residuals. Only one residual will be on left and all remaining residuals to right. To know how well this split works, we calculate a quality/similarity score given by $S.S = \frac{\Sigma Residuals_i^2}{\Sigma(PreviousProability*(1-PreviousProbability)) + \lambda}$. Here $\lambda$ is a regularization parameter.
 4. We will also calculate S.S without any split using all residuals.
 5. To find how well the split works, we calculate gain given by $Gain=LeftLeaveSimilarity + RightLeaveSimilarity-RootSimilarity$
 6. Now we take a new split and repeat the whole process. Now we compare gains of all splits and decide the best split.
