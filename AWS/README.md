@@ -2,6 +2,7 @@
 <details>
 <summary>Table of Contents</summary>
 
+
 ## Table of Contents
 1. [Intro](#Intro)
     1. [Client-Server Model](#client-server-model)
