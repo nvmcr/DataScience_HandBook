@@ -12,6 +12,7 @@ This README file contains only the concepts related to DBMS. All the practice qu
 <details>
 <summary>Table of Contents</summary>
 
+
 ## Table of Contents
 1. [SQL](#SQL)
       1. [Intro](#intro)
