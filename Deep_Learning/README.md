@@ -113,9 +113,25 @@ In a neural network, there is an input layer, an output layer, and any number of
 
 Each input is multiplied (dot product) by the weight of each neuron. This dot product is made nonlinear by passing through the activation function. This output of one hidden layer is passed as the input to the next hidden layer. Each hidden layer will have a bias term just as we have in any other model. (Bias term is to have the offset/intercept as not every function is symmetrical around the origin). The more neurons and layers the more powerful the network is but beware of overfitting and use regularization effectively. 
 ## BackPropagation
-In order to optimize, if we use gradient descent for neural networks, then we have to derive the gradient for weight matrices of each layer, and computing gradients become too complex. The better idea is to use the technique called backpropagation. Watch the [video](https://youtu.be/Ilg3gGewQ5U) by 3Blue1Brown for a visual understanding of backpropagation.   
+In order to optimize, if we use gradient descent for neural networks, then we have to derive the gradient for weight matrices of each layer, and computing gradients become too complex. The better idea is to use the technique called backpropagation. Watch the [video](https://youtu.be/Ilg3gGewQ5U) by 3Blue1Brown for a visual understanding of backpropagation. Let's see the mathematical implementation of backpropagation.
 
+![](Images/bp.png)
 
+Here we have a fully connected 2-layer neural network with layers represented with $a^{layer_num}$, input later being $a^1$, the last hidden layer is $a^l$ and the output layer is $a^{l+1} and weight matrix of layer $l$ are represented as $\theta^{l-1}$. 
+
+In the forward pass,
+
+$$ a^1 = x $$
+
+$$ z^2 = \theta^1 a^1 $$ (Dot product of weight matrix and output of before layer)
+
+$$ a^2 = g(z^2) $$ (Appying a nonlinear transformation/activation function)
+
+$$ a^l = g(z^l) $$
+
+$$ z^{l+1} = \theta^l a^l $$
+
+$$ a^{l+1} = g(z^{l+1}) = \bar{y}$$
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
