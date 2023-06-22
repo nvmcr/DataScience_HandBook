@@ -117,23 +117,27 @@ In order to optimize, if we use gradient descent for neural networks, then we ha
 
 ![](Images/bp.png)
 
-Here we have a fully connected 2-layer neural network with layers represented with $a^{layer_num}$, input later being $a^1$, the last hidden layer is $a^l$ and the output layer is $a^{l+1} and weight matrix of layer $l$ are represented as $\theta^{l-1}$. 
+Here we have a fully connected 2-layer neural network with layers represented with $a^{layer_num}$, input later being $a^1$, the last hidden layer is $a^l$ and the output layer is $a^{l+1} and weight matrix of layer $l$ are represented as $\theta^{l-1}$. The input $x$ is a single sample image from our dataset.
 
 In the forward pass,
 
 $$ a^1 = x $$
 
 $$ z^2 = \theta^1 a^1 $$ 
-(Dot product of weight matrix and output of before layer)
 
 $$ a^2 = g(z^2) $$ 
-(Appying a nonlinear transformation/activation function)
 
 $$ a^l = g(z^l) $$
 
 $$ z^{l+1} = \theta^l a^l $$
 
 $$ a^{l+1} = g(z^{l+1}) = \hat{y}$$
+
+where $g(z) = \frac{1}{1+e^{-z}} $$ which is a sigmoid activation function. 
+
+Backpropagation:
+
+We will chose loss function as a categorical cross entropy $L(y,\hat{y}) = ylog(\hat{y}) + (1-y)log(1-\hat{y})$. We need to optimize the weights and biases. For now, I am removing bias terms as it is handled in the same way as weights. To know in which direction the weights should move, we do gradients. So in the backward pass, we have to find $\frac{\partial L(y,\hat{y})}{\partial \theta_{i,j}^l}$
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
