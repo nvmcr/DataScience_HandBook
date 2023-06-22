@@ -151,7 +151,7 @@ $$ = a^{l-1} g'(z^l) L'(a^l) $$
 
 Not doing explicit calculations as that is not our focus here. We do similarly for the bias term. The result of the bias term is almost the same as above except for the first inner function after using chain rule. So we have the gradient equations for last layer weight and biases so that we can use them in gradient descent to find optimal values. Now we go to the previous layer. Here we need to calculate,
 
-$$ \frac{\partial L}{\partial \theta^{l-2}} = \frac{\partial z^{l-1}}{partial \theta^{l-2}} \frac{\partial a^{l-1}}{\partial z^{l-1}} ** \frac{\partial z^l}{\partial a^{l-1}} \frac{\partial a^l}{\partial z^l} \frac{\partial L}{\partial a^l} ** $$
+$$ \frac{\partial L}{\partial \theta^{l-2}} = \frac{\partial z^{l-1}}{\partial \theta^{l-2}} \frac{\partial a^{l-1}}{\partial z^{l-1}} \frac{\partial z^l}{\partial a^{l-1}} \frac{\partial a^l}{\partial z^l} \frac{\partial L}{\partial a^l} $$
 
 We can see that to calculate the gradients for this l-1 layer, we need gradients from the last layer too which we already calculated (so we start from back instead of first layer). Thus we move backwards calculating each layer gradients till we reach the first layer and do gradient descent to get the updated values for weights and biases for the next forward pass.
 
