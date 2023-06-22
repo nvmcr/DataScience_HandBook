@@ -100,6 +100,61 @@ $$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
 $$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
 Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
+# Neural Networks
+Let's consider a supervised image classification. Using a linear classifier is not enough for images as they don't capture more than one template. It's important that we use a nonlinear classifier. For many years in the field of computer vision, people tried different approaches to extract/learn features of images using techniques like Histogram of Oriented Gradients (HOG), Bag of Words, etc. But most of them are not effective except neural networks. 
+
+Neural networks are a bunch of linear classifiers with activation functions in between. Activation functions are nonlinear functions. Without these, the neural network is just a linear classifier. 
+
+![](Images/af.png)
+
+In a neural network, there is an input layer, an output layer, and any number of hidden layers in between. Each hidden layer consists of neurons. We try to learn the weights/parameters of these neurons. See the below image to know what happens in a fully connected neural network/multi-layer perception. 
+
+![](Images/fcn.png)
+
+Each input is multiplied (dot product) by the weight of each neuron. This dot product is made nonlinear by passing through the activation function. This output of one hidden layer is passed as the input to the next hidden layer. Each hidden layer will have a bias term just as we have in any other model. (Bias term is to have the offset/intercept as not every function is symmetrical around the origin). The more neurons and layers the more powerful the network is but beware of overfitting and use regularization effectively. 
+## BackPropagation
+In order to optimize, if we use gradient descent for neural networks, then we have to derive the gradient for weight matrices of each layer, and computing gradients become too complex. The better idea is to use the technique called backpropagation. Watch the [video](https://youtu.be/Ilg3gGewQ5U) by 3Blue1Brown for a visual understanding of backpropagation. Let's see the mathematical implementation of backpropagation.
+
+![](Images/bp.png)
+
+Here we have a fully connected 3-layer neural network with layers represented with $a^{layer_num}$, input later being $a^1$, the last hidden layer is $a^l$ and the output layer is $a^{l+1} and weight matrix of layer $l$ are represented as $\theta^{l-1}$. The weight and biases are randomly initialized. The input $x$ is a single sample image from our dataset.
+
+In the forward pass,
+
+$$ a^1 = x $$
+
+$$ z^2 = \theta^1 a^1 $$ 
+
+$$ a^2 = g(z^2) $$ 
+
+$$ a^l = g(z^l) $$
+
+$$ z^{l+1} = \theta^l a^l $$
+
+$$ a^{l+1} = g(z^{l+1}) = \hat{y}$$
+
+where $g(z) = \frac{1}{1+e^{-z}} $$ which is a sigmoid activation function. 
+
+Backpropagation:
+
+We will chose loss function as a categorical cross entropy $L(y,\hat{y}) = ylog(\hat{y}) + (1-y)log(1-\hat{y})$. We need to optimize the weights and biases. For now, I am removing bias terms as it is handled in the same way as weights. To know in which direction the weights should move, we do gradients. So in the backward pass, we have to find $\frac{\partial L(y,\hat{y})}{\partial \theta_{i,j}^l}$. We start computing gradients of the last layer first and then keep moving back layers. This is an efficient way as we can use the computed gradients of this layer in the previous layer. We will see an example of this. Say we need to compute how the loss changes based on the last hidden layer,
+
+$$ \frac{\partial L}{\partial \theta^{l-1}} $$
+
+(Note: I am taking the entire weight matrix here but it is actually computed for each neuron of the layer, $\theta_1^{l-1}$) 
+
+This is where the chain rule helps. The chain rule says that we can calculate the effect of changing something can be expressed as multiplying changes done along the way. So we can break down the derivative as inner functions using chain rule. As $z^l = \theta^{l-1} a^{l-1}$, changing the weight will also change $z^l$. Again $a^l = g(z^l)$ so changing $z^l$ will change $a^l$. Thus
+
+$$ \frac{\partial L}{\partial \theta^{l-1}} = \frac{\partial z^l}{partial \theta^{l-1}} \frac{\partial a^l}{\partial z^l} \frac{\partial L}{\partial a^l} $$
+
+$$ = a^{l-1} g'(z^l) L'(a^l) $$
+
+Not doing explicit calculations as that is not our focus here. We do similarly for the bias term. The result of the bias term is almost the same as above except for the first inner function after using chain rule. So we have the gradient equations for last layer weight and biases so that we can use them in gradient descent to find optimal values. Now we go to the previous layer. Here we need to calculate,
+
+$$ \frac{\partial L}{\partial \theta^{l-2}} = \frac{\partial z^{l-1}}{\partial \theta^{l-2}} \frac{\partial a^{l-1}}{\partial z^{l-1}} \frac{\partial z^l}{\partial a^{l-1}} \frac{\partial a^l}{\partial z^l} \frac{\partial L}{\partial a^l} $$
+
+We can see that to calculate the gradients for this l-1 layer, we need gradients from the last layer too which we already calculated (so we start from back instead of first layer). Thus we move backwards calculating each layer gradients till we reach the first layer and do gradient descent to get the updated values for weights and biases for the next forward pass.
+
 
 
 # References
