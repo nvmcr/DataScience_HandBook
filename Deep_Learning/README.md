@@ -123,15 +123,17 @@ In the forward pass,
 
 $$ a^1 = x $$
 
-$$ z^2 = \theta^1 a^1 $$ (Dot product of weight matrix and output of before layer)
+$$ z^2 = \theta^1 a^1 $$ 
+(Dot product of weight matrix and output of before layer)
 
-$$ a^2 = g(z^2) $$ (Appying a nonlinear transformation/activation function)
+$$ a^2 = g(z^2) $$ 
+(Appying a nonlinear transformation/activation function)
 
 $$ a^l = g(z^l) $$
 
 $$ z^{l+1} = \theta^l a^l $$
 
-$$ a^{l+1} = g(z^{l+1}) = \bar{y}$$
+$$ a^{l+1} = g(z^{l+1}) = \hat{y}$$
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
