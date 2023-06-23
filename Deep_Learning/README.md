@@ -155,7 +155,9 @@ $$ \frac{\partial L}{\partial \theta^{l-2}} = \frac{\partial z^{l-1}}{\partial \
 
 We can see that to calculate the gradients for this l-1 layer, we need gradients from the last layer too which we already calculated (so we start from back instead of first layer). Thus we move backwards calculating each layer gradients till we reach the first layer and do gradient descent to get the updated values for weights and biases for the next forward pass.
 
+When using PyTorch or TensorFlow all these local gradients (gradients within the hidden layers) are calculated automatically using auto differentiation. So we need not explicitly calculate all the gradients. But remember that these gradients occupy space within the memory as there will be thousands of parameters in a neural network. If you are getting CUDA out of memory, it's probably because gradients are occupying the memory. 
 
+## Convolutional Neural Network
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
