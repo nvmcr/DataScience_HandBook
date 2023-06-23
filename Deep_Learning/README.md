@@ -178,13 +178,14 @@ This is for a single-channel image. If it is an RGB image, then we have 3 channe
 
 Refer to this [link](https://poloclub.github.io/cnn-explainer/#article-convolution) to visually understand what's happening inside a CNN.
 
-It's important to know how the input size of the image changes at each layer. Say we have an input image of size $W_1 x H_1 x C$ with K number of filers of size F and stride S with zero padding P, then the output is $W_2 x H2 x K$ where 
+It's important to know how the input size of the image changes at each layer. Say we have an input image of size $W_1* H_1 * C$ with K number of filers of size F and stride S with zero padding P, then the output is $W_2 * H2 * K$ where 
 
 $$ W_2 = \frac{W_1-F+2P}{S} + 1 $$
 
 $$ H_2 = \frac{H_1-F+2P}{S} + 1 $$
 
 and the number of parameters is $F^2CK$ and K biases.
+## Training
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
