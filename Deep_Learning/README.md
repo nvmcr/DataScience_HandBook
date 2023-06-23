@@ -153,10 +153,39 @@ Not doing explicit calculations as that is not our focus here. We do similarly f
 
 $$ \frac{\partial L}{\partial \theta^{l-2}} = \frac{\partial z^{l-1}}{\partial \theta^{l-2}} \frac{\partial a^{l-1}}{\partial z^{l-1}} \frac{\partial z^l}{\partial a^{l-1}} \frac{\partial a^l}{\partial z^l} \frac{\partial L}{\partial a^l} $$
 
-We can see that to calculate the gradients for this l-1 layer, we need gradients from the last layer too which we already calculated (so we start from back instead of first layer). Thus we move backwards calculating each layer gradients till we reach the first layer and do gradient descent to get the updated values for weights and biases for the next forward pass.
+We can see that to calculate the gradients for this l-1 layer, we need gradients from the last layer too which we already calculated (so we start from back instead of first layer). Thus we move backward calculating each layer gradients till we reach the first layer and do gradient descent to get the updated values for weights and biases for the next forward pass.
 
+When using PyTorch or TensorFlow all these local gradients (gradients within the hidden layers) are calculated automatically using auto differentiation. So we need not explicitly calculate all the gradients. But remember that these gradients occupy space within the memory as there will be thousands of parameters in a neural network. If you are getting CUDA out of memory, it's probably because gradients are occupying the memory. 
 
+## Convolutional Neural Network
+FCNs are computationally too expensive as they take the entire image by flattening it (32x32x3) and that was one of the reasons why neural networks are not popular for more than 50 years. But it all changed with CNNs. In an image, we don't need an entire image to predict a class. We only need to know the local information to know the edges. So instead of connecting all nodes/neurons of the previous layer to the next layer, we only take the nearby nodes for the next layers. This can be further decreased to shared weight concept where local connections use same weights. This can be thought as using same weight at any location of the image. Using one weight at the top left cornor and using another weight at bottom of the image doesn't make sense because its the same image so should use same weights. This is implemented by applying same filter at different spatial locations of the image.
 
+![](Images/weights.png)
+
+The filter is convoluted over the image. Convolution is nothing but an element-wise dot product between the kernel and image. It's the same as the linear layer but we share weights/use the same kernel over the entire image.
+
+![](Images/convolution.png)
+
+Say a convolution layer has 10 nodes. This means there are 10 filters of the same size but different values/weights applied to the image. After this, an activation function is applied for each node similar to the FCNs we saw before. ReLU is the most used activation function. Sometimes, there will be a pooling layer in order to reduce the dimensions. Below is an image of max pooling where the output contains only the max value in the region of interest. 
+
+![](Images/maxpool.png)
+
+There could be additional layers. How many layers and how many filters/nodes/neurons per each layer is given by the network architecture. At the end, the image is flattened (make into a 1d array by spreading out each pixel value) in order to input into a softmax function to get the probability values. 
+
+The filters have a few important hyperparameters (settings that need to be manually set by us and can't be learned by the model). Padding is often added to the image for making calculations feasible and preserving the input size. This is mostly done by adding zeros to all sides of the image. Next is kernel size which sets the amount of information retained from the image. A smaller kernel means more information. Mostly 3x3 or 5x5 kernels are used. Last one is the stride. It tells us how to move our kernel both horizontally and vertically across the image.
+
+This is for a single-channel image. If it is an RGB image, then we have 3 channels so we follow a similar approach for each channel and stack them (sum them) up on each other. 
+
+Refer to this [link](https://poloclub.github.io/cnn-explainer/#article-convolution) to visually understand what's happening inside a CNN.
+
+It's important to know how the input size of the image changes at each layer. Say we have an input image of size $W_1* H_1 * C$ with K number of filers of size F and stride S with zero padding P, then the output is $W_2 * H2 * K$ where 
+
+$$ W_2 = \frac{W_1-F+2P}{S} + 1 $$
+
+$$ H_2 = \frac{H_1-F+2P}{S} + 1 $$
+
+and the number of parameters is $F^2CK$ and K biases.
+## Training
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
