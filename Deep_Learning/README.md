@@ -67,7 +67,11 @@ $w \leftarrow w + \alpha v$
 
 return w
 
-But, we if observe we have two hyperparameters now, $\rho$ and $\alpha$. They need tuning to get the best results.
+But, we observe we have two hyperparameters now, $\rho$ and $\alpha$. They need tuning to get the best results.
+
+Nesterov momentum is an extension of the standard momentum optimization algorithm. It improves upon traditional momentum by taking into account the expected future position of the parameters when computing the gradient update. This helps to accelerate convergence and enhance the optimization process.
+
+Standard momentum update involves two steps: 1) calculating the momentum term by accumulating a fraction of the previous update, and 2) updating the parameters based on this momentum term. Nesterov momentum modifies the second step to incorporate a look-ahead update, which allows the algorithm to "look ahead" and make a more informed gradient update.
 ## AdaGrad
 AdaGrad, which stands for Adaptive Gradient, is an optimization algorithm that is designed to automatically adapt the learning rate during training. 
 
@@ -100,12 +104,12 @@ $$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
 $$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
 
 Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
+
+*Adam with weight decay (L2 regularization) should be the default choice for most of the problems.*
 # Neural Networks
 Let's consider a supervised image classification. Using a linear classifier is not enough for images as they don't capture more than one template. It's important that we use a nonlinear classifier. For many years in the field of computer vision, people tried different approaches to extract/learn features of images using techniques like Histogram of Oriented Gradients (HOG), Bag of Words, etc. But most of them are not effective except neural networks. 
 
-Neural networks are a bunch of linear classifiers with activation functions in between. Activation functions are nonlinear functions. Without these, the neural network is just a linear classifier. 
-
-![](Images/af.png)
+Neural networks are a bunch of linear classifiers with activation functions in between. Activation functions are nonlinear functions that add nonlinearity and help the model learn complex relations. Without these, the neural network is just a linear classifier. 
 
 In a neural network, there is an input layer, an output layer, and any number of hidden layers in between. Each hidden layer consists of neurons. We try to learn the weights/parameters of these neurons. See the below image to know what happens in a fully connected neural network/multi-layer perception. 
 
@@ -186,6 +190,60 @@ $$ H_2 = \frac{H_1-F+2P}{S} + 1 $$
 
 and the number of parameters is $F^2CK$ and K biases.
 ## Training
+### Activation Functions
+As discussed above activation functions add nonlinearity to the model. Here are the popular choices.
+
+![](Images/af.png)
+
+#### Sigmoid
+This can be seen as a function that squashes every input to range [0,1]. Quite popular before 2012. There are several issues with sigmoid. 
+
+1. When the gradients are small at the output layer and as the backpropagation moves backward, it has to go through the sigmoid gate. As we see in the graph, small input to the sigmoid returns zero. If the gradients flowing back is zero, all gradients from that layer to the input layer remain zero and weights will never change thus no learning happens. This result of no convergence due to small gradients is called **vanishing gradients**. Similarly, when the gradients are too large, the sigmoid output will be zero (see the graph) causing a similar problem. This is called **exploding gradients**.
+2. Another issue with sigmoid is that, it is not zero-centered. It always gives a positive output. Thus gradients are always all positive or all negative thus not optimizing well.
+3. Another minor issue is we need to calculate exponential which can be computationally expensive.
+### Tanh
+This squashes numbers to range [-1,1] and now its zero centered. But the issue of vanishing and exploding gradients remains the same. Just observe the output graph, when there is a constant region, then the gradients are getting saturated.
+### ReLU
+The gradients don't saturate in the positive region and are computationally efficient and converge faster than sigmoid and tanh in practice. Thus this is the most common choice of activation functions. But the issue is in the negative region and the issue of vanishing gradients remains the same. Also, it is not zero-centered as the outputs are never negative.
+### LeakyReLU
+It's the same as ReLU except for the negative region. Here the gradients will never die in both positive and negative regions.
+### ELU
+Exponential linear unit introduces an exponential function in the negative region. This has all features of ReLU along with zero centered and is more robust to noise in the negative regions than LeakyReLU. 
+### GeLU
+Gaussian Error Linear Unit is a quite popular choice for transformers. When the input is positive, it is similar to ReLU. In the negative region, we will have a threshold. If the value is below the threshold then they are allowed and other input values are squashed to zero. This means all negative inputs are not allowed thus adding randomness. We try out various thresholds and take **expectation over randomness**.
+
+![](Images/Gelu.png)
+### Data Preprocessing
+It is often preferred to make the data zero-centered and normalize the data. With normalization, the model is less sensitive to small changes in weights.
+
+![](Images/normalization.png)
+
+For images, in practice, the mean is calculated for each channel of the images, and the mean is subtracted from the respective channel pixels values making each channel zero-centered.
+### Weight initialization
+While discussing backprop, we said we initial starting weights randomly. What if we used `W=constant init` i.e use same weights for all nodes? If weights are all the same at the start then gradients will also be the same for all nodes. Then no matter how many layers we add it is still same as a single layer.
+
+What if we use random values? We can use `W = 0.01 * np.random.randn(Din, Dout)` the output weight matrix will be Din x Dout dimensions. This works for smaller networks but not for deeper networks(more layers). Since the weights are small, taking gradients will result in a vanishing gradients problem. Then we might use larger weights like `W = 0.05 * np.random.randn(Din, Dout)`. But these weights are too big and result in exploding gradients. Uff, so weight initialization is tricky and important. In practice, we use something called **Xavier** initialization, `W = np.random.randn(Din, Dout)/ np.sqrt(Din)` this solves the gradients issues. Another popular coice is **He** initialization (ResNet), `W = np.random.randn(Din, Dout)/ np.sqrt(2/Din)`
+### Batch Normalization
+As we have deeper networks, the distribution of each layer changes due to the weight updates. This is called internal covariate shift. When previous layer distributions change, the next layer needs to constantly adapt to these changes thus more time to converge. Batch normalization explicitly makes our data zero means and unit variance in between layers. 
+
+![](Images/batchnorm.png)
+
+$\gamma$ and $\beta$ are learnable parameters to use different standard deviations and biases respectively. Batchnorm is used just like an extra layer usually inserted after convolutional layers and before activation functions. During training, BatchNorm keeps track of two sets of statistics for each batch-normalized layer: the running mean (μ) and the running variance (σ^2). These statistics are computed by accumulating the mean and variance of the activations across mini-batches during training.
+
+During testing, instead of using the statistics from the mini-batch, BatchNorm uses the accumulated running mean and running variance. This can be an issue as the testing doesn't happen as it should instead uses training data statistics.
+
+The testing procedure can be summarized as follows:
+1. For each mini-batch or individual example during testing, the input activations of the batch-normalized layer are normalized using the running mean (μ) and running variance (σ^2).
+2. The normalized activations are then scaled and shifted using the learned scale (γ) and shift (β) parameters, respectively, which are also accumulated during training.
+3. The scaled and shifted activations are passed through the rest of the network for prediction or inference.
+
+Batch normalization makes deep networks much easier to train, improves gradient flow, allows higher learning rates, robust to weight initialization, and also acts as a regularizer. Only issue is different behaviour during train and test.
+
+Layer normalization is another variant where normalization is done across the dimensions instead of batches thus having the same behavior during train and test.
+
+### Learning Rate Schedule
+
+
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
