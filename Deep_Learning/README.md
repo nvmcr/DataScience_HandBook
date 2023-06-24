@@ -242,7 +242,23 @@ Batch normalization makes deep networks much easier to train, improves gradient 
 Layer normalization is another variant where normalization is done across the dimensions instead of batches thus having the same behavior during train and test.
 
 ### Learning Rate Schedule
+Learning rate is a hyperparameter and choosing a learning rate is quite tricky. Because using a low learning rate increases training time and also isn't helpful to get out of local minima. If we choose a high learning rate, convergence is unstable. The best choice is to use a high learning rate at the start (its fast) and use a small learning rate while reaching the global minima (doesn't overshoot). This is done by learning rate schedular for learning rate decay.
 
+One option we have is to manually input the learning rate at fixed points. For example, multiplying the learning rate by 0.1 after epochs 30, 60, 90 for ResNets. But finding these values for another task is a cumbersome process. One popular schedular is **Cosine** where we fix the number of epochs($T$) and initial learning rate($\alpha_0$) at first. Learning rate an epoch t is given by
+
+  $$ \alpha_t = \frac{1}{2} \alpha_0(1+cos(\frac{t\pi}{T})) $$
+
+This is how the decay looks:
+
+![](Images/cosine.png)
+
+Another popular choice is linear, $\alpha_t = \alpha_0(1-\frac{t}{T})$. 
+
+There is one issue with choosing a high learning rate at first. With high LRs, we might go too far away from global minima and it disturbs all the initializations we carefully crafted. So we use something called **linear warmup** which starts with a very small learning rate for a few iterations or epochs and then moves to a higher learning rate.
+
+> Epochs means the number of times we loop over our entire training data to learn. We do multiple iterations within a single epoch. For example, we have 1000 training samples and a batch size of 100. So in each iteration our model tries to learn 100 samples. 10 iterations will equal one epoch.
+### Dropout
+It is a regularization technique where we randomly set some neurons to zero (removing). We have a hyperparameter, the probability of dropping. If it is set to 0.5, then only half of our neurons will be active in a layer.  During test time, since we can't randomly drop neurons, we multiply the output of hideen layers with some probability percentage p to decrease the activations.
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
