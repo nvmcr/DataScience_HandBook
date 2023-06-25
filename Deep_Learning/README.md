@@ -256,9 +256,44 @@ Another popular choice is linear, $\alpha_t = \alpha_0(1-\frac{t}{T})$.
 
 There is one issue with choosing a high learning rate at first. With high LRs, we might go too far away from global minima and it disturbs all the initializations we carefully crafted. So we use something called **linear warmup** which starts with a very small learning rate for a few iterations or epochs and then moves to a higher learning rate.
 
-> Epochs means the number of times we loop over our entire training data to learn. We do multiple iterations within a single epoch. For example, we have 1000 training samples and a batch size of 100. So in each iteration our model tries to learn 100 samples. 10 iterations will equal one epoch.
+> Epochs means the number of times we loop over our entire training data to learn. We do multiple iterations within a single epoch. For example, we have 1000 training samples and a batch size of 100. So in each iteration, our model tries to learn 100 samples. 10 iterations will equal one epoch.
 ### Dropout
-It is a regularization technique where we randomly set some neurons to zero (removing). We have a hyperparameter, the probability of dropping. If it is set to 0.5, then only half of our neurons will be active in a layer.  During test time, since we can't randomly drop neurons, we multiply the output of hideen layers with some probability percentage p to decrease the activations.
+It is a regularization technique where we randomly set some neurons to zero (removing). We have a hyperparameter, the probability of dropping. If it is set to 0.5, then only half of our neurons will be active in a layer.  During test time, since we can't randomly drop neurons, we multiply the output of hidden layers with some probability percentage p to decrease the activations.
+# Self-Supervised Learning
+Supervised learning is quite expensive due to the manual annotations/labels. Apart from cost, it is more prone to errors in annotations. Even the standard ImageNet has wrong labels. Options outside of supervised learning are semi-supervised, unsupervised, and self-supervised. Semi-supervised learning is to train on unlabeled data along with some labeled data. This is quite popular over a period but is still an active area of research. Getting good results from unsupervised learning is hard as there is no feedback or guidance. That left us with self-supervised learning (SSL). 
+
+> Self-supervised learning aims to learn useful representations or features from unlabeled data without explicit human annotations.
+
+The confusing part is how is it different from unsupervised. In SSL, we do some prediction, $\hat{y}$ which is within the input data itself unlike learning some distribution. There are two steps in SSL.
+
+1. Pretrain a network on a pretext task (will be explained) that doesn't require supervision.
+2. Transfer the learned network to a downstream task via linear classifiers, KNN, and finetuning.
+
+Pretext tasks are in general 3 types. Generative pretext tasks predict part of the input signal like Autoencoders, GANs. Discriminative predicts something about the input signal like contrastive learning, rotation+clustering, and multimodal use of additional signals in addition to RGB images like Video, 3D, Audio, etc.
+
+A common example of a pretext task is we give cropped images to the model and make the model predict the complete image or rotate the image and make the model predict the non-rotated image etc. A downstream task could be anything like object detection, image classification etc. Pretext tasks need not be related to downstream tasks. Evaluation of an SSL model is only based on the downstream task. We don't care about pretext task performance.
+
+![](Images/SSL.png)
+
+A detailed example of a pretext task is to predict rotations. From our data, we rotate the image is 4 ways and the prediction is which way the image is rotated. This became a supervised classification problem but no annotation is required. This way we are forcing the model to learn about image representations and use these learned features for some downstream tasks like image classification(1 way).
+
+![](Images/rotation.png)
+
+Our pretext tasks shouldn't be too easy as the model might learn shortcuts/irrelevant features and it also shouldn't be too hard as the model might be too fixated on pretext tasks and wouldn't work on downstream. Other good pretext tasks are inpainting, jigsaw puzzles, colorization, etc. We don't usually know which pretext works well unless we use it for our downstream task. 
+
+### Contrastive Learning
+A generalized method for a pretext task would be to use different transformations at the same time. For example, we have a cat and dog image. We then apply different transformations on the cat image and on the dog image. In a latent space (lower dimensional space), the transformed image features of a cat should be closer to each other (attract) and far from the transformed image features of a dog (repel). This method is called contrastive learning.
+
+![](Images/contrastive.png)
+
+Our goal is to $score(f(x),f(x^+)) >> score(f(x), f(x^-))$ i.e our score (similarity score) between reference sample and positive sample should be higher than a score between reference sample and negative sample.
+
+A loss function for contrastive learning given 1 positive sample and N-1 negative samples:
+
+$$ L = -E_X[log \frac{exp(s(f(x),f(x^+)))}{exp(s(f(x),f(x^+))) + \Sigma_{j=1}{N-1}exp(s(f(x),f(x_{j}^{-})))}] $$
+
+This is called InfoNCE loss (Information Noise Contrastive Estimation) and kind of looks like softmax loss where we have our reference images as the true class and its transformations (positives) as also the true class and every other negative as another class. 
+#### SimCLR
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
