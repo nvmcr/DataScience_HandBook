@@ -244,7 +244,7 @@ Layer normalization is another variant where normalization is done across the di
 ### Learning Rate Schedule
 Learning rate is a hyperparameter and choosing a learning rate is quite tricky. Because using a low learning rate increases training time and also isn't helpful to get out of local minima. If we choose a high learning rate, convergence is unstable. The best choice is to use a high learning rate at the start (its fast) and use a small learning rate while reaching the global minima (doesn't overshoot). This is done by learning rate schedular for learning rate decay.
 
-One option we have is to manually input the learning rate at fixed points. For example, multiplying the learning rate by 0.1 after epochs 30, 60, 90 for ResNets. But finding these values for another task is a cumbersome process. One popular schedular is **Cosine** where we fix the number of epochs($T$) and initial learning rate($\alpha_0$) at first. Learning rate an epoch t is given by
+One option we have is to manually input the learning rate at fixed points. For example, multiplying the learning rate by 0.1 after epochs 30, 60, 90 for ResNets. We can generally decide at which epoch by looking at epoch vs loss graph. The epoch were the curve plateaus is where we need to decrease our learning rate. But finding these values for another task is a cumbersome process. One popular schedular is **Cosine** where we fix the number of epochs($T$) and initial learning rate($\alpha_0$) at first. Learning rate an epoch t is given by
 
   $$ \alpha_t = \frac{1}{2} \alpha_0(1+cos(\frac{t\pi}{T})) $$
 
@@ -256,10 +256,81 @@ Another popular choice is linear, $\alpha_t = \alpha_0(1-\frac{t}{T})$.
 
 There is one issue with choosing a high learning rate at first. With high LRs, we might go too far away from global minima and it disturbs all the initializations we carefully crafted. So we use something called **linear warmup** which starts with a very small learning rate for a few iterations or epochs and then moves to a higher learning rate.
 
-> Epochs means the number of times we loop over our entire training data to learn. We do multiple iterations within a single epoch. For example, we have 1000 training samples and a batch size of 100. So in each iteration our model tries to learn 100 samples. 10 iterations will equal one epoch.
+> Epochs means the number of times we loop over our entire training data to learn. We do multiple iterations within a single epoch. For example, we have 1000 training samples and a batch size of 100. So in each iteration, our model tries to learn 100 samples. 10 iterations will equal one epoch.
 ### Dropout
-It is a regularization technique where we randomly set some neurons to zero (removing). We have a hyperparameter, the probability of dropping. If it is set to 0.5, then only half of our neurons will be active in a layer.  During test time, since we can't randomly drop neurons, we multiply the output of hideen layers with some probability percentage p to decrease the activations.
+It is a regularization technique where we randomly set some neurons to zero (removing). We have a hyperparameter, the probability of dropping. If it is set to 0.5, then only half of our neurons will be active in a layer.  During test time, since we can't randomly drop neurons, we multiply the output of hidden layers with some probability percentage p to decrease the activations.
+# Self-Supervised Learning
+Supervised learning is quite expensive due to the manual annotations/labels. Apart from cost, it is more prone to errors in annotations. Even the standard ImageNet has wrong labels. Options outside of supervised learning are semi-supervised, unsupervised, and self-supervised. Semi-supervised learning is to train on unlabeled data along with some labeled data. This is quite popular over a period but is still an active area of research. Getting good results from unsupervised learning is hard as there is no feedback or guidance. That left us with self-supervised learning (SSL). 
 
+> Self-supervised learning aims to learn useful representations or features from unlabeled data without explicit human annotations.
+
+The confusing part is how is it different from unsupervised. In SSL, we do some prediction, $\hat{y}$ which is within the input data itself unlike learning some distribution. There are two steps in SSL.
+
+1. Pretrain a network on a pretext task (will be explained) that doesn't require supervision.
+2. Transfer the learned network to a downstream task via linear classifiers, KNN, and finetuning.
+
+Pretext tasks are in general 3 types. Generative pretext tasks predict part of the input signal like Autoencoders, GANs. Discriminative predicts something about the input signal like contrastive learning, rotation+clustering, and multimodal use of additional signals in addition to RGB images like Video, 3D, Audio, etc.
+
+A common example of a pretext task is we give cropped images to the model and make the model predict the complete image or rotate the image and make the model predict the non-rotated image etc. A downstream task could be anything like object detection, image classification etc. Pretext tasks need not be related to downstream tasks. Evaluation of an SSL model is only based on the downstream task. We don't care about pretext task performance.
+
+![](Images/SSL.png)
+
+A detailed example of a pretext task is to predict rotations. From our data, we rotate the image is 4 ways and the prediction is which way the image is rotated. This became a supervised classification problem but no annotation is required. This way we are forcing the model to learn about image representations and use these learned features for some downstream tasks like image classification(1 way).
+
+![](Images/rotation.png)
+
+Our pretext tasks shouldn't be too easy as the model might learn shortcuts/irrelevant features and it also shouldn't be too hard as the model might be too fixated on pretext tasks and wouldn't work on downstream. Other good pretext tasks are inpainting, jigsaw puzzles, colorization, etc. We don't usually know which pretext works well unless we use it for our downstream task. 
+
+### Contrastive Learning
+A generalized method for a pretext task would be to use different transformations at the same time. For example, we have a cat and dog image. We then apply different transformations on the cat image and on the dog image. In a latent space (lower dimensional space), the transformed image features of a cat should be closer to each other (attract) and far from the transformed image features of a dog (repel). This method is called contrastive learning.
+
+![](Images/contrastive.png)
+
+Our goal is to $score(f(x),f(x^+)) >> score(f(x), f(x^-))$ i.e our score (similarity score) between reference sample and positive sample should be higher than a score between reference sample and negative sample.
+
+A loss function for contrastive learning given 1 positive sample and N-1 negative samples:
+
+$$ L = -E_X[log \frac{exp(s(f(x),f(x^+)))}{exp(s(f(x),f(x^+))) + \Sigma_{j=1}^{N-1}exp(s(f(x),f(x_{j}^{-})))}] $$
+
+This is called InfoNCE loss (Information Noise Contrastive Estimation) and kind of looks like softmax loss where we have our reference images as the true class and its transformations (positives) as also the true class and every other negative as another class. 
+#### SimCLR
+A simple framework for Contrastive Learning of visual Representations (SimCLR) was one of the first models to achieve comparable results with supervised learning. 
+1. The model starts with a data augmentation model that transforms a data sample image, $x$ into two correlated views by transformations $\hat{x_i}, \hat{x_j}$ like random crop, crop and resize, color distortion etc. Thus our dataset will now be 2N as each image is augmented with two transformations.
+2. The transformed images $\hat{x_i}, \hat{x_j}$ are passed through a base encoder, $f$ to extract the image representations, $h_i, h_j$. The paper uses a ResNet50 (the last FCN is removed) to extract the representations.
+3. Instead of applying the loss functions on representations directly, representations are passed through a small hidden layer neural network projection head with nonlinearity, $g$ (not entirely clear why but the paper says due to nonlinearity, representations learned will be better with projection head). The goal is to maximize the score for representations that we after projection head, $z_i, z_j$.
+4. In practice, we randomly sample a minibatch of N examples and define
+the contrastive prediction task on pairs of augmented examples derived from the minibatch, resulting in 2N data points. We do not sample negative examples explicitly. All other images, 2(N-1) other than two correlated transformed images are given as negative. Similarity score is given by cosine similarity, $sim(u,v) = \frac{u^Tv}{||u|| ||v||}$. This ranges from 1 to -1 where 1 means both vectors, u and v, point to same direction and high similarity. -1 means vectors are pointing opposite and 0 means vectors are uncorrelated.
+5. The loss function is same InfoNCE loss which is here modified slightly as
+
+$$ L = -log \frac{exp(sim(z_i,z_j))}{\Sigma_{k=1}^N 1_{[k\neq i]} exp(s(z_i,z_j))} $$
+
+![](Images/simclr.png)
+
+After training the ResNet model using representations, we use this ResNet in some downstream tasks like image classification by adding a linear classification layer at the end. The paper achieved similar results as supervised models on the ImageNet dataset. But with a batch size of over 8000 and with 4 times wider ResNet architecture. 
+
+SimCLR needs a huge batch size in order to train effectively. The paper uses LARS optimizer to optimize for higher batch sizes. **Decoupled Contrastive Learning** (DCL) is a modification of the contrastive learning framework, specifically designed to address some of these batch size limitations and challenges associated with the negative-positive coupling (NPC) effect in the InfoNCE loss.
+
+The issue of the NPC effect in the loss arises from the way negative samples are chosen during training. When we take a batch of images, we select the positive pairs and all the remaining samples are treated as negative. When we have a large batch size, there wouldn't be any issue as there are enough negative samples for the model to learn underlying representations. But with a lower batch size, the negative samples chosen for a positive pair are too easy to distinguish from the positive sample, leading to an overly optimistic loss landscape and poor learning of representations.
+
+This is where Decoupled Contrastive Loss helps. As the name says,  the positive sample is removed from the denominator, resulting in a loss calculation that considers only the negative samples. By excluding the positive sample the loss becomes more focused on the relative similarities among the negative samples. This decoupling reduces the influence of the positive sample, making the loss more informative and less prone to the NPC effect, and also can be used with lower batch sizes.
+#### Momentum Contrastive Learning (MoCo)
+In MoCo, instead of having every other sample as a negative sample, we keep a running queue of negative examples (called keys) for all of the images in our batch. The batch size is decoupled with the number of keys. For example, we have a running queue of 2000 keys/negative samples. Say our batch size is 1000, we use all the 2000 keys to compute gradients and update the encoder. 
+
+![](Images/moco.png)
+
+We have a similar encoder setup as SimCLR for the query/reference image and get the feature representations (all these will be positives) on the other side we have running keys and then the loss is compared and gradients flow back only through the query encoder (left side). How the negative samples are chosen is simple. For the current batch, all the images from the previous batch are chosen as negative samples (some extra images can also be added or the previous two or three batch sizes can be combined), hence called *running* keys. If there are no gradients passed through the momentum encoder then how are its parameters updated? The momentum encoder is updated similarly to SGD. The key network's parameters are updated using a moving average of the query network's parameters. This update is performed iteratively, where at each step, a fraction of the query network's parameters are mixed with the key network's parameters. This process helps create a more stable and consistent representation space.
+
+MoCo V2 is also released by combining MoCo and SimCLR by using a projection head on the query encoder. 
+#### DINO
+This is a combination of SimCLR and MoCO but more of a distillation problem. 
+
+![](Images/dino.png)
+
+1. The reference image is transformed into two images. One image is transformed using local augmentations like crop and resize and other image is global augmentation like grayscale, and color distortion (no crop). The local augmented image is given a student encoder model and the global one is given to a teacher encoder model.
+2. Both encoder models are vision transformers and as you can see there are no negative samples involved here.
+3. Centering is similar to normalizing where dimensions are centered to remove any dominant dimension.
+4. The teacher network's parameters are updated using a momentum update mechanism. This involves copying a fraction of the student network's parameters and updating the teacher network's parameters towards the student's parameters. This update process is performed iteratively, and it helps stabilize the training and ensures that the teacher network slowly tracks the student network.
+5. The student network is trained to predict the intermediate representations produced by the teacher network. This is achieved by minimizing a contrastive loss, which encourages similar instances to have high similarity scores and dissimilar instances to have low similarity scores.
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
