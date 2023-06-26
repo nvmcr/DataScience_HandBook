@@ -302,7 +302,7 @@ A simple framework for Contrastive Learning of visual Representations (SimCLR) w
 the contrastive prediction task on pairs of augmented examples derived from the minibatch, resulting in 2N data points. We do not sample negative examples explicitly. All other images, 2(N-1) other than two correlated transformed images are given as negative. Similarity score is given by cosine similarity, $sim(u,v) = \frac{u^Tv}{||u|| ||v||}$. This ranges from 1 to -1 where 1 means both vectors, u and v, point to same direction and high similarity. -1 means vectors are pointing opposite and 0 means vectors are uncorrelated.
 5. The loss function is same InfoNCE loss which is here modified slightly as
 
-   $$ L = -log \frac{exp(sim(z_i,z_j))}{\Sigma_{k=1}^{N} 1_{[k\neq i]}exp(s(z_i,z_j))} $$
+$$ L = -log \frac{exp(sim(z_i,z_j))}{\Sigma_{k=1}^N 1_{[k\neq i]} exp(s(z_i,z_j))} $$
 
 ![](Images/simclr.png)
 
