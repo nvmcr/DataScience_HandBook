@@ -331,6 +331,66 @@ This is a combination of SimCLR and MoCO but more of a distillation problem.
 3. Centering is similar to normalizing where dimensions are centered to remove any dominant dimension.
 4. The teacher network's parameters are updated using a momentum update mechanism. This involves copying a fraction of the student network's parameters and updating the teacher network's parameters towards the student's parameters. This update process is performed iteratively, and it helps stabilize the training and ensures that the teacher network slowly tracks the student network.
 5. The student network is trained to predict the intermediate representations produced by the teacher network. This is achieved by minimizing a contrastive loss, which encourages similar instances to have high similarity scores and dissimilar instances to have low similarity scores.
+
+# Vision and Language
+## Recurrent Neural Networks
+We are now moving towards language from vision. The main difference between language from vision is the sequences (video is an exception) like given a word/letter what is the next word/letter? RNNs are the starting models for processing sequences. The key idea of RNN is they have an internal hidden state (green box) that is updated as a sequence is processed and it is updated recurrently after every output. 
+
+![](Images/RNN1.png)
+
+The hidden state keeps track of all the previously seen inputs. It is updated after every new input by applying a recurrence formula as follows:
+
+$$ h_t = f_W(h_{t-1}, x_t) $$
+
+The present state is given by some function with weights W (a neural network) which takes in input at the present time step and the hidden old state. Observe here that the weights are shared so it doesn't matter how long the input is. The initial hidden state is usually zeros. In the case of a vanilla RNN, $f_W$ looks like:
+
+$$ h_t = tanh(W_{hh}h_{t-1} + W_{xh}x_t) $$
+
+and output is given by $y_t = W_{hy}h_t$. The final loss is given by summing all the individual losses. 
+
+The above case is if we have multiple outputs like the next words. Incase of sentiment analysis we might have just one y based on multiple inputs something like whether the statement is positive or negative. Then the loss is only given by the final y. 
+
+Sometimes there might be multiple outputs but a single input like image captioning (describing what's happening in the image). Then the process remains the same keeping inputs of the next hidden units are zeros or can be the output of the previous input. 
+
+Lets see an example now, say we are training our model to predict the next character, the model looks like:
+
+![](Images/RNN2.png)
+
+As you can see the inputs are given in the form of one hot-encoded vector. Our weight matrix for the looks like this:
+
+![](Images/RNN3.png)
+
+During the test time based on the output score, the next character is given as the input to the next state and so on the word is predicted.
+
+Similar to a normal neural network, we do backpropagation. But it has to load the memory with the weights of every character. This will blow up our memory for long articles. So instead of backpropagating the entire article we take chunks of data at a time and backpropagate and then go for the next chunk in the document.
+
+Image captioning is as simple as combining CNN with RNN and using start and end tokens to say when to stop generating captions.
+
+![](Images/RNN4.png)
+
+Even with all these RNNs are not popular. Because when we think of backpropagation, we know that tanh squashes everything to [-1,1]. When the gradients are flowing back, many values less than 1 keep getting multiplied. By the time gradients from the last hidden state come to the first hidden state the gradients become very very small causing a vanishing gradients problem. This problem is solved by LSTMs.
+## Long Short Term Memory 
+It is a variant of RNNS. There are many new terms involved here. In RNN we only combine the previous hidden state with the present input using a neural network and passing through a tanh. But in LSTM we have four such activation functions with their own task.
+* i: input gate: decides whether to write to cell
+* f: Forget gate: decides whether to erase cell
+* o: Output gate: decides how much to reveal cell
+* g: info gate: decides how much to write to cell
+
+![](Images/lstm.png)
+
+The first thing is to observe the cell state line which is at the top with C labels. It kind of looks like a single highway. The LSTM does have the ability to remove or add information to the cell state, carefully regulated by structures called gates. Let's understand it with an example (copied from colah's blog). 
+
+The first step in our LSTM is to decide what information we’re going to throw away from the cell state. This decision is made by a sigmoid layer called the “forget gate layer (f).” It looks at $h_{t−1}$ and $x_t$, and outputs a number between 0 and 1 for each number in the cell state $C_{t−1}$. We multiply $f_t$ with the previous cell state, $C_{t-1}$ to get only the things we want after removing things we need to forget. Let’s go back to our example of a language model trying to predict the next word based on all the previous ones. In such a problem, the cell state might include the gender of the present subject, so that the correct pronouns can be used. When we see a new subject, we want to forget the gender of the old subject. 
+
+The next step is to decide what new information we’re going to store in the cell state. This has two parts. First, a sigmoid layer called the “input gate layer(i)” decides whether to update. Next, a tanh layer (g) creates a vector of new candidate values that could be added to the state. In the next step, we’ll combine these two to create an update to the state. This multiplied g and i is added to the previously multiplied f gate. In the case of the language model, this is where we’d actually drop the information about the old subject’s gender and add the new information, as we decided in the previous steps.
+
+Finally, we need to decide what we’re going to output. This output will be based on our cell state, but will be a filtered version. First, we run a sigmoid layer (o) which decides what parts of the cell state we’re going to output. Then, we put the cell state through tanh and multiply it by the output of the sigmoid gate, so that we only output the parts we decided to. For the language model example, since it just saw a subject, it might want to output information relevant to a verb, in case that’s what is coming next. For example, it might output whether the subject is singular or plural, so that we know what form a verb should be conjugated into if that’s what follows next.
+
+How does this LSTM fix the vanishing gradients? Remember the highway of the cell state? When the gradients need to flow back, they flow back through this highway without going through activations functions thus preserving our gradients. This doesn't entirely solve the problems but it works for most of the cases.
+
+There are many other versions of LSTMS. Gated Recurrent Unit, or GRU, is one such popular version. It combines the forget and input gates into a single “update gate.” It also merges the cell state and hidden state and makes some other changes. The resulting model is simpler than standard LSTM models and has been growing increasingly popular.
+
+## Attention and Transformers
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
