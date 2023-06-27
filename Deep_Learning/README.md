@@ -362,7 +362,22 @@ As you can see the inputs are given in the form of one hot-encoded vector. Our w
 
 During the test time based on the output score, the next character is given as the input to the next state and so on the word is predicted.
 
-Similar to normal neural network, we do backpropagation. But it has to load the memory with the weights of every character. This will blow up our memory for long articles. So instead of backpropagating the entire article we take chunks of data at a time and backpropagate and then go for the next chunk in the document.
+Similar to a normal neural network, we do backpropagation. But it has to load the memory with the weights of every character. This will blow up our memory for long articles. So instead of backpropagating the entire article we take chunks of data at a time and backpropagate and then go for the next chunk in the document.
+
+Image captioning is as simple as combining CNN with RNN and using start and end tokens to say when to stop generating captions.
+
+![](Images/RNN4.png)
+
+Even with all these RNNs are not popular. Because when we think of backpropagation, we know that tanh squashes everything to [-1,1]. When the gradients are flowing back, many values less than 1 keep getting multiplied. By the time gradients from the last hidden state come to the first hidden state the gradients become very very small causing a vanishing gradients problem. This problem is solved by LSTMs.
+## Long Short Term Memory 
+It is a variant of RNNS. There are many new terms involved here. In RNN we only combine the previous hidden state with the present input using a neural network and passing through a tanh. But in LSTM we have four such activation functions with their own task.
+* i: input gate: decides whether to write to cell
+* f: Forget gate: decides whether to erase cell
+* o: Output gate: decides how much to reveal cell
+* g: info gate: decides how much to write to cell
+
+![](Images/lstm.png)
+
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
