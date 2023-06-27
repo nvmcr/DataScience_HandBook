@@ -331,6 +331,38 @@ This is a combination of SimCLR and MoCO but more of a distillation problem.
 3. Centering is similar to normalizing where dimensions are centered to remove any dominant dimension.
 4. The teacher network's parameters are updated using a momentum update mechanism. This involves copying a fraction of the student network's parameters and updating the teacher network's parameters towards the student's parameters. This update process is performed iteratively, and it helps stabilize the training and ensures that the teacher network slowly tracks the student network.
 5. The student network is trained to predict the intermediate representations produced by the teacher network. This is achieved by minimizing a contrastive loss, which encourages similar instances to have high similarity scores and dissimilar instances to have low similarity scores.
+
+# Vision and Language
+## Recurrent Neural Networks
+We are now moving towards language from vision. The main difference between language from vision is the sequences (video is an exception) like given a word/letter what is the next word/letter? RNNs are the starting models for processing sequences. The key idea of RNN is they have an internal hidden state (green box) that is updated as a sequence is processed and it is updated recurrently after every output. 
+
+![](Images/RNN1.png)
+
+The hidden state keeps track of all the previously seen inputs. It is updated after every new input by applying a recurrence formula as follows:
+
+$$ h_t = f_W(h_{t-1}, x_t) $$
+
+The present state is given by some function with weights W (a neural network) which takes in input at the present time step and the hidden old state. Observe here that the weights are shared so it doesn't matter how long the input is. The initial hidden state is usually zeros. In the case of a vanilla RNN, $f_W$ looks like:
+
+$$ h_t = tanh(W_{hh}h_{t-1} + W_{xh}x_t) $$
+
+and output is given by $y_t = W_{hy}h_t$. The final loss is given by summing all the individual losses. 
+
+The above case is if we have multiple outputs like the next words. Incase of sentiment analysis we might have just one y based on multiple inputs something like whether the statement is positive or negative. Then the loss is only given by the final y. 
+
+Sometimes there might be multiple outputs but a single input like image captioning (describing what's happening in the image). Then the process remains the same keeping inputs of the next hidden units are zeros or can be the output of the previous input. 
+
+Lets see an example now, say we are training our model to predict the next character, the model looks like:
+
+![](Images/RNN2.png)
+
+As you can see the inputs are given in the form of one hot-encoded vector. Our weight matrix for the looks like this:
+
+![](Images/RNN3.png)
+
+During the test time based on the output score, the next character is given as the input to the next state and so on the word is predicted.
+
+Similar to normal neural network, we do backpropagation. But it has to load the memory with the weights of every character. This will blow up our memory for long articles. So instead of backpropagating the entire article we take chunks of data at a time and backpropagate and then go for the next chunk in the document.
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
