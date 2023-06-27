@@ -378,6 +378,19 @@ It is a variant of RNNS. There are many new terms involved here. In RNN we only 
 
 ![](Images/lstm.png)
 
+The first thing is to observe the cell state line which is at the top with C labels. It kind of looks like a single highway. The LSTM does have the ability to remove or add information to the cell state, carefully regulated by structures called gates. Let's understand it with an example (copied from colah's blog). 
+
+The first step in our LSTM is to decide what information we’re going to throw away from the cell state. This decision is made by a sigmoid layer called the “forget gate layer (f).” It looks at $h_{t−1}$ and $x_t$, and outputs a number between 0 and 1 for each number in the cell state $C_{t−1}$. We multiply $f_t$ with the previous cell state, $C_{t-1}$ to get only the things we want after removing things we need to forget. Let’s go back to our example of a language model trying to predict the next word based on all the previous ones. In such a problem, the cell state might include the gender of the present subject, so that the correct pronouns can be used. When we see a new subject, we want to forget the gender of the old subject. 
+
+The next step is to decide what new information we’re going to store in the cell state. This has two parts. First, a sigmoid layer called the “input gate layer(i)” decides whether to update. Next, a tanh layer (g) creates a vector of new candidate values that could be added to the state. In the next step, we’ll combine these two to create an update to the state. This multiplied g and i is added to the previously multiplied f gate. In the case of the language model, this is where we’d actually drop the information about the old subject’s gender and add the new information, as we decided in the previous steps.
+
+Finally, we need to decide what we’re going to output. This output will be based on our cell state, but will be a filtered version. First, we run a sigmoid layer (o) which decides what parts of the cell state we’re going to output. Then, we put the cell state through tanh and multiply it by the output of the sigmoid gate, so that we only output the parts we decided to. For the language model example, since it just saw a subject, it might want to output information relevant to a verb, in case that’s what is coming next. For example, it might output whether the subject is singular or plural, so that we know what form a verb should be conjugated into if that’s what follows next.
+
+How does this LSTM fix the vanishing gradients? Remember the highway of the cell state? When the gradients need to flow back, they flow back through this highway without going through activations functions thus preserving our gradients. This doesn't entirely solve the problems but it works for most of the cases.
+
+There are many other versions of LSTMS. Gated Recurrent Unit, or GRU, is one such popular version. It combines the forget and input gates into a single “update gate.” It also merges the cell state and hidden state and makes some other changes. The resulting model is simpler than standard LSTM models and has been growing increasingly popular.
+
+## Attention and Transformers
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
