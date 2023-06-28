@@ -342,7 +342,7 @@ The hidden state keeps track of all the previously seen inputs. It is updated af
 
 $$ h_t = f_W(h_{t-1}, x_t) $$
 
-The present state is given by some function with weights W (a neural network) which takes in input at the present time step and the hidden old state. Observe here that the weights are shared so it doesn't matter how long the input is. The initial hidden state is usually zeros. In the case of a vanilla RNN, $f_W$ looks like:
+The present state is given by some function with weights W (a neural network) which takes in input at the present time step and the hidden old state. While reading a sequence, if RNN model uses different parameters for each step during training, it won't generalize to unseen sequences of different lengths. Observe here that the weights are shared so it doesn't matter how long the input is. The initial hidden state is usually zeros. In the case of a vanilla RNN, $f_W$ looks like:
 
 $$ h_t = tanh(W_{hh}h_{t-1} + W_{xh}x_t) $$
 
@@ -370,7 +370,7 @@ Image captioning is as simple as combining CNN with RNN and using start and end 
 
 Even with all these RNNs are not popular. Because when we think of backpropagation, we know that tanh squashes everything to [-1,1]. When the gradients are flowing back, many values less than 1 keep getting multiplied. By the time gradients from the last hidden state come to the first hidden state the gradients become very very small causing a vanishing gradients problem. This problem is solved by LSTMs.
 ## Long Short Term Memory 
-It is a variant of RNNS. There are many new terms involved here. In RNN we only combine the previous hidden state with the present input using a neural network and passing through a tanh. But in LSTM we have four such activation functions with their own task.
+It is a variant of RNN and also follows similar weight sharing. There are many new terms involved here. In RNN we only combine the previous hidden state with the present input using a neural network and passing through a tanh. But in LSTM we have four such activation functions with their own task.
 * i: input gate: decides whether to write to cell
 * f: Forget gate: decides whether to erase cell
 * o: Output gate: decides how much to reveal cell
@@ -390,7 +390,65 @@ How does this LSTM fix the vanishing gradients? Remember the highway of the cell
 
 There are many other versions of LSTMS. Gated Recurrent Unit, or GRU, is one such popular version. It combines the forget and input gates into a single “update gate.” It also merges the cell state and hidden state and makes some other changes. The resulting model is simpler than standard LSTM models and has been growing increasingly popular.
 
-## Attention and Transformers
+## Attention
+Take an example of image captioning. The entire image is passed through a CNN model to get the hidden representation and this hidden representation vector is passed through the RNN or LSTM. But what if we need to generate a 100-word caption about the image? Our hidden representation should encode the information needed for a 100 words caption which is not easy.
+
+When we think about how we process the image, we won't process the entire image in one go right? We pick up things one by one and observe different parts of the image at a time. This idea leads to attention blocks. Instead of appending everything to a single vector, we do it in blocks. 
+
+Before going into attention, lets talk about spatial features. After an image is passed through a CNN, we get a hidden representation,$h$ by using a fully connected layer at the end. The input to the fully connected layer is the spatial features matrix, $z$. Using h and z as inputs to a multi-layer perceptron (or could be just h.z or anything more complex), we get scalar values called alignment scores. Applying a softmax function on these scores will give us normalized attention weights. These scores will tell us how important a particular region is. Based on the score, the model determines the amount of attention a region needs. These weights are multiplied with the spatial features and then summed to give the context vector, c. This context vector is passed through the RNN or LSTM.
+
+![](Images/attention.png)
+
+If we take an example of NLP language translation, this is how attention works
+
+![](Images/attention2.png)
+### General Attention Layer
+
+![](Images/attention3.png)
+
+We will generalize the attention model we learned for image captioning to other general applications. We will start by stretching the spatial vectors into a single vector of N = H*W. Instead of using a complex MLP, we will use a dot product but to reduce the effect of large magnitude vectors we will normalize by dividing with sqrt of input dimensions. 
+
+![](Images/attention5.png)
+
+Will go a little bit further. Instead of using a single input query (Our h is called query here), we can use multiple queries and produce multiple context vectors at the same time. 
+
+![](Images/attention4.png)
+
+Here we are using our spatial/input vectors used for both alignment and attention calculations. We can fine-tune this by using linear layers (fully connected) on input vectors to get keys and vectors which will be used for alignment and attention respectively. The input and output dimensions can now change depending on the key and value layers. The below model is the generalized attention model used in most of the applications.
+
+![](Images/attention6.png)
+
+### Self Attention
+Remeber that the queries are derived from spatial features by applying a fully connected layer to flatten. So we can change our attention to the following:
+
+![](Images/selfattention.png)
+
+Thus we can say that we have some inputs coming in and passed through the self-attention block we get outputs. The order of inputs doesn't matter, it can take input in any order but the output order also changes accordingly. It isn't an issue for an image but for language order is important so the inputs are first passed through a position encoding, p to get representations for inputs. The purpose of positional encoding is to inject this positional information into the self-attention mechanism so that the model can distinguish between different positions in the sequence and learn dependencies based on their relative distances.  The most common approach to positional encoding is to use sinusoidal functions to encode the positions. The positional encoding matrix has the same dimensions as the input embeddings. Each row of the matrix corresponds to a position in the sequence, and each column represents a dimension of the input embeddings. The value at each position and dimension is determined by a combination of sinusoidal functions. The values are determined by using sin and cos with varying frequencies. It's not important for us but just think of it as a binary representation of input vectors so that the model learns the positions.
+
+![](Images/selfattention2.png)
+
+Masked self-attention is a variant of self-attention where certain positions in the input sequence are masked or ignored during the attention computation. The purpose of masking is to prevent the model from attending to future positions in the sequence when making predictions for a particular position. In the context of language modelings or autoregressive tasks, such as machine translation or text generation, the model generates tokens one by one, and it should only have access to the tokens that precede the current position. Masked self-attention ensures that the model attends to and utilizes only the previously generated tokens during the prediction process, preventing it from accessing future tokens.
+
+Multi-head self-attention is an extension of the self-attention mechanism used in the Transformer architecture. Instead of relying on a single attention mechanism, multi-head self-attention introduces multiple parallel attention mechanisms, called attention heads, to capture different types of relationships and dependencies within the input sequence. In the context of natural language processing tasks, such as language translation or text generation, different attention heads can focus on different aspects of the input, such as word order, syntactic structure, or semantic relationships. Each attention head learns to attend to different parts of the input sequence independently, enabling the model to capture diverse patterns and interactions.
+
+![](Images/selfattention3.png)
+
+## Transformers
+For the same image captioning example, the transformer model looks like:
+
+![](Images/transformers.png)
+
+Inside the transformer encoder block, there can be N encoder blocks. It looks like: 
+
+![](Images/transformers2.png)
+
+Inside the transformer encoder block, there can be N encoder blocks. It looks like: 
+
+![](Images/transformers3.png)
+
+The C-shaped connections with a plus sign are residual connections. It is the same as the encoder block but the difference is masked self-attention at first and the use of a generalized attention model with keys, values, and queries.
+
+Models now don't even need the CNN first. All of the computer vision now involves breaking down the images into patches and using a transformer. This model is called ViT(Vision Transformers).
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
