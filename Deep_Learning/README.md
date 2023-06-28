@@ -436,15 +436,15 @@ Multi-head self-attention is an extension of the self-attention mechanism used i
 ## Transformers
 For the same image captioning example, the transformer model looks like:
 
-![](Image/transformers.png)
+![](Images/transformers.png)
 
 Inside the transformer encoder block, there can be N encoder blocks. It looks like: 
 
-![](Image/transformers2.png)
+![](Images/transformers2.png)
 
 Inside the transformer encoder block, there can be N encoder blocks. It looks like: 
 
-![](Image/transformers3.png)
+![](Images/transformers3.png)
 
 The C-shaped connections with a plus sign are residual connections. It is the same as the encoder block but the difference is masked self-attention at first and the use of a generalized attention model with keys, values, and queries.
 
