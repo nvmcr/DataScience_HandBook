@@ -342,7 +342,7 @@ The hidden state keeps track of all the previously seen inputs. It is updated af
 
 $$ h_t = f_W(h_{t-1}, x_t) $$
 
-The present state is given by some function with weights W (a neural network) which takes in input at the present time step and the hidden old state. Observe here that the weights are shared so it doesn't matter how long the input is. The initial hidden state is usually zeros. In the case of a vanilla RNN, $f_W$ looks like:
+The present state is given by some function with weights W (a neural network) which takes in input at the present time step and the hidden old state. While reading a sequence, if RNN model uses different parameters for each step during training, it won't generalize to unseen sequences of different lengths. Observe here that the weights are shared so it doesn't matter how long the input is. The initial hidden state is usually zeros. In the case of a vanilla RNN, $f_W$ looks like:
 
 $$ h_t = tanh(W_{hh}h_{t-1} + W_{xh}x_t) $$
 
@@ -370,7 +370,7 @@ Image captioning is as simple as combining CNN with RNN and using start and end 
 
 Even with all these RNNs are not popular. Because when we think of backpropagation, we know that tanh squashes everything to [-1,1]. When the gradients are flowing back, many values less than 1 keep getting multiplied. By the time gradients from the last hidden state come to the first hidden state the gradients become very very small causing a vanishing gradients problem. This problem is solved by LSTMs.
 ## Long Short Term Memory 
-It is a variant of RNNS. There are many new terms involved here. In RNN we only combine the previous hidden state with the present input using a neural network and passing through a tanh. But in LSTM we have four such activation functions with their own task.
+It is a variant of RNN and also follows similar weight sharing. There are many new terms involved here. In RNN we only combine the previous hidden state with the present input using a neural network and passing through a tanh. But in LSTM we have four such activation functions with their own task.
 * i: input gate: decides whether to write to cell
 * f: Forget gate: decides whether to erase cell
 * o: Output gate: decides how much to reveal cell
@@ -391,6 +391,20 @@ How does this LSTM fix the vanishing gradients? Remember the highway of the cell
 There are many other versions of LSTMS. Gated Recurrent Unit, or GRU, is one such popular version. It combines the forget and input gates into a single “update gate.” It also merges the cell state and hidden state and makes some other changes. The resulting model is simpler than standard LSTM models and has been growing increasingly popular.
 
 ## Attention and Transformers
+Take an example of image captioning. The entire image is passed through a CNN model to get the hidden representation and this hidden representation vector is passed through the RNN or LSTM. But what if we need to generate a 100-word caption about the image? Our hidden representation should encode the information needed for a 100 words caption which is not easy.
+
+When we think about how we process the image, we won't process the entire image in one go right? We pick up things one by one and observe different parts of the image at a time. This idea leads to attention blocks. Instead of appending everything to a single vector, we do it in blocks. 
+
+Before going into attention, lets talk about spatial features. After an image is passed through a CNN, we get a hidden representation,$h$ by using a fully connected layer at the end. The input to the fully connected layer is the spatial features matrix, $z$. Using h and z as inputs to a multi-layer perceptron (or could be just h.z or anything more complex), we get scalar values called alignment scores. Applying a softmax function on these scores will give us normalized attention weights. These scores will tell us how important a particular region is. Based on the score, the model determines the amount of attention a region needs. These weights are multiplied with the spatial features and then summed to give the context vector, c. This context vector is passed through the RNN or LSTM.
+
+![](Images/attention.png)
+
+If we take an example of NLP language translation, this is how attention works
+
+![](Images/attention2.png)
+### General Attention Layer
+We will generalize the attention model we learned for image captioning to other general applications. We will start with stretching the spatial vectors into a single vector of N = H*W.
+
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
