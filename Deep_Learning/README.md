@@ -1,4 +1,4 @@
-![image](https://github.com/nvmcr/DataScience_HandBook/assets/115141848/65c91c82-1e95-4cff-abe5-d44cb1e544d3)# Deep Learning
+# Deep Learning
 Deep learning algorithms are inspired by the structure and function of the human brain, allowing machines to learn from vast amounts of data, recognize patterns, and make accurate predictions. From image and speech recognition to natural language processing and autonomous vehicles, deep learning is everywhere these days. I will try to cover the most talked about topics in this chapter.
 # Loss Function
 As discussed vastly in [Machine Learning chapter](https://github.com/nvmcr/DataScience_HandBook/tree/main/Machine_Learning), a loss function is something that tells us how well our model is working. In deep learning, we will most look into classification cases. Multiclass SVM (also called hinge loss) and Softmax Loss.
