@@ -193,7 +193,7 @@ and the number of parameters is $F^2CK$ and K biases.
 ### Inception
 Also know as GoogleNet, is a 22-layer model architecture that was one of the successful models that came after AlaexNet and VGG. It all started with the choice of kernel size. AlexNet had a kernel size of 11x11 (hint: its too big) and VGG used 7x7. When the image information is more concentrated globally (like the full image is a dog), a large kernel size is preferred whereas when the information is concentrated more locally (a part of the image has a dog), a small kernel size is preferred. The authors of inception thought why not use multiple sizes on the same level? The network would be wider instead of deeper. This is the basis of naive inception.
 
-![](Images/inceptionv1.jpg)
+![](Images/inception1.jpg)
 
 Each inception module performs convolution on an input, with 3 different sizes of filters (1x1, 3x3, 5x5). Additionally, max pooling is also performed. The outputs are concatenated and sent to the next inception module. This has low parameters which is good but this is computationally expensive to run. Because for each input we need to do multiple calculations due to multiple filters. The solution to this is *bottleneck*. It's all about using 1x1 convolutions. Say on an input of 56x56x64 if we use 32 1x1 filters the output is reduced to 56x56x32. These 1x1 convolutions are way more efficient. So the module is updated with adding 1x1 bottlenecks reducing dimensionality. These modules are used for 22 layers.
 
