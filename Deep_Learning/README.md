@@ -206,7 +206,55 @@ The paper that proposed ResNet was the most cited paper in all of the sciences. 
 ![](Images/resnet.png)
 
 In full-resnet architecture, we stack these residual blocks with two 3x3 conv layers in between. Periodically as the layer goes deeper, the filters are doubled and spatially downsampled using stride 2 which halves each dimension. There are variants of ResNet based on the number of layers like resnet18, 34, 50, 101, and 152. For models bigger than 50 layers, we use a 1x1 conv filter added at the start of the residual block.
+### Xception
 
+![](Images/xception.jpg)
+
+Xception aka Extreme Inception (created by the creator of Keras) builds upon the Inception architecture and extends it by replacing the standard convolutional layers with depthwise separable convolutions. The key idea behind Xception is to improve the efficiency and performance of the model by reducing the computational complexity and increasing the model's capacity for learning expressive representations.
+
+Depthwise separable convolutions are a type of convolutional operation that decomposes the standard convolution into two separate steps: depthwise convolution and pointwise convolution. This technique aims to reduce the computational complexity of convolutional layers while maintaining their expressive power.
+
+In a standard convolution, a kernel (also known as a filter) slides across the input data, computing a dot product between the kernel weights and the corresponding input patch at each position. The output of this operation is a feature map that represents the learned features.
+
+In depthwise separable convolutions, the convolutional operation is split into two distinct steps: In the depthwise convolution step, each input channel is convolved with a separate kernel, also known as a depthwise filter. Each depthwise filter operates on a single input channel independently, scanning through the entire input volume. The depthwise convolution performs spatial filtering, capturing local patterns and information within each channel. In the pointwise convolution step, 1x1 convolutions, or pointwise filters, are applied to the output of the depthwise convolution.
+
+Here are the main components and concepts of the Xception architecture:
+
+* Depthwise Separable Convolutions: Xception extensively uses depthwise separable convolutions instead of standard convolutions. As explained earlier, depthwise separable convolutions decompose the convolutional operation into depthwise and pointwise convolutions, reducing the number of parameters and computations while maintaining representational power.
+
+* Linear Bottleneck: Xception introduces a linear bottleneck module that consists of a series of depthwise separable convolutions. The linear bottleneck module helps to capture complex patterns and increase the model's capacity for learning high-level representations.
+
+* Skip Connections: Xception utilizes skip connections, also known as residual connections, to improve information flow and gradient propagation. By connecting earlier layers directly to later layers, Xception enables the network to learn both fine-grained and high-level features and also as discussed earlier for backpropagation.
+
+* Fully Convolutional Structure: Xception adopts a fully convolutional structure, which means it does not have fully connected layers at the end. Instead, it uses global average pooling to reduce the spatial dimensions, followed by a softmax activation for classification.
+> Xception is the same inception but standard convolutions replaced with depthwise convolutions.
+### DenseNet
+The main idea behind DenseNet is to establish direct connections between layers within a dense block. A dense block is a group of consecutive layers, and each layer receives input from all preceding layers within the block. This connectivity pattern is in contrast to traditional CNN architectures, such as VGG or ResNet, where layers are connected sequentially.
+
+![](Images/densenet1.jpg)
+
+The dense connections enable each layer to have direct access to the feature maps of all preceding layers, promoting information flow throughout the network. This design choice has several advantages:
+
+* Feature reuse: Since each layer receives feature maps from all preceding layers, it can reuse features computed at different depths of the network. This encourages the network to be more efficient in terms of parameter usage and enhances gradient flow during training.
+
+* Gradient propagation: Dense connections alleviate the vanishing gradient problem by providing multiple paths for gradients to flow through the network. The gradients can reach earlier layers directly, bypassing fewer layers and avoiding the diminishing gradient issue.
+
+* Enhanced representation: DenseNet facilitates the combination of features from different layers, which can lead to richer and more expressive representations. The dense connections enable the network to capture both low-level and high-level features, contributing to better overall performance.
+
+![](Images/densenet2.gif)
+
+The DenseNet architecture is composed of several dense blocks, followed by transition layers. A dense block typically consists of multiple convolutional layers, which are interconnected via dense connections. Transition layers are used to reduce the spatial dimensions of the feature maps, typically by employing a combination of pooling and convolution operations. These transitions help in controlling the number of parameters and the spatial resolution of feature maps as the network progresses.
+
+### MobileNet
+It is specifically designed for mobile and embedded devices with limited computational resources. This is the same as xception but implemented instead of inception modules, layers are sequential and have no residual connections. Also pointwise convolutions are implemented after depthwise convolutions. MobileNet also introduces the concept of width multiplier and resolution multiplier to further optimize the model. Width Multiplier α is introduced to control the number of channels or channel depth, which makes C become αC where $\alpha$ is between 0 to 1. The width multiplier reduces the number of channels in each layer, effectively reducing the model's size and computational requirements. The resolution multiplier ($\rho$ in the range [0,1]) scales down the input resolution of the images by $\rho * input resolution$, providing a trade-off between accuracy and efficiency.
+
+![](Images/mobilenet.jpg)
+MobileNetV2 builds upon the previous version by adding these:
+* Inverted Residuals: MobileNetV2 introduces a concept called "inverted residuals" or "bottleneck blocks." These blocks consist of a lightweight 1x1 pointwise convolution to reduce the number of input channels, followed by a depthwise separable convolution, and finally, another 1x1 pointwise convolution to expand the number of output channels. This design allows MobileNetV2 to capture complex patterns using fewer parameters and computations. Called inverted because in normal residuals the skip connection is between two conv layers but here it's between two bottleneck layers.
+
+* Linear Bottlenecks: In MobileNetV2, the bottleneck blocks are modified to use linear activations instead of nonlinear activations like ReLU. This helps in reducing information loss and improves the flow of gradients through the network during training.
+
+* Shortcut Connections: MobileNetV2 utilizes shortcut connections or skip connections between bottleneck blocks to facilitate information flow. These connections allow the network to bypass certain layers and provide a gradient path that helps in training deeper models.
 ## Training
 ### Activation Functions
 As discussed above activation functions add nonlinearity to the model. Here are the popular choices. 
