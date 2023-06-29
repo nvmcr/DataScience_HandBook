@@ -189,9 +189,27 @@ $$ W_2 = \frac{W_1-F+2P}{S} + 1 $$
 $$ H_2 = \frac{H_1-F+2P}{S} + 1 $$
 
 and the number of parameters is $F^2CK$ and K biases.
+## CNN Architectures
+### Inception
+Also know as GoogleNet, is a 22-layer model architecture that was one of the successful models that came after AlaexNet and VGG. It all started with the choice of kernel size. AlexNet had a kernel size of 11x11 (hint: its too big) and VGG used 7x7. When the image information is more concentrated globally (like the full image is a dog), a large kernel size is preferred whereas when the information is concentrated more locally (a part of the image has a dog), a small kernel size is preferred. The authors of inception thought why not use multiple sizes on the same level? The network would be wider instead of deeper. This is the basis of naive inception.
+
+![](Images/inceptionv1.jpg)
+
+Each inception module performs convolution on an input, with 3 different sizes of filters (1x1, 3x3, 5x5). Additionally, max pooling is also performed. The outputs are concatenated and sent to the next inception module. This has low parameters which is good but this is computationally expensive to run. Because for each input we need to do multiple calculations due to multiple filters. The solution to this is *bottleneck*. It's all about using 1x1 convolutions. Say on an input of 56x56x64 if we use 32 1x1 filters the output is reduced to 56x56x32. These 1x1 convolutions are way more efficient. So the module is updated with adding 1x1 bottlenecks reducing dimensionality. These modules are used for 22 layers.
+
+![](Images/inception2.png)
+
+This same concept is updated with some smart ways like instead of using 5x5 filters, it is replaced with two 3x3 filters which is computationally expensive. Also factorizing filters i.einstead of using nxn filters, we use 1xn and nx1. These were proposed in inceptionv2 and v3. 
+### ResNet
+The paper that proposed ResNet was the most cited paper in all of the sciences. The issue with deeper models is the gradients die during backpropagation. ResNet solves this issue using residual connections. The idea is simple. Since the gradients are dying due to nonlinearity after convolution layers, we can have skip connections called residual connections without nonlinearity. In the image below we pass the input skipping a few layers so that during backpropagation, gradients flow back through those skip connections. The question might be how is input sizes configured in skip connections. Well, they have linear projections without nonlinearity to match the sizes.
+
+![](Images/resnet.png)
+
+In full-resnet architecture, we stack these residual blocks with two 3x3 conv layers in between. Periodically as the layer goes deeper, the filters are doubled and spatially downsampled using stride 2 which halves each dimension. There are variants of ResNet based on the number of layers like resnet18, 34, 50, 101, and 152. For models bigger than 50 layers, we use a 1x1 conv filter added at the start of the residual block.
+
 ## Training
 ### Activation Functions
-As discussed above activation functions add nonlinearity to the model. Here are the popular choices.
+As discussed above activation functions add nonlinearity to the model. Here are the popular choices. 
 
 ![](Images/af.png)
 
@@ -448,7 +466,9 @@ Inside the transformer encoder block, there can be N encoder blocks. It looks li
 
 The C-shaped connections with a plus sign are residual connections. It is the same as the encoder block but the difference is masked self-attention at first and the use of a generalized attention model with keys, values, and queries.
 
-Models now don't even need the CNN first. All of the computer vision now involves breaking down the images into patches and using a transformer. This model is called ViT(Vision Transformers).
+Models now don't even need the CNN first. All of the computer vision now involves breaking down the images into patches and using a transformer. This model is called ViT(Vision Transformers). We split an image into patches, then flatten the patches and produce a lower dimensional embedding using a linear conv layer. Then add a positional encoding to encode the location of each patch within the image. Feed the sequence as an input to a standard transformer encoder. The common patch size is 32x32 or 16x16. More the patch size lesser the number of input sequences thus less compute needed but less accuracy. The difference between CNN is the CNN starts with local relations and then looks globally it has implicit bias. But transformers do everything from scratch and iterate with more attention on specific regions thus needing large data.
+
+![](Images/vit.png)
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
