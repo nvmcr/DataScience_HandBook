@@ -189,9 +189,76 @@ $$ W_2 = \frac{W_1-F+2P}{S} + 1 $$
 $$ H_2 = \frac{H_1-F+2P}{S} + 1 $$
 
 and the number of parameters is $F^2CK$ and K biases.
+## CNN Architectures
+### Inception
+Also know as GoogleNet, is a 22-layer model architecture that was one of the successful models that came after AlaexNet and VGG. It all started with the choice of kernel size. AlexNet had a kernel size of 11x11 (hint: its too big) and VGG used 7x7. When the image information is more concentrated globally (like the full image is a dog), a large kernel size is preferred whereas when the information is concentrated more locally (a part of the image has a dog), a small kernel size is preferred. The authors of inception thought why not use multiple sizes on the same level? The network would be wider instead of deeper. This is the basis of naive inception.
+
+![](Images/inception1.jpg)
+
+Each inception module performs convolution on an input, with 3 different sizes of filters (1x1, 3x3, 5x5). Additionally, max pooling is also performed. The outputs are concatenated and sent to the next inception module. This has low parameters which is good but this is computationally expensive to run. Because for each input we need to do multiple calculations due to multiple filters. The solution to this is *bottleneck*. It's all about using 1x1 convolutions. Say on an input of 56x56x64 if we use 32 1x1 filters the output is reduced to 56x56x32. These 1x1 convolutions are way more efficient. So the module is updated with adding 1x1 bottlenecks reducing dimensionality. These modules are used for 22 layers.
+
+![](Images/inception2.png)
+
+This same concept is updated with some smart ways like instead of using 5x5 filters, it is replaced with two 3x3 filters which is computationally expensive. Also factorizing filters i.einstead of using nxn filters, we use 1xn and nx1. These were proposed in inceptionv2 and v3. 
+### ResNet
+The paper that proposed ResNet was the most cited paper in all of the sciences. The issue with deeper models is the gradients die during backpropagation. ResNet solves this issue using residual connections. The idea is simple. Since the gradients are dying due to nonlinearity after convolution layers, we can have skip connections called residual connections without nonlinearity. In the image below we pass the input skipping a few layers so that during backpropagation, gradients flow back through those skip connections. The question might be how is input sizes configured in skip connections. Well, they have linear projections without nonlinearity to match the sizes.
+
+![](Images/resnet.png)
+
+In full-resnet architecture, we stack these residual blocks with two 3x3 conv layers in between. Periodically as the layer goes deeper, the filters are doubled and spatially downsampled using stride 2 which halves each dimension. There are variants of ResNet based on the number of layers like resnet18, 34, 50, 101, and 152. For models bigger than 50 layers, we use a 1x1 conv filter added at the start of the residual block.
+### Xception
+
+![](Images/xception.jpg)
+
+Xception aka Extreme Inception (created by the creator of Keras) builds upon the Inception architecture and extends it by replacing the standard convolutional layers with depthwise separable convolutions. The key idea behind Xception is to improve the efficiency and performance of the model by reducing the computational complexity and increasing the model's capacity for learning expressive representations.
+
+Depthwise separable convolutions are a type of convolutional operation that decomposes the standard convolution into two separate steps: depthwise convolution and pointwise convolution. This technique aims to reduce the computational complexity of convolutional layers while maintaining their expressive power.
+
+In a standard convolution, a kernel (also known as a filter) slides across the input data, computing a dot product between the kernel weights and the corresponding input patch at each position. The output of this operation is a feature map that represents the learned features.
+
+In depthwise separable convolutions, the convolutional operation is split into two distinct steps: In the depthwise convolution step, each input channel is convolved with a separate kernel, also known as a depthwise filter. Each depthwise filter operates on a single input channel independently, scanning through the entire input volume. The depthwise convolution performs spatial filtering, capturing local patterns and information within each channel. In the pointwise convolution step, 1x1 convolutions, or pointwise filters, are applied to the output of the depthwise convolution.
+
+Here are the main components and concepts of the Xception architecture:
+
+* Depthwise Separable Convolutions: Xception extensively uses depthwise separable convolutions instead of standard convolutions. As explained earlier, depthwise separable convolutions decompose the convolutional operation into depthwise and pointwise convolutions, reducing the number of parameters and computations while maintaining representational power.
+
+* Linear Bottleneck: Xception introduces a linear bottleneck module that consists of a series of depthwise separable convolutions. The linear bottleneck module helps to capture complex patterns and increase the model's capacity for learning high-level representations.
+
+* Skip Connections: Xception utilizes skip connections, also known as residual connections, to improve information flow and gradient propagation. By connecting earlier layers directly to later layers, Xception enables the network to learn both fine-grained and high-level features and also as discussed earlier for backpropagation.
+
+* Fully Convolutional Structure: Xception adopts a fully convolutional structure, which means it does not have fully connected layers at the end. Instead, it uses global average pooling to reduce the spatial dimensions, followed by a softmax activation for classification.
+> Xception is the same inception but standard convolutions replaced with depthwise convolutions.
+### DenseNet
+The main idea behind DenseNet is to establish direct connections between layers within a dense block. A dense block is a group of consecutive layers, and each layer receives input from all preceding layers within the block. This connectivity pattern is in contrast to traditional CNN architectures, such as VGG or ResNet, where layers are connected sequentially.
+
+![](Images/densenet1.jpg)
+
+The dense connections enable each layer to have direct access to the feature maps of all preceding layers, promoting information flow throughout the network. This design choice has several advantages:
+
+* Feature reuse: Since each layer receives feature maps from all preceding layers, it can reuse features computed at different depths of the network. This encourages the network to be more efficient in terms of parameter usage and enhances gradient flow during training.
+
+* Gradient propagation: Dense connections alleviate the vanishing gradient problem by providing multiple paths for gradients to flow through the network. The gradients can reach earlier layers directly, bypassing fewer layers and avoiding the diminishing gradient issue.
+
+* Enhanced representation: DenseNet facilitates the combination of features from different layers, which can lead to richer and more expressive representations. The dense connections enable the network to capture both low-level and high-level features, contributing to better overall performance.
+
+![](Images/densenet2.gif)
+
+The DenseNet architecture is composed of several dense blocks, followed by transition layers. A dense block typically consists of multiple convolutional layers, which are interconnected via dense connections. Transition layers are used to reduce the spatial dimensions of the feature maps, typically by employing a combination of pooling and convolution operations. These transitions help in controlling the number of parameters and the spatial resolution of feature maps as the network progresses.
+
+### MobileNet
+It is specifically designed for mobile and embedded devices with limited computational resources. This is the same as xception but implemented instead of inception modules, layers are sequential and have no residual connections. Also pointwise convolutions are implemented after depthwise convolutions. MobileNet also introduces the concept of width multiplier and resolution multiplier to further optimize the model. Width Multiplier α is introduced to control the number of channels or channel depth, which makes C become αC where $\alpha$ is between 0 to 1. The width multiplier reduces the number of channels in each layer, effectively reducing the model's size and computational requirements. The resolution multiplier ($\rho$ in the range [0,1]) scales down the input resolution of the images by $\rho * input resolution$, providing a trade-off between accuracy and efficiency.
+
+![](Images/mobilenet.jpg)
+
+MobileNetV2 builds upon the previous version by adding these:
+* Inverted Residuals: MobileNetV2 introduces a concept called "inverted residuals" or "bottleneck blocks." These blocks consist of a lightweight 1x1 pointwise convolution to reduce the number of input channels, followed by a depthwise separable convolution, and finally, another 1x1 pointwise convolution to expand the number of output channels. This design allows MobileNetV2 to capture complex patterns using fewer parameters and computations. Called inverted because in normal residuals the skip connection is between two conv layers but here it's between two bottleneck layers.
+
+* Linear Bottlenecks: In MobileNetV2, the bottleneck blocks are modified to use linear activations instead of nonlinear activations like ReLU. This helps in reducing information loss and improves the flow of gradients through the network during training.
+
+* Shortcut Connections: MobileNetV2 utilizes shortcut connections or skip connections between bottleneck blocks to facilitate information flow. These connections allow the network to bypass certain layers and provide a gradient path that helps in training deeper models.
 ## Training
 ### Activation Functions
-As discussed above activation functions add nonlinearity to the model. Here are the popular choices.
+As discussed above activation functions add nonlinearity to the model. Here are the popular choices. 
 
 ![](Images/af.png)
 
@@ -448,7 +515,9 @@ Inside the transformer encoder block, there can be N encoder blocks. It looks li
 
 The C-shaped connections with a plus sign are residual connections. It is the same as the encoder block but the difference is masked self-attention at first and the use of a generalized attention model with keys, values, and queries.
 
-Models now don't even need the CNN first. All of the computer vision now involves breaking down the images into patches and using a transformer. This model is called ViT(Vision Transformers).
+Models now don't even need the CNN first. All of the computer vision now involves breaking down the images into patches and using a transformer. This model is called ViT(Vision Transformers). We split an image into patches, then flatten the patches and produce a lower dimensional embedding using a linear conv layer. Then add a positional encoding to encode the location of each patch within the image. Feed the sequence as an input to a standard transformer encoder. The common patch size is 32x32 or 16x16. More the patch size lesser the number of input sequences thus less compute needed but less accuracy. The difference between CNN is the CNN starts with local relations and then looks globally it has implicit bias. But transformers do everything from scratch and iterate with more attention on specific regions thus needing large data.
+
+![](Images/vit.png)
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
