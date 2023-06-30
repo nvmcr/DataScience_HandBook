@@ -326,6 +326,12 @@ There is one issue with choosing a high learning rate at first. With high LRs, w
 > Epochs means the number of times we loop over our entire training data to learn. We do multiple iterations within a single epoch. For example, we have 1000 training samples and a batch size of 100. So in each iteration, our model tries to learn 100 samples. 10 iterations will equal one epoch.
 ### Dropout
 It is a regularization technique where we randomly set some neurons to zero (removing). We have a hyperparameter, the probability of dropping. If it is set to 0.5, then only half of our neurons will be active in a layer.  During test time, since we can't randomly drop neurons, we multiply the output of hidden layers with some probability percentage p to decrease the activations.
+## Transfer Learning
+Many think that we need a lot of data to train CNNs but actually, we don't. We know that initial layers of CNN learn low-level features like edges, and corners which don't change much depending on the dataset. As layers progress, high-level features specific to the data are captured. So the idea is to train these low-level layers on one specific dataset and use those trained weights and biases on a different dataset. This is called Transfer learning. It is a technique where knowledge gained from training a model on one task is leveraged to improve the performance of a model on a different, but related, task. Instead of training a model from scratch on a new task, transfer learning allows the model to transfer its learned knowledge and representations from the source task to the target task.
+
+During transfer learning, the lower layers of a pre-trained CNN, which have learned low-level and intermediate features, are typically kept fixed or frozen. This is done to preserve the general representations learned from the source task. The last layers of the CNN are then replaced or modified to suit the target task, allowing the network to learn task-specific features and make predictions accordingly. By fine-tuning the last layers, the model can adapt its knowledge to the specific nuances and requirements of the target task, while still benefiting from the pre-trained feature extraction capabilities of the earlier layers.
+
+In general, modern architectures like ResNet, and Inception are trained on ImageNet where the last layer is a fully connected layer with output dimensions being 1000 for 1000 classes. In transfer learning, we freeze the weights of all layers except the last layer. The last layer is changed to a fully connected layer with output dimensions of C for C classes in a new dataset. Only this layer is trained. If you have a bigger dataset, train all of the last fully connected layers. But remember tasks should be similar to image classification. The more data we have and the more different the task is, we need to finetune (training) more layers starting from the last.
 # Self-Supervised Learning
 Supervised learning is quite expensive due to the manual annotations/labels. Apart from cost, it is more prone to errors in annotations. Even the standard ImageNet has wrong labels. Options outside of supervised learning are semi-supervised, unsupervised, and self-supervised. Semi-supervised learning is to train on unlabeled data along with some labeled data. This is quite popular over a period but is still an active area of research. Getting good results from unsupervised learning is hard as there is no feedback or guidance. That left us with self-supervised learning (SSL). 
 
@@ -518,6 +524,115 @@ The C-shaped connections with a plus sign are residual connections. It is the sa
 Models now don't even need the CNN first. All of the computer vision now involves breaking down the images into patches and using a transformer. This model is called ViT(Vision Transformers). We split an image into patches, then flatten the patches and produce a lower dimensional embedding using a linear conv layer. Then add a positional encoding to encode the location of each patch within the image. Feed the sequence as an input to a standard transformer encoder. The common patch size is 32x32 or 16x16. More the patch size lesser the number of input sequences thus less compute needed but less accuracy. The difference between CNN is the CNN starts with local relations and then looks globally it has implicit bias. But transformers do everything from scratch and iterate with more attention on specific regions thus needing large data.
 
 ![](Images/vit.png)
+
+# Structured Prediction
+In contrast to standard classification or regression tasks where the output is a single label or value, structured prediction tasks aim to model and predict the dependencies and relationships among multiple output variables. There are three major structured predictions in computer vision: semantic segmentation, object detection, and instance segmentation.
+## Semantic Segmentation
+It involves assigning a class label to each pixel in an image, thereby dividing the image into different regions or segments based on their semantic meaning. The goal of semantic segmentation is to understand the detailed semantics and boundaries of objects or regions within an image. In semantic segmentation, each pixel is classified into one of several predefined categories or classes, such as a person, car, tree, sky, road, etc. Think of it like image classification for each pixel.
+
+But the issue is how to label each pixel because just one pixel won't have enough context to do classification. So to get more context we can take patches of image instead of a pixel. For every patch, we will only label the center pixel of that patch so that we are using context from neighboring pixels instead of just one pixel. But we need to have so many patches such that every pixel is centered for at least one patch which is inefficient. So we move to convolutions where filters are used on patches. But in general, CNNs reduce the spatial dimensions when going through layers for less computing and the final output will be a single-dimensional vector but semantic segmentation should have the same output size as input as it is per-pixel classification. So our CNNs should use full image propagating through layers without reducing spatial dimensions. But it needs a lot of computing. 
+
+The final idea to implement semantic segmentation is to do downsampling where spatial dimensions are reduced and trained on these lower dimensions and then do upsampling to get back to the original dimensions. We know downsampling which happens in CNNs but what how to do upsampling to increase the image spatial dimensions? We can do max unpooling where before downsampling images, model learns at what poisition there is a max element in a patch and during upsampling, we use the value in lower dimension in place of learned positions in higher dimensions.
+
+![](Images/unpooling.png)
+
+For better compute, we do transpose convolution where the filer is convoluted on the output instead of image. A filter is learned such that that filter is multiplied with the value from smaller dimensions to get the upsampled output. 
+
+![](Images/upsampling.png)
+
+![](Images/upsampling2.png)
+
+The overall semantic segmentation looks like this (called Unet):
+
+![](Images/ss.png)
+
+In semantic segmentation, each object in the image is segmented but it won't segment each instance. 
+
+## Object Detection
+It involves identifying and localizing multiple objects of interest within an image or a video. The goal of object detection is to not only determine the presence of objects but also to precisely locate them by drawing bounding boxes around each detected object. We can think of doing image classification as well as regression for bounding box coordinates. 
+
+![](Images/od.png)
+
+### Region Based
+Our goal is to upgrade this to multiple object detection. We can use the same old sliding window where we take crops of images and do single object detection. But this is difficult because our window size can not be of the same size and we take infinite crops. One popular approach in region proposals is selective search. Instead of doing an infinite number of crops, we use some algorithms to get limited region proposals (image crops) that are likely to have an object. One such algorithm is the F&H algorithm which we use to get different regions of an image and do similarity criteria like color, size, and texture to detect the regions and sizes of crops (it is a bottom-up approach that starts with small crops and greedily merge to get final region proposals). 
+### R-CNN
+We take an image and do a selective search that gives around 2k region proposals and we use CNNs on each proposal to extract features and fed to SVM for classification and do regression for bounding boxes. Each region becomes a single object detection and localization we discussed before.
+
+![](Images/rcnn.png)
+
+But the issue with this is doing all these operations on 2k regions per image is still expensive.
+### Fast R-CNN
+To make R-CNN fast, we can pass images through CNN first and extract features and get regions for these features. 
+
+![](Images/fastrcnn.png)
+
+The question is how to get region proposals on features. One idea is RoI Pooling. We extract the 2k regions like rcnn and project those onto the extracted features we get after CNN i.e. each region proposal is mapped to the corresponding region of the feature maps. To achieve this mapping, the coordinates of the region proposal are aligned with the spatial dimensions of the feature maps.
+
+![](Images/roi.png)
+
+Of course the dimensions don't match as CNN lowers the spatial dimensions, so we find the nearest pixel location to align the regions on the feature map. We divide this aligned region into sub regions and do max pooling to get a summary of the information. The max-pooled values from each sub-region are concatenated to form a fixed-size feature representation for the corresponding region proposal. This fixed-size representation can be passed through fully connected layers for further processing.
+### Mask R-CNN
+The obvious issue with this is the region misalignments on the feature map. To counter this **mask rcnn** is proposed where we have the region proposal from selective search and we place on top of our feature map. The region is subdivided equally (usually into 4 regions) and in each region, we sample 4 sub-points. The point of the feature map is determined by the weighted linear combination of features at its four neighboring grid cells. Thus the regions on feature maps are much aligned we do max pooling like earlier.
+
+![](Images/maskrcnn.png)
+
+### Faster R-CNN
+The majority of time is taken by selective search to get region proposals. So faster rcnn gets rid of selective search, it learns the region proposals using deep learning techniques.
+
+![](Images/fasterrcnn.png)
+
+Think of faster rcnn as the same as fast rcnn except for the way we get the initial region proposals. So what happens inside the Region Proposal Network (RPN)? 
+
+![](Images/rpn.png)
+
+Here region proposals are called anchor boxes which are predefined bounding boxes of various scales and aspect ratios that are centered at a position. An anchor is a box. In the default configuration of Faster R-CNN, there are 9 anchors at each position of an image with different lengths and widths and in total around 2000 hand-crafted anchors per image.
+
+For each anchor box, the RPN predicts two essential pieces of information:
+
+Objectness Score: The RPN predicts whether an object is present or not within each anchor box. This is represented by a binary classification output. The objective is to differentiate between foreground (containing an object) and background (not containing an object). This helps the RPN to filter out most of the background regions and focus on potential object regions.
+
+Bounding Box Regression: In addition to the objectness score, the RPN also predicts the refinement offsets for each anchor box. These offsets provide corrections to the anchor box's coordinates, enabling a more accurate localization of the object within the anchor box. The predicted offsets adjust the anchor box's position, width, and height to tightly fit the object's actual boundaries.
+
+To generate these predictions, the RPN typically consists of a few convolutional layers followed by two sibling fully connected layers: the classification layer and the regression layer. These layers take the feature maps as input and generate the objectness scores and bounding box regression predictions for each anchor box.
+
+During training, the RPN requires ground truth annotations (hand-crafted anchors) to compute the training targets. The ground truth annotations provide information about which anchor boxes should be labeled as foreground (positive) or background (negative) and the corresponding bounding box regression targets.
+
+The RPN is trained using a multi-task loss function that combines two components:
+
+Objectness Classification Loss: This loss measures the accuracy of the objectness scores predicted by the RPN. It uses a binary cross-entropy loss to compare the predicted objectness scores with the ground truth labels, encouraging the RPN to accurately classify the anchor boxes as foreground or background.
+
+Bounding Box Regression Loss: This loss measures the accuracy of the bounding box regression predictions. It computes the difference between the predicted offsets and the ground truth offsets for the positive (foreground) anchor boxes. The loss is usually computed using metrics IoU (Intersection over Union) loss i.e. the number of pixels aligned in predicted and actual regions by overall pixels of both regions.
+
+By jointly optimizing these two losses, the RPN learns to generate high-quality object proposals by identifying potential regions of interest in the image.
+### Single Stage
+When we look at faster rcnn it happens in two stages. The first stage is applying CNN on the overall image to get a feature map and do RPN to get region proposals and the second stage is RoI pooling and predictions. Instead of these two-stage object detectors, UW came up with a single-stage object detector called YOLO (You Only Look Once). It does region proposals and prediction is one pass.
+
+![](Images/yolo.jpg)
+
+The key idea behind YOLO is to divide the input image into a grid of cells, typically, say, 7x7 or 13x13. Each cell in the grid is responsible for predicting the presence and properties of objects whose centers fall within that cell. For each cell, YOLO predicts a fixed number of bounding boxes (typically 2 or 3) and their corresponding class probabilities.
+
+To make these predictions, YOLO uses a deep convolutional neural network (CNN) as its backbone architecture. The network processes the entire input image and generates a feature map. This feature map is then used for predicting the bounding boxes and class probabilities for each grid cell.
+
+For each bounding box prediction, YOLO outputs five main values: the coordinates of the bounding box (x, y, width, height), and a confidence score. The confidence score represents how confident YOLO is that the predicted bounding box contains an object and how accurate the box is.
+
+During training, YOLO learns to optimize its predictions by comparing them to ground truth bounding boxes. It uses a combination of classification loss (measuring the accuracy of class predictions) and localization loss (measuring the accuracy of predicted bounding boxes) to update the network's parameters.
+
+Initial versions of YOLO had issues with detecting small objects. To counter this SSD (Single Shot Multi-Box Detector) is proposed. 
+
+![](Images/ssd.jpg)
+
+SSD takes an input image and applies a convolutional neural network (CNN) as a backbone to extract features. However, SSD goes beyond just one feature map by adding extra layers to the CNN, resulting in multiple feature maps of different sizes and resolutions. These feature maps capture both high-level semantic information and fine-grained details.
+
+On each of these feature maps, SSD generates anchor boxes (default boxes) of different scales and aspect ratios at each spatial location. These anchor boxes serve as references for object detection. SSD then predicts the class probabilities and adjusts the coordinates of these anchor boxes to match the objects present in the image.
+
+During training, SSD optimizes its predictions by comparing them to ground truth bounding boxes. It uses a combination of classification loss and localization loss to update the network's parameters, similar to YOLO. The use of feature maps of different scales allows SSD to capture smaller details and handle objects of various sizes.
+## Instance Segmentation
+In semantic segmentation, each object in the image is segmented but it won't segment each instance. It is semantic segmentation on top of object detection. For example, if an image has two cats, semantic segmentation colors both cats with the same color and object detection does two bounding boxes, one for each cat but instance segmentation colors each cat with a different color. 
+
+![](Images/sp.png)
+
+Instance segmentation is done by adding an Unet after faster rcnn. Mask RCNN is one such example.
+
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
