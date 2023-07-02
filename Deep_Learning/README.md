@@ -3,7 +3,7 @@ Deep learning algorithms are inspired by the structure and function of the human
 # Loss Function
 As discussed vastly in [Machine Learning chapter](https://github.com/nvmcr/DataScience_HandBook/tree/main/Machine_Learning), a loss function is something that tells us how well our model is working. In deep learning, we will most look into classification cases. Multiclass SVM (also called hinge loss) and Softmax Loss.
 ## Multiclass SVM
-It is the same loss function used in SVMs for multi-class classification. Say we have a classifier and scores vector is, $s=f(x_i, W), then the loss is given as:
+It is the same loss function used in SVMs for multi-class classification. Say we have a classifier and scores vector is, $s=f(x_i, W)$, then the loss is given as:
 
 $$ L_i = \Sigma_{j\neq y_i} max(0, s_j-s_{y_i}+1) $$
 
@@ -632,6 +632,53 @@ In semantic segmentation, each object in the image is segmented but it won't seg
 ![](Images/sp.png)
 
 Instance segmentation is done by adding an Unet after faster rcnn. Mask RCNN is one such example.
+
+# Generative Modelling
+Generative models  aim to model the underlying probability distribution (density) of the data. These models learn the patterns and structures in the training data and then generate new samples that resemble the original data distribution. They can be classified into Explicit density and implicit density models. Under explicit there are tractable and approximate densities. Tractable meaning models exactly calculate density not approximate it.
+
+![](Images/gm.png)
+
+## Autoregressive Models
+The likelihood of an image x is equal to the joint likelihood of each pixel in x. 
+
+$$ p(x) = p(x_1,x_2, .., x_n) $$
+
+$$ p(x) = p(x_n|x_1, x_2,...,x_{n-1})p(x_1, x_2,...,x_{n-1}) $$ Probability Chain Rule
+
+$$ p(x) = \Pi_{i=1}^np(x_i|x_1, x_2,...,x_{i-1}) $$
+
+This can be interpreted as we calculate the probability of the next pixel given all previous pixels and repeat that till the last pixel to get the likelihood of the entire image. This is the explicit calculation of probability density/ autoregressive. The assumption is that we can express this density distribution using a neural network. Since the next pixel is calculated based on the previous pixel, we can see a form of sequence so we can use RNN or LSTM. There are two different methods of doing this.
+### PixelRNN
+We generate image pixels starting from a corner and move forward to generate new pixels using an RNN or LSTM.
+
+![](Images/pixelrnn.png)
+
+The drawback of this method is it's sequential and thus very slow to generate.
+### PixelCNN
+The architecture of PixelCNN typically consists of several layers of convolutional neural networks (CNNs), where each layer progressively refines the conditional distribution. At each layer, the model takes as input a context window, which includes the previously generated pixels as well as the pixels in the receptive field of the current pixel being predicted. This is done by using masked convolutions, where the convolutional filters are applied only to the valid pixels in the context window. For example, in our kernel, only the left and top values are nonzeros and the rest are zeros as they are not yet generated. This masking ensures that each pixel can only depend on the values of the pixels that have already been generated. By using this masked convolutional structure, the model ensures that the autoregressive property is maintained throughout the generation process. But still its sequential so slow.
+## Variational Autoencoders
+In here we make an assumption that there is some variational latent variable z, which is some estimated representation of our data. Insted of using pixels, we use this latent distribution to generate new samples. Before going to why we do that lets see what is an autoencoder?
+
+The general idea of autoencoders is pretty simple and consists in setting an encoder and a decoder as neural networks and learning the best encoding-decoding scheme using an iterative optimization process. For example, we have our input data, x and we pass it through a neural network and we get a feature representation, z which is generally a compact and low-dimensional representation. Using z and another neural network (deconvolution) as decoder we try to get, $\hat{x}$ back the original data. The loss is calculated as ||\hat{x} - x|| and is optimized to lower this loss.
+
+The whole point of autoencoders is to summarize our input data effectively but not to generate new data. We can not generate new data from z is because we don't know/learn the space of z so it generates rubbish. To make these autoencoders generate new images, we need to learn that unobserved (latent) representation, z.
+
+In variational autoencoders, we assume some distribution of z (called prior, p(z)) which is encodes as distribution (p(z|x)) and we sample from this distribution to get new data (p(x|z)). We generally assume z is a Gaussian representation. Here the likelihood of an image with parameters, $\theta$ is given by
+
+$$ p_{\theta} (x) = \integral p_{\theta}(z)p_{\theta} (x|z) dz $$
+
+We know the prior $p_{\theta}(z)$ as we assume it is gaussian and we know $p_{\theta}(x|z)$ from the decoder neural network. The issue is integral because we can not go through all values of z to compute p(x|z). So we use Bayes rule and modify the above as
+
+$$ p_{\theta} (x) = \frac{p_{\theta} (x|z)p_{\theta} (x)}{p_{\theta} (z|x)} $$
+
+We can calculate/approximate the denominator (posterior) by the encoder neural network. So in summary, In a VAE, the encoder network maps the input data to a distribution in the latent space rather than a deterministic representation. This distribution is typically assumed to be Gaussian. The encoder outputs the mean and variance parameters of this Gaussian distribution, which are used to sample a latent vector from the distribution. This sampling process introduces stochasticity, allowing for the generation of diverse latent representations for a given input.
+
+The decoder network takes the sampled latent vector as input and reconstructs the original input data. The parameters of the decoder are trained to minimize the reconstruction loss, similar to traditional autoencoders. However, in VAEs, an additional objective is introduced, namely the Kullback-Leibler (KL) divergence between the learned latent distribution and a prior distribution (usually a standard Gaussian).
+
+The inclusion of the KL divergence term serves two purposes in VAEs. First, it encourages the learned latent distribution to resemble the prior distribution, effectively regularizing the latent space. Second, it enables the VAE to generate new samples by sampling from the learned latent distribution. By sampling from the latent space, new data points can be generated that capture the variations present in the training data.
+## GAN
+Generative Adversarial Networks are the state of art methods in generative modeling.
+
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
