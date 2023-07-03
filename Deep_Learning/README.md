@@ -3,7 +3,7 @@ Deep learning algorithms are inspired by the structure and function of the human
 # Loss Function
 As discussed vastly in [Machine Learning chapter](https://github.com/nvmcr/DataScience_HandBook/tree/main/Machine_Learning), a loss function is something that tells us how well our model is working. In deep learning, we will most look into classification cases. Multiclass SVM (also called hinge loss) and Softmax Loss.
 ## Multiclass SVM
-It is the same loss function used in SVMs for multi-class classification. Say we have a classifier and scores vector is, $s=f(x_i, W), then the loss is given as:
+It is the same loss function used in SVMs for multi-class classification. Say we have a classifier and scores vector is, $s=f(x_i, W)$, then the loss is given as:
 
 $$ L_i = \Sigma_{j\neq y_i} max(0, s_j-s_{y_i}+1) $$
 
@@ -632,6 +632,91 @@ In semantic segmentation, each object in the image is segmented but it won't seg
 ![](Images/sp.png)
 
 Instance segmentation is done by adding an Unet after faster rcnn. Mask RCNN is one such example.
+
+# Generative Modelling
+Generative models  aim to model the underlying probability distribution (density) of the data. These models learn the patterns and structures in the training data and then generate new samples that resemble the original data distribution. They can be classified into Explicit density and implicit density models. Under explicit there are tractable and approximate densities. Tractable meaning models exactly calculate density not approximate it.
+
+![](Images/gm.png)
+
+## Autoregressive Models
+The likelihood of an image x is equal to the joint likelihood of each pixel in x. 
+
+$$ p(x) = p(x_1,x_2, .., x_n) $$
+
+$$ p(x) = p(x_n|x_1, x_2,...,x_{n-1})p(x_1, x_2,...,x_{n-1}) $$ Probability Chain Rule
+
+$$ p(x) = \Pi_{i=1}^np(x_i|x_1, x_2,...,x_{i-1}) $$
+
+This can be interpreted as we calculate the probability of the next pixel given all previous pixels and repeat that till the last pixel to get the likelihood of the entire image. This is the explicit calculation of probability density/ autoregressive. The assumption is that we can express this density distribution using a neural network. Since the next pixel is calculated based on the previous pixel, we can see a form of sequence so we can use RNN or LSTM. There are two different methods of doing this.
+### PixelRNN
+We generate image pixels starting from a corner and move forward to generate new pixels using an RNN or LSTM.
+
+![](Images/pixelrnn.png)
+
+The drawback of this method is it's sequential and thus very slow to generate.
+### PixelCNN
+The architecture of PixelCNN typically consists of several layers of convolutional neural networks (CNNs), where each layer progressively refines the conditional distribution. At each layer, the model takes as input a context window, which includes the previously generated pixels as well as the pixels in the receptive field of the current pixel being predicted. This is done by using masked convolutions, where the convolutional filters are applied only to the valid pixels in the context window. For example, in our kernel, only the left and top values are nonzeros and the rest are zeros as they are not yet generated. This masking ensures that each pixel can only depend on the values of the pixels that have already been generated. By using this masked convolutional structure, the model ensures that the autoregressive property is maintained throughout the generation process. But still its sequential so slow.
+## Variational Autoencoders
+In here we make an assumption that there is some variational latent variable z, which is some estimated representation of our data. Insted of using pixels, we use this latent distribution to generate new samples. Before going to why we do that lets see what is an autoencoder?
+
+The general idea of autoencoders is pretty simple and consists in setting an encoder and a decoder as neural networks and learning the best encoding-decoding scheme using an iterative optimization process. For example, we have our input data, x and we pass it through a neural network and we get a feature representation, z which is generally a compact and low-dimensional representation. Using z and another neural network (deconvolution) as decoder we try to get, $\hat{x}$ back the original data. The loss is calculated as ||\hat{x} - x|| and is optimized to lower this loss.
+
+The whole point of autoencoders is to summarize our input data effectively but not to generate new data. We can not generate new data from z is because we don't know/learn the space of z so it generates rubbish. To make these autoencoders generate new images, we need to learn that unobserved (latent) representation, z.
+
+In variational autoencoders, we assume some distribution of z (called prior, p(z)) which is encodes as distribution (p(z|x)) and we sample from this distribution to get new data (p(x|z)). We generally assume z is a Gaussian representation. Here the likelihood of an image with parameters, $\theta$ is given by
+
+$$ p_{\theta} (x) = \int p_{\theta}(z)p_{\theta} (x|z) dz $$
+
+We know the prior $p_{\theta}(z)$ as we assume it is gaussian and we know $p_{\theta}(x|z)$ from the decoder neural network. The issue is integral because we can not go through all values of z to compute p(x|z). So we use Bayes rule and modify the above as
+
+$$ p_{\theta} (x) = \frac{p_{\theta} (x|z)p_{\theta} (x)}{p_{\theta} (z|x)} $$
+
+We can calculate/approximate the denominator (posterior) by the encoder neural network. So in summary, In a VAE, the encoder network maps the input data to a distribution in the latent space rather than a deterministic representation. This distribution is typically assumed to be Gaussian. The encoder outputs the mean and variance parameters of this Gaussian distribution, which are used to sample a latent vector from the distribution. This sampling process introduces stochasticity, allowing for the generation of diverse latent representations for a given input.
+
+The decoder network takes the sampled latent vector as input and reconstructs the original input data. The parameters of the decoder are trained to minimize the reconstruction loss, similar to traditional autoencoders. However, in VAEs, an additional objective is introduced, namely the Kullback-Leibler (KL) divergence between the learned latent distribution and a prior distribution (usually a standard Gaussian).
+
+The inclusion of the KL divergence term serves two purposes in VAEs. First, it encourages the learned latent distribution to resemble the prior distribution, effectively regularizing the latent space. Second, it enables the VAE to generate new samples by sampling from the learned latent distribution. By sampling from the latent space, new data points can be generated that capture the variations present in the training data.
+## GAN
+Generative Adversarial Networks are the state of art methods in generative modeling. Unlike the above two explicit density methods, GANs don't care about the density or likelihood of pixels. GANs just want to sample from the training distribution and improve the generated image. Since it is just doing sampling, we need something to decide whether the generated image is good or bad. So we use something called a discriminator to decide that.
+
+The goal of GANs is to learn and generate realistic samples that resemble a target distribution, such as images, music, or text. The generator network takes random input noise as its input and tries to produce samples that resemble the target distribution. The discriminator network, on the other hand, acts as a binary classifier that aims to distinguish between real samples from the target distribution and fake samples generated by the generator.
+
+![](Images/gans.png)
+
+The training process of GANs involves a competitive game between the generator and discriminator networks. The generator tries to produce samples that fool the discriminator into classifying them as real, while the discriminator tries to correctly classify real samples as real and fake samples as fake. The generator and discriminator networks are trained iteratively, with the objective of improving their performance over time. The discriminator is trained to minimize the classification error, while the generator is trained to maximize the probability of the discriminator misclassifying its generated samples as real. This adversarial process drives the generator to improve its ability to produce realistic samples, while the discriminator becomes more skilled at distinguishing real from fake.
+
+As the training progresses, the generator learns to generate samples that progressively become more similar to the real samples from the target distribution. Ideally, the generator becomes capable of producing samples that are indistinguishable from real data, according to the discriminator. Once training is complete, the generator can be used independently to generate new samples that resemble the target distribution.
+
+Let's dive deeper to get proper intuition. (the following is inspired from a blog written by Joseph Rocca)
+
+In generative models, we try to generate complex random variables. We can see the problem of generating a new image of a dog is equivalent to the problem of generating a new vector following the “dog probability distribution” over the N-dimensional vector space. So we are facing the problem of generating a random variable with respect to a specific probability distribution. The “dog probability distribution” we mentioned is a very complex distribution over a very large space and we obviously don’t know how to express explicitly this distribution.
+
+To do this, the idea is to model the transform function by a neural network that takes as input a simple N-dimensional uniform random variable (taking uniform because it is simple) and that returns as output another N-dimensional random variable that should follow, after training, the right “dog probability distribution”. 
+
+![](Images/gans3.jpg)
+
+Now, we still need to train (optimize) the network to express the right transform function. The direct training method consists in comparing the true (original images) and the generated probability distributions and backpropagating the difference (the error) through the network. This is the idea that rules Generative Matching Networks (GMNs). These GMNs can be expensive and focus on generating samples that closely match the training data, which may lead to less diversity in the generated samples. So instead many prefer GANs. In GANs the generator is a neural network that models a transform function. It takes as input a simple random variable and must return, once trained, a random variable that follows the targeted distribution. As it is very complicated and unknown, we decide to model the discriminator with another neural network. This neural network models a discriminative function. It takes as input a point (in our dog example a N-dimensional vector) and returns as output the probability of this point being a “true” one. At each iteration of the training process, the weights of the generative network are updated in order to increase the classification error (error gradient ascent over the generator’s parameters) whereas the weights of the discriminative network are updated so that to decrease this error (error gradient descent over the discriminator’s parameters).
+
+The objective function is a min-max function
+
+![](Images/gans2.png)
+
+This objective function separately can be seen as alternating between:
+1. Gradient ascent on discriminator:
+
+$$ \max_{\theta_d}[E_{x \sim p_{data}(x)}\log D_{\theta_d}(x) + E_{z \sim p_z(z)} \log (1 - D_{\theta_d}(G_{\theta_g}(z)))] $$
+
+2. Gradient descent on generator:
+
+$$ \min_{\theta_g}E_{z \sim p_z(z)}\log (1 - D_{\theta_d}(G_{\theta_g}(z))) $$
+
+At the beginning, the loss term is close to zero as neither discriminator or generator doesn't know anything and as training progresses the loss goes negative. As the loss is loss at the beginning, gradients will be very small and training becomes slow. So in practice, people tweak the above objective as gradient *ascent* on the generator, and starting loss is high positive and as training progresses loss approaches zero.
+
+$$ \max_{\theta_g}E_{z \sim p_z(z)}\log (D_{\theta_d}(G_{\theta_g}(z))) $$
+
+Overall algorithm looks like:
+
+![](Images/gans4.jpg)
 
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
