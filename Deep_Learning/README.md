@@ -665,7 +665,7 @@ The whole point of autoencoders is to summarize our input data effectively but n
 
 In variational autoencoders, we assume some distribution of z (called prior, p(z)) which is encodes as distribution (p(z|x)) and we sample from this distribution to get new data (p(x|z)). We generally assume z is a Gaussian representation. Here the likelihood of an image with parameters, $\theta$ is given by
 
-$$ p_{\theta} (x) = \integral p_{\theta}(z)p_{\theta} (x|z) dz $$
+$$ p_{\theta} (x) = \int p_{\theta}(z)p_{\theta} (x|z) dz $$
 
 We know the prior $p_{\theta}(z)$ as we assume it is gaussian and we know $p_{\theta}(x|z)$ from the decoder neural network. The issue is integral because we can not go through all values of z to compute p(x|z). So we use Bayes rule and modify the above as
 
