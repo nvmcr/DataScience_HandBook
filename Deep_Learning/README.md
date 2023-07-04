@@ -525,6 +525,26 @@ Models now don't even need the CNN first. All of the computer vision now involve
 
 ![](Images/vit.png)
 
+## Language Models
+There are three types of language models.
+### Encoder only
+Also known as autoregressive models. They capture the meaning of the entire sequence. BERT is an example. These models focus on the encoding of text, and they do not involve a decoder component.
+
+In a typical encoder-only language model, the input is a sequence of words or tokens, and the goal is to capture the meaning of the sequence. The model processes the input sequence through a stack of layers, typically using recurrent neural network (RNN) or transformer-based architectures.
+
+At each step, the model takes the previous words as input and generates a representation, often called a hidden state or feature vector, which summarizes the information contained in the input sequence so far. If we give the entire input sequence, the model tries to cheat and learn to copy-paste instead of learning the semantic/grammatical/logical information of the sequences. So model like BERT takes 15% of the tokens (usually words) and in that 15%, there is an 80% chance of masking (fill in the blank type), a 10% chance of giving a random token, and another 10% to leave it as it is.
+
+![](Images/encoderonly.png)
+
+### Decoder only
+Their goal is to predict the next word given a few input words. GPT is an example of decoder only.
+
+![](Images/decoderonly.png)
+
+## Encoder-Decoder
+Its aim is to understand the meaning of a sequence and generate text based on the previously understood sequence. An example is the language translators.
+
+![](Images/encdec.png)
 # Structured Prediction
 In contrast to standard classification or regression tasks where the output is a single label or value, structured prediction tasks aim to model and predict the dependencies and relationships among multiple output variables. There are three major structured predictions in computer vision: semantic segmentation, object detection, and instance segmentation.
 ## Semantic Segmentation
