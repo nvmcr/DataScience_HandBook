@@ -226,8 +226,54 @@ Calculating the test static using our formula gives, $X^2=9.79$. We calculate de
 ## Choosing a Statistical Test
 ![Tests](Images/tests.png)
 
+# Statistical Paradoxes
+## Simpsons Paradox
+Simpson's Paradox is a statistical phenomenon where a trend or association observed within different subgroups of data is reversed or disappears when the subgroups are combined. In other words, the direction of a relationship between two variables can be misleading when the data is aggregated or grouped. Let's consider an example to understand Simpson's Paradox better:
+
+Suppose a university is evaluating the admission process for two departments: the Computer Science department and the History department. The university wants to determine if one department has a higher admission rate than the other.
+In a particular year, the admission data for the two departments is as follows:
+
+Computer Science Department:
+
+* Male applicants: 800 admitted out of 1,000 (80% admission rate)
+* Female applicants: 200 admitted out of 1,500 (13.3% admission rate)
+
+History Department:
+
+* Male applicants: 500 admitted out of 1,000 (50% admission rate)
+* Female applicants: 500 admitted out of 1,000 (50% admission rate)
+
+If we analyze the data separately for each department, it appears that the Computer Science department has a higher admission rate for both males (80%) and females (13.3%) compared to the History department's admission rate for both males (50%) and females (50%). However, when we combine the data for both departments and look at the overall admission rates, a surprising result emerges:
+
+Combined Data:
+
+* Male applicants: 1,300 admitted out of 2,000 (65% admission rate)
+* Female applicants: 700 admitted out of 2,500 (28% admission rate)
+
+Here's where the paradox occurs: Even though the admission rates for each department favored males over females, the overall admission rate shows that females (28%) had a lower admission rate compared to males (65%). The paradox arises due to the difference in the composition or proportions of males and females in each department. In this example, the Computer Science department had a larger proportion of male applicants (2,000 out of 2,500) compared to the History department (1,000 out of 2,000). And since the admission rates within each department favored males, the overall admission rate appeared to favor males as well, despite the fact that females had a higher admission rate within each department.
+
+This example demonstrates how Simpson's Paradox can occur when the underlying composition or distribution of variables within subgroups affects the overall relationship observed when the data is aggregated. In most cases considering weighted averages avoids this paradox or find any confounding variables (variables outside of our dataset that are affecting our outcome).  
+## Gamblers Fallacy
+The Gambler's Fallacy is a cognitive bias that occurs when an individual mistakenly believes that past independent events in a random sequence will influence future events. It is the belief that the likelihood of a particular outcome increases or decreases based on previous outcomes, despite the events being statistically independent. For example, if an unbiased coin is tossed and you get heads 9 out of 10 times then you might expect next trial will give you a head but the coin is unbiased so the probability is still 50-50. Taking over a large sample space like 100 trails, the probability should be close to 50-50. 
+## Berksons Paradox
+Berkson's Paradox, named after the American mathematician Joseph L. Berkson, is a statistical phenomenon that can arise when studying the relationship between two variables. It occurs when there is an artificial or non-representative association between variables due to the sampling or selection process.
+
+The paradox can be explained with an example:
+
+Suppose a hospital is conducting a study to investigate the relationship between diabetes and high blood pressure. The hospital collects data from two sources: patients who visit the diabetes clinic and patients admitted to the hospital for high blood pressure.
+
+In the diabetes clinic: 60% of patients have diabetes.
+40% of patients have high blood pressure.
+In the hospital for high blood pressure: 10% of patients have diabetes.
+90% of patients have high blood pressure. If we look at each source individually, we observe an inverse relationship: a higher proportion of patients with diabetes in the diabetes clinic and a higher proportion of patients with high blood pressure in the hospital for high blood pressure.
+
+However, if we combine the data from both sources, we get the following overall proportions: 30% of patients have diabetes.
+70% of patients have high blood pressure.
+This result seems to suggest a negative association between diabetes and high blood pressure, which is contrary to what is generally known (diabetes is often associated with an increased risk of high blood pressure).
+
+The paradox arises because the sampling process created an artificial association. Patients who visit the diabetes clinic are more likely to have diabetes and less likely to have high blood pressure compared to the general population. On the other hand, patients admitted to the hospital for high blood pressure are more likely to have high blood pressure and less likely to have diabetes. When the two groups are combined, the non-representative sampling introduces the paradoxical relationship. Berkson's Paradox reminds us to be cautious when interpreting associations between variables, especially if the data collection process involves selective sampling. It highlights the importance of considering the sampling biases and understanding the context to avoid drawing erroneous conclusions based on artificially created relationships.
 # References
-The information is pulled from various sources from internet. Major sources are:
+The information is pulled from various sources on the internet. Major sources are:
 1. [Practical Statistics for Data Scientists](https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/)
 2. [Scibbr](https://www.scribbr.com/statistics/)
 3. [Ace the Data Science Interview](https://www.acethedatascienceinterview.com/)
