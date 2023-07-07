@@ -738,6 +738,14 @@ Overall algorithm looks like:
 
 ![](Images/gans4.jpg)
 
+# Unsupervised Domain Adaptation
+This section is about a project with NASA Jet Propulsion Laboratory as part of a capstone at the University of Washington. My team was given a task to use machine learning algorithms to detect hazards like rocks, and snow for the EELS robot. But here comes the issue. There is no dataset given to us or at least it will take quite a lot of weeks to get it released after all the paperwork. So we were tasked to train a model without data (sounds impossible). Well, synthetic data comes to the rescue. Our specific task is to do semantic segmentation on images.
+
+Convolutional neural network-based approaches have achieved remarkable progress in semantic segmentation.
+However, these approaches heavily rely on annotated data which are labor intensive. To cope with this limitation, automatically annotated data generated from graphic engines are used to train segmentation models. However, the models trained from synthetic data are difficult to transfer to real images. To tackle this issue, many papers have considered directly adapting models from the source data to
+the unlabeled target data (to reduce the inter-domain gap). Nonetheless, these techniques do not consider the large distribution gap among the target data itself (intra-domain gap). Fei Pan and co at KAIST  proposed a two-step self-supervised domain adaptation approach to minimize the inter-domain and intra-domain gap together. First, they conduct the interdomain adaptation of the model; from this adaptation, they separate the target domain into an easy and hard split using an entropy-based ranking function. Finally, to decrease the intra-domain gap, they proposed to employ a self-supervised adaptation technique from the easy to the hard split.
+
+
 # References
 1. [Deep Learning by Ranjay Krishna and Aditya Kusupati](https://courses.cs.washington.edu/courses/cse493g1/23sp/schedule/)
 2. [Machine Learning CSE 446 UW](https://courses.cs.washington.edu/courses/cse446/22au/)
