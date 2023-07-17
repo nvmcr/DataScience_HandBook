@@ -764,7 +764,11 @@ We first forward the source image (with annotations) to the segmentation network
 
 The above paragraph tells us the initial interdomain adaptation method i.e. how to adapt the source and target images. With few modifications, the above approach is adapted to intra-domain adaptation i.e. within target images there might be hard or easy images. To close the inter-domain gap between the source and target domains, utilize entropy maps in order to align the distribution shift of the features. The assumption is that the source domain-trained models tend to produce neat segmentation outputs and low-entropy predictions for source-like images, and bad segmentation outputs and high-entropy predictions for target-like images. The generator takes a target image as an input and produces the segmentation maps and entropy maps. To align the inter-domain gap, the discriminator is trained to predict the domain labels for the entropy maps while the generator is trained to fool the discriminator. The loss function is the same as before like cross entropy loss but with entropy maps of both target and source. This achieves interdomain adaptation. 
 
-For intra-domain adaptation (within target images) we separate easy and hard split.  
+## Entropy-based Ranking
+For intra-domain adaptation (within target images) we separate easy and hard split. But the question is how? To build these splits, we take advantage of the entropy maps in order to determine the confidence levels of the target predictions. The generator $G_{inter}$ takes a target image as input to generate a segmentation map and entropy map. We do a ranking based on the mean values of all pixels in the entropy map. Based on a threshold value, which is a ratio between the number of easy split images and the total target image set, we separate easy and hard splits. 
+
+## Intra-domain Adaptation
+Since no annotation is available for the easy split, directly aligning the gap between the easy and hard split is infeasible. So we use predictions from $G_{inter}$ as pseudo labels. We repeat the same process that we did in inter-domain adaptation. 
 
 
 # References
