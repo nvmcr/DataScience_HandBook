@@ -26,16 +26,16 @@ Machine trained without labelled data.
 
 3. Semisupervised Learning 
 
-Only a few samples of the data is labelled. The machine learns to label the unlabelled samples. Example is a photo-hosting service like Google Photos.  Once
+Only a few samples of the data are labeled. The machine learns to label the unlabelled samples. An example is a photo-hosting service like Google Photos.  Once
 you upload all your family photos to the service, it automatically recognizes that the
 same person A shows up in photos 1, 5, and 11, while another person B shows up in
 photos 2, 5, and 7. This is the unsupervised part of the algorithm (clustering). Now all
-the system needs is for you to tell it who these people are. Just one label per person,4
+the system needs is for you to tell it who these people are. Just one label per person,
 and it is able to name everyone in every photo, which is useful for searching photos.
 
 4. Reinforcement Learning 
 
-The learning system, called an agent
+The learning system called an agent
 in this context, can observe the environment, select and perform actions, and get
 rewards in return (or penalties in the form of negative rewards). It
 must then learn by itself what is the best strategy, called a policy, to get the most
@@ -44,12 +44,12 @@ given situation.
 ### Batch vs Online Learning
 In batch learning, the system must be trained
 using all the available data. This will generally take a lot of time and computing
-resources, so it is typically done offline. First the system is trained, and then it is
+resources, so it is typically done offline. First, the system is trained, and then it is
 launched into production and runs without learning anymore; it just applies what it
 has learned. This is called offline learning.
 
 In online learning, you train the system incrementally by feeding it data instances
-sequentially, either individually or by small groups called mini-batches. Each learning
+sequentially, either individually or in small groups called mini-batches. Each learning
 step is fast and cheap, so the system can learn about new data on the fly, as it arrives. One important parameter of online learning systems is how fast they should adapt to
 changing data: this is called the learning rate. If you set a high learning rate, then your
 system will rapidly adapt to new data, but it will also tend to quickly forget the old
@@ -75,15 +75,15 @@ Discriminative Classifiers.
 
 * Assume some functional form for P(Y|X)
 * Estimate parameters of P(Y|X) directly from training data
-* ‌Logistic regression, SVMs, ‌CNNs, RNNs, Nearest neighbours.
+* ‌Logistic regression, SVMs, ‌CNNs, RNNs, Nearest neighbors.
 
 ### Parametric vs Non-parametric Models
-A paramter is something that is estimated from the training data and change (learnt) while training a model. They can be weights, coefficients, support vectors etc.
+A parameter is something that is estimated from the training data and changes (learned) while training a model. They can be weights, coefficients, support vectors etc.
 
 A parametric model summarizes data with a set of **fixed-size** parameters (independent on the number of instances of training). Parametric machine learning algorithms are which optimizes the function to a known form. 
-For example, we already assume the function is linear in linear regression. If y = b0 + b1\*x, we fixed parameters to b0 and b1 and these are learnt while training. Examples include: Logistic Regression, linear SVM (w<sup>T</sup>x + b = 0), Linear Discriminant Analysis, Perceptron, Naive Bayes, Simple Neural Networks.
+For example, we already assume the function is linear in linear regression. If y = b0 + b1\*x, we fixed parameters to b0 and b1, which are learned while training. Examples include: Logistic Regression, linear SVM (w<sup>T</sup>x + b = 0), Linear Discriminant Analysis, Perceptron, Naive Bayes, Simple Neural Networks.
 
-A Nonparametric models are those which do not make specific assumptions about the type of the mapping function. They are prepared to choose any functional form from the training data, by not making assumptions. The word nonparametric does not mean that the value lacks parameters existing in it, but rather that the parameters are adjustable and can change. 
+Nonparametric models are those which do not make specific assumptions about the type of the mapping function. They are prepared to choose any functional form from the training data, by not making assumptions. The word nonparametric does not mean that the value lacks parameters existing in it, but rather that the parameters are adjustable and can change. 
 For example, in k-nearest neighbors' algorithm we make predictions for a new data instance based on the most similar training patterns k. The only assumption it makes about the data set is that the training patterns that are the most similar are most likely to have a similar result. Examples include: k-Nearest Neighbors, Decision Trees, SVMs.
 ## Maximum Likelihood Estimation
 In one line, MLE is a method that determines values of the parameters of a model such that they maximise the likelihood of observed data given a probability distribution. In simpler terms, say we have a random sample of data from some gaussian distribution. We need to find out which gaussian curve (need to find mean and variance) is most likely responsible for creating our data sample. We use MLE to find the parameters mean and variance.
@@ -98,14 +98,14 @@ $$ \hat{\theta}\_{MLE} = \arg\max_{\theta} P(D|\theta) $$
 
 In the above eqn, arg max means the value that returns the maximum value of a function. (Say we have a function, f(x) = x + 10 where x is in range \[1,5]. Max of the fn will be f(5) = 5 + 10 = 15. But arg max would be 5 beacuse that is the value that returned max value of function.)
 
-We will consider log likelihood as it is easy for calculation. Log function is monotonically increasing function which means the arg max would be same for with log or without log.
+We will consider log likelihood as it is easy for calculation. Log function is a monotonically increasing function which means the arg max would be same for with log or without log.
 
 $$ \hat{\theta}\_{MLE} = \arg\max_{\theta} \log P(D|\theta) = \arg\max_{\theta} \log \theta^k*(1-\theta)^{(n-k)} $$
 
 We know that derivative is zero at maxima and minima. So we need to find at which $\frac{d}{d\theta} \log P(D|\theta) = 0$. Calculating, we will get $\theta = \frac{k}{n}$.
 
 ## Linear Regression
-It is a parametric model where we assume our data is linear i.e our output y(house price) is a linear function of feature x(sq.ft). There might be d number of different features like sq.ft, no.of rooms, etc and we represent number of samples in training data with n. As we assume the data is linear, w.k.t y = mx where m is our paramter which is our slope. We represent the parameter/weight with w. So for each sample in our data, y = wx. The error in our model is represnted with e. A loss/cost/objective function is used to know this error. We optimize this loss function to get the least error. 
+It is a parametric model where we assume our data is linear i.e our output y(house price) is a linear function of feature x(sq.ft). There might be d number of different features like sq.ft, no.of rooms, etc and we represent number of samples in training data with n. As we assume the data is linear, w.k.t y = mx where m is our parameter which is our slope. We represent the parameter/weight with w. So for each sample in our data, y = wx. The error in our model is represented with e. A loss/cost/objective function is used to know this error. We optimize this loss function to get the least error. 
 
 ![Linear Regression](Images/lr.png)
 
@@ -117,13 +117,13 @@ We can take derivative to find the minimum and we will obtain:
 
 $$ \hat{w}\_{LS} = (X^TX)^{-1}X^Ty $$
 
-> Least squares is preffered over absolute values because, LS is differentiable which is a necessity for gradient descent approaches. But more importantly, least squares closed form solution is equal to MLE closed form.
+> Least squares is preferred over absolute values because, LS is differentiable which is a necessity for gradient descent approaches. But more importantly, least squares closed form solution is equal to MLE closed form.
 
-But data is not always linear, we then use polynomial regression to fit to the data.
+But data is not always linear, we then use polynomial regression to fit the data.
 
 ![Polynomial Regression](Images/pr.png)
 
-The more the degree of the polynomial the better is the fit but the more is the issue of overfitting.
+The more the degree of the polynomial the better the fit but the more is the issue of overfitting.
 # Core Concepts
 ## Bias-Variance Tradeoff
 Bias is the difference between the average prediction of our model and the correct value which we are trying to predict. The more bias means more error as the model(usually very simple models) couldn't properly fit to the data which is called underfitting. Variance is the variability of the model prediction and it tells about the spread of the data. Model with high variance (usually a complex model) pays a lot of attention to training data and fits almost exactly. When we use model with high variance on unseen data, the model couldn't generalize/adapt to the new data has it is too rigid and fixed with training data. This is called over-fitting. We desire low bias and low variance for our model to generalize well.
@@ -175,11 +175,11 @@ RMSE is preffered over Mean Absoulte Error (MAE) because RMSE penalizes large er
 ### R squared
 as the coefficient of determination, is a statistical measure that represents the proportion of the variance in the dependent variable (i.e., the target variable) that is explained by the independent variables (i.e., the features) in a regression model. In other words, it represents how well our regression model fits the given data. R-squared is a value between 0 and 1, where 0 indicates that the model does not explain any of the variability in the dependent variable, and 1 indicates that the model explains all of the variability in the dependent variable.
 
-We first calculate variance(sum of squared residuals) along the mean of the data and later calculate variance along the new model line that is fitted to the data.
+We first calculate variance(sum of squared residuals) along the mean line of the data and later calculate variance along the new model line that is fitted to the data.
 
-$$ R^2 = \frac {Var(mean)-Var(fitted_line)}{Var(mean)} $$
+$$ R^2 = \frac {Var(mean line)-Var(fitted line)}{Var(mean)} $$
 ### Confusion Matrix
-Used for classification tasks. In a confusion matrix, `True Positives` are the *positive* samples that are predicted as **positive**, `False Positives`(also called **Type 1 errors**) are the *negative* samples that are predicted as **postive**. Similarly `True Negatives` are the *negative* samples that are predicted as **negative**, `False Negatives` (Type 2 errors) are the *positive* samples that are predicted as **negative**.
+Used for classification tasks. In a confusion matrix, `True Positives` are the *positive* samples that are predicted as **positive**, `False Positives`(also called **Type 1 errors**) are the *negative* samples that are predicted as **positive**. Similarly `True Negatives` are the *negative* samples that are predicted as **negative**, `False Negatives` (Type 2 errors) are the *positive* samples that are predicted as **negative**.
 ### Accuracy
 It is calculated as the number of true positives and true negatives divided by the total number of instances in the dataset. In most of the cases, the distribution of classes is imbalanced, meaning that some classes have far fewer instances than others. In such cases, a classifier that always predicts the majority class will have a high accuracy, even though it is not very useful. So just accuracy is not good enough estimate.
 ### Precision, Recall and F1 Score
@@ -288,75 +288,6 @@ In the above convergence plot, there are two co-ordinates say $x_1,x_2$ plotted 
 The advantage of coordinate descent is that it can be efficient when the function to be optimized has some structure that makes it separable in terms of the variables like lasso regression. In other words, when the function can be expressed as a sum of functions, each depending on a single variable. In this case, coordinate descent can converge more quickly than other optimization methods.
 
 However, coordinate descent can be slow when the variables are highly correlated or when the function is not separable.
-## Advanced GD
-### GD Pitfalls
-Not all convex functions are good for GD. There are non-smooth functions which have sharp corners where function is not differentiable.
-> The derivative of a function at a point is defined as the slope of the tangent line to the function at that point.
-
-![GD Pitfalls](Images/GD1.png)
-
-A subgradient is the gradient at a point on the function. At the sharp corners, there can be multiple tangents leading to multiple subgradients at a single point. This makes convergence go crazy.
-
-Other two main challenges with Gradient Descent are local minima's, saddle points and plateau. 
-
-![GD Pitfalls](Images/GD2.png)
-
-If the random initialization starts the algorithm on the left, then it will converge to a local minimum, which is not as good as the global minimum. If it starts on the right, then it will take a very long time to cross the plateau (flat regions), and if you stop too early you will never reach the global minimum. 
-
-
-Saddle points are not local minima. They are the points where in one direction loss goes up and in other loss goes down making graident at the point zero. But the point is not local or global minima. Our GD can't get out of saddle point regions.
-
-Most of these pitfalls are common for deep learning models as we have large number of dimensions involved in optimization. So most of the below discussed optimizations are used in deep learning.
-### SGD with Momentum
-This is a technique used to accelerate the convergence of the optimization process by adding a fraction of the previous gradient to the current gradient estimate. The idea is to allow the optimization algorithm to build up speed in directions that have consistent gradients and to dampen oscillations in directions with inconsistent gradients thus passing local minima with velocity gathered from rolling down the hill. Similarly crossing saddle points and plateau (flat regions).
-
-Specifically, at each iteration of the SGD algorithm with momentum, the gradient is computed on a small subset of the training data (a mini-batch), and then a "velocity" vector is updated by adding a fraction (the momentum coefficient or $\rho$) of the previous velocity vector to the current gradient estimate. The parameters of the model are then updated by subtracting the updated velocity vector from the current parameter estimate.
-
-The momentum coefficient is typically set to a value between 0 and 1, usually 0.9 with higher values leading to more momentum and faster convergence, but potentially overshooting the optimal solution.
-
-for t=1,...T do
-
-  for i=1,...n do
-
-$v \leftarrow = \rho v + (y^i - w^Tx^i)x^i$
-
-$w \leftarrow w + \alpha v$
-
-return w
-
-But, we if observe we have two hyperparameters now, $\rho$ and $\alpha$. They need tuning to get the best results.
-### AdaGrad
-AdaGrad, which stands for Adaptive Gradient, is an optimization algorithm that is designed to automatically adapt the learning rate during training. 
-
-During training, AdaGrad maintains a set of per-parameter gradient accumulators, which are initialized to zero. At each iteration, the gradient of the loss function with respect to the parameters is computed, and the accumulated sum of the squared gradients for each parameter is updated as follows: $grad accumulator += gradient^2$. The parameter is calculated as:
-
-$$ parameter -= \frac{initial learning rate}{\sqrt{grad accumulator} + offset to avoid zero}* gradient $$
-
-The negative sign is turned into positive by the gradient (negative gradient means going down the slope). The initial learning rate is generally set to 0.1 or 0.01 but it doesn't matter because it is adaptively scaled. Adagrad even address issue in higher dimensional space where one parameter converges faster than the other.
-
-In Adagrad, as the gradient decreases, the step size keeps decreasing as we approach convergence which is useful in convex but if there is a saddle point or flat, then the optimization becomes super slow.
-### RMSProp
-This is an updated version of Adagrad.
-
-$$ grad acc = decay rate * grad acc + (1 - decay rate) * gradient^2 $$
-
-$$ parameter -= \frac{initial learning rate}{\sqrt{grad accumulator} + offset to avoid zero}* gradient $$
-
-The first line of the update rule computes the moving average of the squared gradients using an exponential decay, which is a hyper-parameter usually set to 0.9. This effectively scales down the learning rate for parameters with large gradients and scales up the learning rate for parameters with small gradients. Thus giving us smoother convergence.
-### Adam
-Perhaps the most used optimizer for neural networks. Adam, short for Adaptive Moment Estimation, is a popular optimization algorithm in machine learning that combines ideas from both RMSprop and momentum-based gradient descent. It is an adaptive learning rate optimization algorithm, which means it adjusts the learning rate of each parameter based on the history of the gradients for that parameter. 
-
-The Adam algorithm maintains a set of exponentially decaying average of past gradients and past squared gradients for each parameter. The decaying rate of the averages is controlled by two hyperparameters, $\beta_1$ and $\beta_2$, which are typically set to 0.9 and 0.999, respectively. The average of past gradients is used to calculate the momentum term, while the average of past squared gradients is used to calculate the scaling term. These two terms are then combined to obtain the update for each parameter.
-
-Say the computed gradient of loss function be $dx$ and first and second moment are set to zero initially.
-
-$$ first moment = \beta_1\*first moment + (1-\beta_1)\*dx $$
-
-$$ second moment = \beta_2\*second moment + (1-\beta_2)\*dx\*dx $$
-
-$$ parameter -= \frac{\alpha*first moment}{\sqrt{second moment} + offset} $$
-
-Adam also includes a bias correction mechanism that corrects for the fact that the estimates of the first and second moments are biased towards zero, especially in the early stages of training when the estimates are very inaccurate.
 # Regularization Models
 ## Ridge Regression (L2)
 For a linear model, $y=b+ w_1x_1 + w_2x_2 + ... + w_dx_d$. If model overfits, then w is large thus small changes in x will make the model vary a lot. So by limiting weights, we can improve model generalization. W.K.T, loss/cost function is to find minimum weights, w such that loss is the least. In ridge regression (also called shrinkage method), we use a regularizer $||w||^2_2$ (l2-norn) to control weights.
@@ -597,7 +528,7 @@ Odds represent the ratio of the probability of an event happening to the probabi
 1. Choose a differentiable loss function like logistic loss.
 2. Initialize the model with a single tree (it will be a single value in first case).
 3. But unlike regression, we can't use average value as the starting prediction. So we use log odds. Say we have 10 samples with output classes of survived (4) and not survived(6), then log(odds) that a passenger survives is log(no.of times survived in all sample outputs/no.of times in not survived in all sample outputs)= log(4/6). This value is our first tree.
-4. For classificaion, we convert this log odds to probability by using $\frac{e^{log(odds)}}{1+e^{log(odds)}}. Say we got a value of 0.7
+4. For classificaion, we convert this log odds to probability by using the sigmoid function, $\frac{e^{log(odds)}}{1+e^{log(odds)}}$. Say we got a value of 0.7
 5. We calculate residuals for all samples. For all survived (0), residual will be (0-0.7)=0.3 and for all not survived, residual value will be 0.3
 6. Using these residual values we build our second tree with all the features(columns).
 9. Start the loop `for m = 1 to M`
@@ -628,7 +559,7 @@ Extreme Gradient Boosting trees are perhaps the most used and successful model o
 #### Classification
 1. Similar to gradient boosting, we will start with an initial prediction. Unlike taking averages, we will use a default value of 0.5.
 2. Again same as gradient boosting classification, we will take residuals from the data points to this prediction and will build a tree as the residual values as the leaves. 
-3. To choose the root node, we first need to sort the values of the feature. Choose first two data points and find average value and use this avg value to split the residuals. Only one residual will be on left and all remaining residuals to right. To know how well this split works, we calculate a quality/similarity score given by $S.S = \frac{{\Sigma Residuals_i}^2}{\Sigma(PreviousProability*(1-PreviousProbability)) + \lambda}$. Here $\lambda$ is a regularization parameter.
+3. To choose the root node, we first need to sort the values of the feature. Choose first two data points and find average value and use this avg value to split the residuals. Only one residual will be on left and all remaining residuals to right. To know how well this split works, we calculate a quality/similarity score given by $S.S = \frac{\Sigma Residuals_i^2}{\Sigma(PreviousProability*(1-PreviousProbability)) + \lambda}$. Here $\lambda$ is a regularization parameter.
 4. We will also calculate S.S without any split using all residuals.
 5. To find how well the split works, we calculate gain given by $Gain=LeftLeaveSimilarity + RightLeaveSimilarity-RootSimilarity$
 6. Now we take a new split and repeat the whole process. Now we compare gains of all splits and decide the best split.
@@ -746,7 +677,7 @@ t-distributed Stochastic Neighbour Embedding is one of the techniques in Manifol
 
 The core idea behind t-SNE is to construct a probability distribution that measures the similarity between pairs of high-dimensional data points. This is done by modeling the probability of a point choosing another point as its neighbor based on their similarities. The similarity is calculated using a Gaussian kernel, which assigns higher values to points that are closer in the original space.
 
-Next, t-SNE constructs a similar probability distribution in the low-dimensional space, where the embedded points will reside. It aims to minimize the Kullback-Leibler (KL) divergence between the two distributions, ensuring that points with high similarities in the original space are mapped to nearby locations in the low-dimensional space.
+Next, t-SNE constructs a similar probability distribution in the low-dimensional space, where the embedded points will reside. It aims to minimize the Kullback-Leibler (KL) divergence (it is similar to cross-entropy loss) between the two distributions, ensuring that points with high similarities in the original space are mapped to nearby locations in the low-dimensional space.
 
 The algorithm starts by randomly placing the data points in the low-dimensional space and iteratively adjusts their positions to minimize the KL divergence. It uses gradient descent optimization to update the positions based on the differences between the similarities in the high-dimensional and low-dimensional spaces. In each iteration, t-SNE calculates the gradient of the KL divergence and adjusts the positions of the points accordingly.
 
